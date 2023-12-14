@@ -1,16 +1,16 @@
 import { useEffect, useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import PromotionItem from "./PromotionItem";
+import MerchantItem from "./MerchantItem";
 import { ServiceContext } from "../../../context/ServiceContext";
-import { promotionAction } from "../../../slices/promotionSlice";
+import { merchantAction } from "../../../slices/merchantSlice";
 
-const PromotionList = () => {
+const MerchantList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const dispatch = useDispatch();
-  const { promotions } = useSelector((state) => state.promotion);
-  const { promotionService } = useContext(ServiceContext);
-  // console.log(promotionService);
+  const { merchants } = useSelector((state) => state.merchant);
+  const { merchantService } = useContext(ServiceContext);
+  // console.log(merchantService);
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
@@ -29,10 +29,10 @@ const PromotionList = () => {
   };
 
   useEffect(() => {
-    const onGetPromotions = () => {
+    const onGetMerchants = () => {
       dispatch(
-        promotionAction(async () => {
-          const result = await promotionService.fetchPromotions({
+        merchantAction(async () => {
+          const result = await merchantService.fetchMerchants({
             page: currentPage,
             size: currentSize,
           });
@@ -41,8 +41,8 @@ const PromotionList = () => {
         })
       );
     };
-    onGetPromotions();
-  }, [currentPage, currentSize, dispatch, promotionService]);
+    onGetMerchants();
+  }, [currentPage, currentSize, dispatch, merchantService]);
 
   useEffect(() => {
     if (currentPage < 1 || currentPage > paging.totalPages) {
@@ -53,7 +53,7 @@ const PromotionList = () => {
 
   return (
     <div className="m-4">
-      {promotions && promotions.length !== 0 && (
+      {merchants && merchants.length !== 0 && (
         <div className="d-flex">
           <nav aria-label="page navigation example">
             <ul className="pagination">
@@ -95,34 +95,34 @@ const PromotionList = () => {
       )}
 
       <div className="d-flex justify-content-between align-items-center">
-        <h2 className="fw-bold">Promotion List</h2>
+        <h2 className="fw-bold">Merchant List</h2>
       </div>
       <table className="table">
         <thead>
           <tr>
              <th className="fw-normal">No</th>
              <th className="fw-normal">ID</th>
-             <th className="fw-normal">Merchant ID</th>
              <th className="fw-normal">Name</th>
-             <th className="fw-normal">Value</th>
+             <th className="fw-normal">PIC Name</th>
+             <th className="fw-normal">PIC Number</th>
+             <th className="fw-normal">PIC Email</th>
+             <th className="fw-normal">Description</th>
              <th className="fw-normal">Status</th>
-             <th className="fw-normal">Cost</th>
-             <th className="fw-normal">Quantity</th>
+             <th className="fw-normal">Join Date</th>
              <th className="fw-normal">Created At</th>
              <th className="fw-normal">Updated At</th>
-             <th className="fw-normal">Expired Date</th>
              <th className="fw-normal">Action</th>
              
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {promotions &&
-            promotions.length !== 0 &&
-            promotions.map((promotion, idx) => {
+          {merchants &&
+            merchants.length !== 0 &&
+            merchants.map((merchant, idx) => {
               return (
-                <PromotionItem
-                  key={promotion.promotionID}
-                  promotion={promotion}
+                <MerchantItem
+                  key={merchant.merchantID}
+                  merchant={merchant}
                   idx={++idx}
                 />
               );
@@ -132,4 +132,4 @@ const PromotionList = () => {
     </div>
   );
 };
-export default PromotionList;
+export default MerchantList;

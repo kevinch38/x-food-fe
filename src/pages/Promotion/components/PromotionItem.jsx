@@ -10,17 +10,13 @@ function PromotionItem({ promotion, idx }) {
 		promotionID,
 		merchantID,
 		cost,
-		maxRedeem,
 		promotionValue,
-		promotionDescription,
 		promotionName,
 		quantity,
 		expiredDate,
-		adminID,
 		promotionStatusID,
 		createdAt,
 		updatedAt,
-		notes,
 	} = promotion;
 
 	return (

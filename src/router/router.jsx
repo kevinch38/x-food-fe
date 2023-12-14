@@ -4,6 +4,8 @@ import Account from "../pages/Account";
 import AuthenticatedLayout from "../layout/AuthenticatedLayout";
 import AccountList from "../pages/Account/components/AccountList";
 import Promotion from "../pages/Promotion";
+import Merchant from "../pages/Merchant";
+import MerchantBranch from "../pages/Merchant Branch";
 
 const setupRouter = () =>
   createBrowserRouter([
@@ -24,6 +26,14 @@ const setupRouter = () =>
             {
               path: "promotion",
               element: <Promotion />,
+            },
+            {
+              path: "merchant",
+              element: <Merchant />,
+            },
+            {
+              path: "merchant/branch",
+              element: <MerchantBranch />,
             },
           ],
         },
