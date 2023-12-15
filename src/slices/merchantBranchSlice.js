@@ -13,8 +13,6 @@ const merchantBranchSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(merchantBranchAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                console.log("A");
-                console.log(payload)
                 state.merchantBranchs = payload.data;
             }
         });

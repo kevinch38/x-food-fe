@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 
 MerchantBranchItem.propTypes = {
-	merchantBranch: PropTypes.any,
+	merchantBranchs: PropTypes.any,
 	idx: PropTypes.number,
 };
 
-function MerchantBranchItem({ merchantBranch, idx }) {
+function MerchantBranchItem({ merchantBranchs, idx }) {
 	const {
 		branchID,
 		branchName,
@@ -15,31 +15,37 @@ function MerchantBranchItem({ merchantBranch, idx }) {
 		cityID,
 		createdAt,
 		updatedAt,
-	} = merchantBranch;
+	} = merchantBranchs;
 
 	return (
-		<tr>
-			<td>{idx}</td>
-			<td>{branchID}</td>
-             <td>{branchName}</td>
-             <td>{address}</td>
-             <td>{branchWorkingHoursID}</td>
-             <td>{cityID}</td>
-             <td>{timezone}</td>
-             <td>{createdAt}</td>
-             <td>{updatedAt}</td>
+		<tr key={idx}>
 			<td>
-				<div className='p-2 row'>
-					<div className='btn-group justify-content-center text-normal fw-bold'>
-						<button className='btn btn-primary text-white'>
-							Update
-						</button>
-						<button className='btn btn-danger text-white'>
-							Delete
-						</button>
-					</div>
+				<div className='custom-control custom-checkbox'>
+					<input
+						type='checkbox'
+						className='custom-control-input'
+						id={`customCheck${idx}`}
+					/>
+					<label
+						className='custom-control-label'
+						htmlFor={`customCheck${idx}`}
+					></label>
 				</div>
 			</td>
+			<td>{idx}</td>
+			<td>{branchID}</td>
+			<td>{branchName}</td>
+			<td>{address}</td>
+			<td>{branchWorkingHoursID}</td>
+			<td>{cityID}</td>
+			<td>{timezone}</td>
+			<td>{createdAt}</td>
+			<td>{updatedAt}</td>
+
+			<td>Bootstrap 4 CDN and Starter Template</td>
+			<td>Cristina</td>
+			<td>913</td>
+			<td>2.846</td>
 		</tr>
 	);
 }
