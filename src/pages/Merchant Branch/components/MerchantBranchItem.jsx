@@ -35,17 +35,11 @@ function MerchantBranchItem({ merchantBranchs, idx }) {
 			<td>{idx}</td>
 			<td>{branchID}</td>
 			<td>{branchName}</td>
-			<td>{address}</td>
+			<td>{cityID}</td>
 			<td>{branchWorkingHoursID}</td>
 			<td>{cityID}</td>
 			<td>{timezone}</td>
-			<td>{createdAt}</td>
-			<td>{updatedAt}</td>
-
-			<td>Bootstrap 4 CDN and Starter Template</td>
-			<td>Cristina</td>
-			<td>913</td>
-			<td>2.846</td>
+			<td>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</td>
 		</tr>
 	);
 }

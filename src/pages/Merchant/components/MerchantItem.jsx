@@ -40,7 +40,7 @@ function MerchantItem({ merchant, idx }) {
 
 	return (
 		<>
-			<tr data-bs-toggle='modal' data-bs-target={`#exampleModal${idx}`}>
+			<tr>
 				<td>{idx}</td>
 				<td>{merchantID}</td>
 				<td>{merchantName}</td>
@@ -70,44 +70,39 @@ function MerchantItem({ merchant, idx }) {
 							<i
 								className='bi bi-list-ul h3'
 								onClick={() => onGetMerchantBranchs(merchantID)}
+								data-bs-toggle='modal'
+								data-bs-target={`#exampleModal${idx}`}
 							></i>
 						</div>
 					</div>
 				</td>
 			</tr>
 			<div
-				className='modal fade h-auto'
+				className='modal fade h-auto mt-5'
 				id={`exampleModal${idx}`}
 				tabIndex='-1'
 				aria-labelledby={`exampleModal${idx}`}
 				aria-hidden='true'
 				style={{
-					position: 'absolute',
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -50%)',
 					borderRadius: '50px',
 				}}
 			>
 				<div className='modal-dialog modal-xl rounded-5'>
 					<div className='modal-content border-0'>
-						<h1
-							className='modal-title fw-bold text-center mt-5'
-							id={`exampleModal${idx}`}
-						>
-							Merchant Details
-						</h1>
 						<button
 							type='button'
-							className='close'
+							className='btn-close align-self-end m-4'
 							data-bs-dismiss='modal'
 							aria-label='Close'
-						>
-							<span aria-hidden='true'>&times;</span>
-						</button>
+						></button>
+						<h1 className='modal-title fw-bold text-center'>
+							Merchant Details
+						</h1>
 						<div
-							className='modal-body'
-							style={{ textAlign: 'left' }}
+							className='modal-body h-auto'
+							style={{
+								textAlign: 'left',
+							}}
 						>
 							<table className='table'>
 								<tr>
@@ -123,7 +118,7 @@ function MerchantItem({ merchant, idx }) {
 								<tr>
 									<td>Description:</td>
 
-									<td> | {merchantName}</td>
+									<td> | {merchantDescription}</td>
 								</tr>
 								<tr>
 									<td>PIC:</td>
@@ -143,9 +138,8 @@ function MerchantItem({ merchant, idx }) {
 								<tr>
 									<td>Branch(es)</td>
 									<td rowSpan={4} className='align-top'>
-										<div className='container'>
+										<div className='table-responsive' style={{overflow:'scroll', maxWidth:'82%'}}>
 											<div className='row'>
-												<div className='col-12'>
 													<table className='table text-center'>
 														<thead>
 															<tr>
@@ -181,9 +175,6 @@ function MerchantItem({ merchant, idx }) {
 																	PIC Number
 																</th>
 																<th scope='col'>
-																	PIC Email
-																</th>
-																<th scope='col'>
 																	Status
 																</th>
 																<th scope='col'>
@@ -194,16 +185,7 @@ function MerchantItem({ merchant, idx }) {
 																</th>
 															</tr>
 														</thead>
-														<tbody
-															className='table-group-divider'
-															style={{
-																overflowY:
-																	'scroll',
-																	overflowX:
-																		'hidden',
-																height: '200px',
-															}}
-														>
+														<tbody className='table-group-divider'>
 															{merchantBranchs &&
 																merchantBranchs.length !==
 																	0 &&
@@ -231,7 +213,6 @@ function MerchantItem({ merchant, idx }) {
 													</table>
 												</div>
 											</div>
-										</div>
 									</td>
 								</tr>
 								<tr>
@@ -243,7 +224,7 @@ function MerchantItem({ merchant, idx }) {
 								<tr>
 									<td>
 										<div className='p-2 row'>
-											<div className='btn-group justify-content-center text-normal fw-bold w-50'>
+											<div className='btn-group  text-normal fw-bold w-50'>
 												<button className='btn btn-primary text-white'>
 													Update
 												</button>
