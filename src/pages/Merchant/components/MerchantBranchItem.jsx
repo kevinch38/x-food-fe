@@ -5,7 +5,7 @@ MerchantBranchItem.propTypes = {
 	idx: PropTypes.number,
 };
 
-function MerchantBranchItem({ merchantBranchs, idx }) {
+function MerchantBranchItem({ key, merchantBranchs, idx }) {
 	const {
 		branchID,
 		branchName,
@@ -18,7 +18,7 @@ function MerchantBranchItem({ merchantBranchs, idx }) {
 	} = merchantBranchs;
 
 	return (
-		<tr key={idx}>
+		<tr key={key}>
 			<td>
 				<div className='custom-control custom-checkbox'>
 					<input

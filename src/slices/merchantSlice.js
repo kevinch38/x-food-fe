@@ -13,8 +13,6 @@ const merchantSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(merchantAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                console.log("A");
-                console.log(payload)
                 state.merchants = payload.data;
             }
         });

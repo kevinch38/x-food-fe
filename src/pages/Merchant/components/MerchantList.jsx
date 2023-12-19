@@ -10,11 +10,11 @@ const MerchantList = () => {
 	const dispatch = useDispatch();
 	const { merchants } = useSelector((state) => state.merchant);
 	const { merchantService } = useContext(ServiceContext);
-	// console.log(merchantService);
+
 	const [paging, setPaging] = useState({});
 
 	const currentPage = parseInt(searchParam.get('page') || 1);
-	const currentSize = parseInt(searchParam.get('size') || 1);
+	const currentSize = parseInt(searchParam.get('size') || 10);
 
 	const onNext = () => {
 		if (currentPage === paging.totalPages) return;
@@ -97,6 +97,13 @@ const MerchantList = () => {
 
 			<div className='d-flex justify-content-between align-items-center'>
 				<h2 className='fw-bold'>Merchant List</h2>
+				<i
+					className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
+					style={{
+						color: 'rgb(101, 213, 26)',
+					}}
+					onClick={() => console.log('tambah')}
+				></i>
 			</div>
 			<table className='table text-center'>
 				<thead>
@@ -113,7 +120,7 @@ const MerchantList = () => {
 						<th className='fw-normal'>Created At</th>
 						<th className='fw-normal'>Updated At</th>
 						<th className='fw-normal'>Action</th>
-						<th></th>
+						<th style={{ minWidth: '100px' }}></th>
 					</tr>
 				</thead>
 				{merchants && merchants.length !== 0 && (

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import MerchantBranchItem from '../../Merchant Branch/components/MerchantBranchItem';
+import MerchantBranchItem from './MerchantBranchItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { useContext } from 'react';
 import { ServiceContext } from '../../../context/ServiceContext';
@@ -40,7 +40,7 @@ function MerchantItem({ merchant, idx }) {
 
 	return (
 		<>
-			<tr>
+			<tr key={merchantID}>
 				<td>{idx}</td>
 				<td>{merchantID}</td>
 				<td>{merchantName}</td>
@@ -53,22 +53,30 @@ function MerchantItem({ merchant, idx }) {
 				<td>{createdAt}</td>
 				<td>{updatedAt}</td>
 				<td>
-					<div className='p-2 row'>
-						<div className='btn-group justify-content-center text-normal fw-bold'>
-							<button className='btn btn-primary text-white'>
-								Update
-							</button>
-							<button className='btn btn-danger text-white'>
-								Delete
-							</button>
+					<div className='p-2 d-flex justify-content-between w-100'>
+						<div className='btn-group justify-content-between'>
+							<i
+								className='bi bi-pencil-fill h3 cursor-pointer m-2'
+								style={{
+									color: 'rgb(255, 210, 48)',
+								}}
+								onClick={() => console.log('edit')}
+							></i>
+							<i
+								className='bi bi-trash-fill h3 cursor-pointer m-2'
+								style={{
+									color: 'rgb(255, 0, 0)',
+								}}
+								onClick={() => console.log('delete')}
+							></i>
 						</div>
 					</div>
 				</td>
-				<td className='cursor-pointer center'>
-					<div className='p-2 row'>
-						<div className='d-flex align-items-center justify-content-center'>
+				<td className=' ms-5'>
+					<div className='p-2'>
+						<div className='d-flex flex-column align-items-center justify-content-center pt-2'>
 							<i
-								className='bi bi-list-ul h3'
+								className='bi bi-list-ul h3 cursor-pointer'
 								onClick={() => onGetMerchantBranchs(merchantID)}
 								data-bs-toggle='modal'
 								data-bs-target={`#exampleModal${idx}`}
@@ -88,8 +96,12 @@ function MerchantItem({ merchant, idx }) {
 					marginTop: '5%',
 				}}
 			>
-				<div className='modal-dialog rounded-5' style={{
-					maxWidth:'90vw'}}>
+				<div
+					className='modal-dialog rounded-5'
+					style={{
+						maxWidth: '90vw',
+					}}
+				>
 					<div className='modal-content border-0'>
 						<button
 							type='button'
@@ -106,11 +118,7 @@ function MerchantItem({ merchant, idx }) {
 								textAlign: 'left',
 							}}
 						>
-							<table
-								className='table'
-								style={{
-								}}
-							>
+							<table className='table' style={{}}>
 								<tr>
 									<td>ID:</td>
 
@@ -140,6 +148,17 @@ function MerchantItem({ merchant, idx }) {
 									<td className='pb-4'>Note:</td>
 
 									<td className='pb-4'> | {note}</td>
+									<td>
+										<i
+											className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
+											style={{
+												color: 'rgb(101, 213, 26)',
+											}}
+											onClick={() =>
+												console.log('tambah')
+											}
+										></i>
+									</td>
 								</tr>
 								<tr>
 									<td>Branch(es)</td>
@@ -148,10 +167,10 @@ function MerchantItem({ merchant, idx }) {
 											className='table-responsive'
 											style={{
 												overflow: 'scroll',
-												maxWidth: '78vw',
+												maxWidth: '70vw',
 												display: 'block',
 												maxHeight: '40vh',
-												overflowY:'scroll'
+												overflowY: 'scroll',
 											}}
 										>
 											<div className='row'>
@@ -239,13 +258,29 @@ function MerchantItem({ merchant, idx }) {
 								<tr>
 									<td>
 										<div className='p-2 row'>
-											<div className='btn-group  text-normal fw-bold w-50'>
-												<button className='btn btn-primary text-white'>
-													Update
-												</button>
-												<button className='btn btn-danger text-white'>
-													Delete
-												</button>
+											<div className='p-2 d-flex justify-content-between w-100'>
+												<div className='btn-group justify-content-between'>
+													<i
+														className='bi bi-pencil-fill h3 cursor-pointer m-2'
+														style={{
+															color: 'rgb(255, 210, 48)',
+														}}
+														onClick={() =>
+															console.log('edit')
+														}
+													></i>
+													<i
+														className='bi bi-trash-fill h3 cursor-pointer m-2'
+														style={{
+															color: 'rgb(255, 0, 0)',
+														}}
+														onClick={() =>
+															console.log(
+																'delete'
+															)
+														}
+													></i>
+												</div>
 											</div>
 										</div>
 									</td>
