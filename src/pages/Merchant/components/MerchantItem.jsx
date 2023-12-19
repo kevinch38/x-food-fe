@@ -78,13 +78,14 @@ function MerchantItem({ merchant, idx }) {
 				</td>
 			</tr>
 			<div
-				className='modal fade h-auto mt-5'
+				className='modal fade'
 				id={`exampleModal${idx}`}
 				tabIndex='-1'
 				aria-labelledby={`exampleModal${idx}`}
 				aria-hidden='true'
 				style={{
 					borderRadius: '50px',
+					marginTop: '5%',
 				}}
 			>
 				<div className='modal-dialog modal-xl rounded-5'>
@@ -104,7 +105,11 @@ function MerchantItem({ merchant, idx }) {
 								textAlign: 'left',
 							}}
 						>
-							<table className='table'>
+							<table
+								className='table'
+								style={{
+								}}
+							>
 								<tr>
 									<td>ID:</td>
 
@@ -138,81 +143,90 @@ function MerchantItem({ merchant, idx }) {
 								<tr>
 									<td>Branch(es)</td>
 									<td rowSpan={4} className='align-top'>
-										<div className='table-responsive' style={{overflow:'scroll', maxWidth:'82%'}}>
+										<div
+											className='table-responsive'
+											style={{
+												overflow: 'scroll',
+												maxWidth: '75vw',
+												display: 'block',
+												maxHeight: '40vh',
+												overflowY:'scroll'
+											}}
+										>
 											<div className='row'>
-													<table className='table text-center'>
-														<thead>
-															<tr>
-																<th>
-																	<div className='custom-control custom-checkbox'>
-																		<input
-																			type='checkbox'
-																			className='custom-control-input'
-																			id={`customCheck0`}
+												<table className='table text-center'>
+													<thead>
+														<tr>
+															<th>
+																<div className='custom-control custom-checkbox'>
+																	<input
+																		type='checkbox'
+																		className='custom-control-input'
+																		id={`customCheck0`}
+																	/>
+																	<label
+																		className='custom-control-label'
+																		htmlFor={`customCheck0`}
+																	></label>
+																</div>
+															</th>
+															<th scope='col'>
+																NO
+															</th>
+															<th scope='col'>
+																ID
+															</th>
+															<th scope='col'>
+																Branch
+															</th>
+															<th scope='col'>
+																City
+															</th>
+															<th scope='col'>
+																PIC Name
+															</th>
+															<th scope='col'>
+																PIC Number
+															</th>
+															<th scope='col'>
+																Status
+															</th>
+															<th scope='col'>
+																Join Date
+															</th>
+															<th scope='col'>
+																Created At
+															</th>
+														</tr>
+													</thead>
+													<tbody className='table-group-divider'>
+														{merchantBranchs &&
+															merchantBranchs.length !==
+																0 &&
+															merchantBranchs.map(
+																(
+																	merchantbranchs,
+																	idx
+																) => {
+																	return (
+																		<MerchantBranchItem
+																			key={
+																				merchantbranchs.merchantbranchID
+																			}
+																			merchantBranchs={
+																				merchantbranchs
+																			}
+																			idx={
+																				++idx
+																			}
 																		/>
-																		<label
-																			className='custom-control-label'
-																			htmlFor={`customCheck0`}
-																		></label>
-																	</div>
-																</th>
-																<th scope='col'>
-																	NO
-																</th>
-																<th scope='col'>
-																	ID
-																</th>
-																<th scope='col'>
-																	Branch
-																</th>
-																<th scope='col'>
-																	City
-																</th>
-																<th scope='col'>
-																	PIC Name
-																</th>
-																<th scope='col'>
-																	PIC Number
-																</th>
-																<th scope='col'>
-																	Status
-																</th>
-																<th scope='col'>
-																	Join Date
-																</th>
-																<th scope='col'>
-																	Created At
-																</th>
-															</tr>
-														</thead>
-														<tbody className='table-group-divider'>
-															{merchantBranchs &&
-																merchantBranchs.length !==
-																	0 &&
-																merchantBranchs.map(
-																	(
-																		merchantbranchs,
-																		idx
-																	) => {
-																		return (
-																			<MerchantBranchItem
-																				key={
-																					merchantbranchs.merchantbranchID
-																				}
-																				merchantBranchs={
-																					merchantbranchs
-																				}
-																				idx={
-																					++idx
-																				}
-																			/>
-																		);
-																	}
-																)}
-														</tbody>
-													</table>
-												</div>
+																	);
+																}
+															)}
+													</tbody>
+												</table>
 											</div>
+										</div>
 									</td>
 								</tr>
 								<tr>

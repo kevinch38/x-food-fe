@@ -54,7 +54,7 @@ const MerchantList = () => {
 	return (
 		<div
 			className='m-4 container-fluid table-responsive'
-			style={{overflowX:'scroll'}}
+			style={{ overflowX: 'scroll' }}
 		>
 			<div className='d-flex w-100'>
 				<nav aria-label='page navigation example'>
@@ -95,29 +95,29 @@ const MerchantList = () => {
 				</div>
 			</div>
 
-			{merchants && merchants.length !== 0 && (
-				<>
-					<div className='d-flex justify-content-between align-items-center'>
-						<h2 className='fw-bold'>Merchant List</h2>
-					</div>
-					<table className='table text-center'>
-						<thead>
-							<tr>
-								<th className='fw-normal'>No</th>
-								<th className='fw-normal'>ID</th>
-								<th className='fw-normal'>Name</th>
-								<th className='fw-normal'>PIC Name</th>
-								<th className='fw-normal'>PIC Number</th>
-								<th className='fw-normal'>PIC Email</th>
-								<th className='fw-normal'>Description</th>
-								<th className='fw-normal'>Status</th>
-								<th className='fw-normal'>Join Date</th>
-								<th className='fw-normal'>Created At</th>
-								<th className='fw-normal'>Updated At</th>
-								<th className='fw-normal'>Action</th>
-								<th></th>
-							</tr>
-						</thead>
+			<div className='d-flex justify-content-between align-items-center'>
+				<h2 className='fw-bold'>Merchant List</h2>
+			</div>
+			<table className='table text-center'>
+				<thead>
+					<tr>
+						<th className='fw-normal'>No</th>
+						<th className='fw-normal'>ID</th>
+						<th className='fw-normal'>Name</th>
+						<th className='fw-normal'>PIC Name</th>
+						<th className='fw-normal'>PIC Number</th>
+						<th className='fw-normal'>PIC Email</th>
+						<th className='fw-normal'>Description</th>
+						<th className='fw-normal'>Status</th>
+						<th className='fw-normal'>Join Date</th>
+						<th className='fw-normal'>Created At</th>
+						<th className='fw-normal'>Updated At</th>
+						<th className='fw-normal'>Action</th>
+						<th></th>
+					</tr>
+				</thead>
+				{merchants && merchants.length !== 0 && (
+					<>
 						<tbody className='table-group-divider'>
 							{merchants &&
 								merchants.length !== 0 &&
@@ -131,9 +131,9 @@ const MerchantList = () => {
 									);
 								})}
 						</tbody>
-					</table>
-				</>
-			)}
+					</>
+				)}
+			</table>
 		</div>
 	);
 };
