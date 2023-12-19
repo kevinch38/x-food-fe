@@ -88,7 +88,8 @@ function MerchantItem({ merchant, idx }) {
 					marginTop: '5%',
 				}}
 			>
-				<div className='modal-dialog modal-xl rounded-5'>
+				<div className='modal-dialog rounded-5' style={{
+					maxWidth:'90vw'}}>
 					<div className='modal-content border-0'>
 						<button
 							type='button'
@@ -147,7 +148,7 @@ function MerchantItem({ merchant, idx }) {
 											className='table-responsive'
 											style={{
 												overflow: 'scroll',
-												maxWidth: '75vw',
+												maxWidth: '78vw',
 												display: 'block',
 												maxHeight: '40vh',
 												overflowY:'scroll'
