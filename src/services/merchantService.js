@@ -11,10 +11,23 @@ const MerchantService = () => {
         return data;
     }
 
+    const saveMerchant = async (merchant) => {
+        const { data } = await axiosInstance.post('/api/merchants', merchant);
+        return data;
+    }
+
+    
+    const updateMerchant = async (merchant) => {
+        const { data } = await axiosInstance.put('/api/merchants', merchant);
+        return data;
+    }
+
 
     return {
         fetchMerchantById,
         fetchMerchants,
+        saveMerchant,
+        updateMerchant,
     }
 }
 

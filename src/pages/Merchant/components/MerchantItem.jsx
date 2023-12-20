@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useContext } from 'react';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { merchantBranchAction } from '../../../slices/merchantBranchSlice';
+import EmptyState from '../../../components/EmptyState';
+import CreateMerchantBranchModal from './CreateMerchantBranchModal';
 
 MerchantItem.propTypes = {
 	merchant: PropTypes.any,
@@ -19,7 +21,7 @@ function MerchantItem({ merchant, idx }) {
 		picNumber,
 		picEmail,
 		joinDate,
-		merchantStatusID,
+		status,
 		note,
 		createdAt,
 		updatedAt,
@@ -48,7 +50,7 @@ function MerchantItem({ merchant, idx }) {
 				<td>{picNumber}</td>
 				<td>{picEmail}</td>
 				<td>{merchantDescription}</td>
-				<td>{merchantStatusID}</td>
+				<td>{status}</td>
 				<td>{joinDate}</td>
 				<td>{createdAt}</td>
 				<td>{updatedAt}</td>
@@ -142,7 +144,7 @@ function MerchantItem({ merchant, idx }) {
 								<tr>
 									<td>Status:</td>
 
-									<td> | {merchantStatusID}</td>
+									<td> | {status}</td>
 								</tr>
 								<tr>
 									<td className='pb-4'>Note:</td>
@@ -154,76 +156,78 @@ function MerchantItem({ merchant, idx }) {
 											style={{
 												color: 'rgb(101, 213, 26)',
 											}}
-											onClick={() =>
-												console.log('tambah')
-											}
+											data-bs-toggle='modal'
+											data-bs-target={`#createMerchantBranchModal`}
+											onClick={()=>console.log('A')}
 										></i>
 									</td>
 								</tr>
 								<tr>
 									<td>Branch(es)</td>
 									<td rowSpan={4} className='align-top'>
-										<div
-											className='table-responsive'
-											style={{
-												overflow: 'scroll',
-												maxWidth: '70vw',
-												display: 'block',
-												maxHeight: '40vh',
-												overflowY: 'scroll',
-											}}
-										>
-											<div className='row'>
-												<table className='table text-center'>
-													<thead>
-														<tr>
-															<th>
-																<div className='custom-control custom-checkbox'>
-																	<input
-																		type='checkbox'
-																		className='custom-control-input'
-																		id={`customCheck0`}
-																	/>
-																	<label
-																		className='custom-control-label'
-																		htmlFor={`customCheck0`}
-																	></label>
-																</div>
-															</th>
-															<th scope='col'>
-																NO
-															</th>
-															<th scope='col'>
-																ID
-															</th>
-															<th scope='col'>
-																Branch
-															</th>
-															<th scope='col'>
-																City
-															</th>
-															<th scope='col'>
-																PIC Name
-															</th>
-															<th scope='col'>
-																PIC Number
-															</th>
-															<th scope='col'>
-																Status
-															</th>
-															<th scope='col'>
-																Join Date
-															</th>
-															<th scope='col'>
-																Created At
-															</th>
-														</tr>
-													</thead>
-													<tbody className='table-group-divider'>
-														{merchantBranchs &&
-															merchantBranchs.length !==
-																0 &&
-															merchantBranchs.map(
+										{merchantBranchs &&
+										merchantBranchs.length !== 0 ? (
+											<div
+												className='table-responsive'
+												style={{
+													overflow: 'scroll',
+													maxWidth: '70vw',
+													display: 'block',
+													maxHeight: '40vh',
+													overflowY: 'scroll',
+												}}
+											>
+												<div className='row'>
+													<table className='table text-center'>
+														<thead>
+															<tr>
+																<th>
+																	<div className='custom-control custom-checkbox'>
+																		<input
+																			type='checkbox'
+																			className='custom-control-input'
+																			id={`customCheck0`}
+																		/>
+																		<label
+																			className='custom-control-label'
+																			htmlFor={`customCheck0`}
+																		></label>
+																	</div>
+																</th>
+																<th scope='col'>
+																	NO
+																</th>
+																<th scope='col'>
+																	ID
+																</th>
+																<th scope='col'>
+																	Branch
+																</th>
+																<th scope='col'>
+																	City
+																</th>
+																<th scope='col'>
+																	PIC Name
+																</th>
+																<th scope='col'>
+																	PIC Number
+																</th>
+																<th scope='col'>
+																	PIC Email
+																</th>
+																<th scope='col'>
+																	Status
+																</th>
+																<th scope='col'>
+																	Join Date
+																</th>
+																<th scope='col'>
+																	Created At
+																</th>
+															</tr>
+														</thead>
+														<tbody className='table-group-divider'>
+															{merchantBranchs.map(
 																(
 																	merchantbranchs,
 																	idx
@@ -243,10 +247,15 @@ function MerchantItem({ merchant, idx }) {
 																	);
 																}
 															)}
-													</tbody>
-												</table>
+														</tbody>
+													</table>
+												</div>
 											</div>
-										</div>
+										) : (
+											<div className='w-100'>
+												<EmptyState />
+											</div>
+										)}
 									</td>
 								</tr>
 								<tr>
@@ -307,6 +316,7 @@ function MerchantItem({ merchant, idx }) {
 						</div>
 					</div>
 				</div>
+				<CreateMerchantBranchModal />
 			</div>
 		</>
 	);

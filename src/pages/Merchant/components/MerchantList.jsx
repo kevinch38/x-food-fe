@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import MerchantItem from './MerchantItem';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { merchantAction } from '../../../slices/merchantSlice';
+import CreateMerchantModal from './CreateMerchantModal';
+import EmptyState from '../../../components/EmptyState';
 
 const MerchantList = () => {
 	const [searchParam, setSearchParam] = useSearchParams();
@@ -13,8 +15,8 @@ const MerchantList = () => {
 
 	const [paging, setPaging] = useState({});
 
-	const currentPage = parseInt(searchParam.get('page') || 1);
-	const currentSize = parseInt(searchParam.get('size') || 10);
+	let currentPage = parseInt(searchParam.get('page') || 1);
+	let currentSize = parseInt(searchParam.get('size') || 10);
 
 	const onNext = () => {
 		if (currentPage === paging.totalPages) return;
@@ -27,6 +29,11 @@ const MerchantList = () => {
 		searchParam.set('page', currentPage - 1);
 		setSearchParam(searchParam);
 	};
+
+	// useEffect(() => {
+	// 	currentPage = parseInt(searchParam.get('page') || 1);
+	// 	currentSize = parseInt(searchParam.get('size') || 10);
+	// }, [paging]);
 
 	useEffect(() => {
 		const onGetMerchants = () => {
@@ -42,7 +49,7 @@ const MerchantList = () => {
 			);
 		};
 		onGetMerchants();
-	}, [currentPage, currentSize, dispatch, merchantService]);
+	}, [currentPage, currentSize, dispatch, merchantService, merchants.length]);
 
 	useEffect(() => {
 		if (currentPage < 1 || currentPage > paging.totalPages) {
@@ -50,6 +57,7 @@ const MerchantList = () => {
 			setSearchParam(searchParam);
 		}
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
+	console.log(merchants.length);
 
 	return (
 		<div
@@ -102,29 +110,31 @@ const MerchantList = () => {
 					style={{
 						color: 'rgb(101, 213, 26)',
 					}}
-					onClick={() => console.log('tambah')}
+					data-bs-toggle='modal'
+					data-bs-target={`#createMerchantModal`}
 				></i>
 			</div>
-			<table className='table text-center'>
-				<thead>
-					<tr>
-						<th className='fw-normal'>No</th>
-						<th className='fw-normal'>ID</th>
-						<th className='fw-normal'>Name</th>
-						<th className='fw-normal'>PIC Name</th>
-						<th className='fw-normal'>PIC Number</th>
-						<th className='fw-normal'>PIC Email</th>
-						<th className='fw-normal'>Description</th>
-						<th className='fw-normal'>Status</th>
-						<th className='fw-normal'>Join Date</th>
-						<th className='fw-normal'>Created At</th>
-						<th className='fw-normal'>Updated At</th>
-						<th className='fw-normal'>Action</th>
-						<th style={{ minWidth: '100px' }}></th>
-					</tr>
-				</thead>
-				{merchants && merchants.length !== 0 && (
-					<>
+
+			{merchants && merchants.length !== 0 ? (
+				<>
+					<table className='table text-center'>
+						<thead>
+							<tr>
+								<th className='fw-normal'>No</th>
+								<th className='fw-normal'>ID</th>
+								<th className='fw-normal'>Name</th>
+								<th className='fw-normal'>PIC Name</th>
+								<th className='fw-normal'>PIC Number</th>
+								<th className='fw-normal'>PIC Email</th>
+								<th className='fw-normal'>Description</th>
+								<th className='fw-normal'>Status</th>
+								<th className='fw-normal'>Join Date</th>
+								<th className='fw-normal'>Created At</th>
+								<th className='fw-normal'>Updated At</th>
+								<th className='fw-normal'>Action</th>
+								<th style={{ minWidth: '100px' }}></th>
+							</tr>
+						</thead>
 						<tbody className='table-group-divider'>
 							{merchants &&
 								merchants.length !== 0 &&
@@ -138,9 +148,14 @@ const MerchantList = () => {
 									);
 								})}
 						</tbody>
-					</>
-				)}
-			</table>
+					</table>
+				</>
+			) : (
+				<div className='w-100'>
+					<EmptyState />
+				</div>
+			)}
+			<CreateMerchantModal />
 		</div>
 	);
 };
