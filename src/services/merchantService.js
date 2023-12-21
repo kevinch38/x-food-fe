@@ -12,13 +12,25 @@ const MerchantService = () => {
     }
 
     const saveMerchant = async (merchant) => {
-        const { data } = await axiosInstance.post('/api/merchants', merchant);
-        return data;
+        console.log(merchant.joinDate);
+        // const formData = new FormData();
+        // formData.append('id', merchant.id);
+        // formData.append('name', merchant.name);
+        // formData.append('price', merchant.price);
+        // formData.append('category', merchant.category);
+        // formData.append('image', merchant.image);
+        // const { data } = await axiosInstance.post('/api/merchants', formData);
+        // return data;
     }
 
     
     const updateMerchant = async (merchant) => {
         const { data } = await axiosInstance.put('/api/merchants', merchant);
+        return data;
+    }
+
+    const deleteMerchant = async (id) => {
+        const { data } = await axiosInstance.delete(`/api/merchants/${id}`);
         return data;
     }
 
@@ -28,6 +40,7 @@ const MerchantService = () => {
         fetchMerchants,
         saveMerchant,
         updateMerchant,
+        deleteMerchant,
     }
 }
 

@@ -6,6 +6,7 @@ import { ServiceContext } from '../../../context/ServiceContext';
 import { merchantAction } from '../../../slices/merchantSlice';
 import CreateMerchantModal from './CreateMerchantModal';
 import EmptyState from '../../../components/EmptyState';
+import DeleteMerchantModal from './DeleteMerchantModal';
 
 const MerchantList = () => {
 	const [searchParam, setSearchParam] = useSearchParams();
@@ -40,6 +41,7 @@ const MerchantList = () => {
 			dispatch(
 				merchantAction(async () => {
 					const result = await merchantService.fetchMerchants({
+						paging:true,
 						page: currentPage,
 						size: currentSize,
 					});
@@ -57,7 +59,8 @@ const MerchantList = () => {
 			setSearchParam(searchParam);
 		}
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
-	console.log(merchants.length);
+	
+	const [merchantID, setMerchantID] = useState();
 
 	return (
 		<div
@@ -110,6 +113,7 @@ const MerchantList = () => {
 					style={{
 						color: 'rgb(101, 213, 26)',
 					}}
+					onClick={()=>setMerchantID(null)}
 					data-bs-toggle='modal'
 					data-bs-target={`#createMerchantModal`}
 				></i>
@@ -117,7 +121,7 @@ const MerchantList = () => {
 
 			{merchants && merchants.length !== 0 ? (
 				<>
-					<table className='table text-center'>
+					<table className='table text-center align-middle'>
 						<thead>
 							<tr>
 								<th className='fw-normal'>No</th>
@@ -144,6 +148,7 @@ const MerchantList = () => {
 											key={merchant.merchantID}
 											merchant={merchant}
 											idx={++idx}
+											setMerchantID={setMerchantID}
 										/>
 									);
 								})}
@@ -155,7 +160,8 @@ const MerchantList = () => {
 					<EmptyState />
 				</div>
 			)}
-			<CreateMerchantModal />
+			<CreateMerchantModal merchantID={merchantID}/>
+			<DeleteMerchantModal merchantID={merchantID}/>
 		</div>
 	);
 };

@@ -12,7 +12,7 @@ function MerchantBranchItem({ key, merchantBranchs, idx }) {
 		address,
 		timezone,
 		branchWorkingHoursID,
-		cityID,
+		city,
 		createdAt,
 		updatedAt,
 	} = merchantBranchs;
@@ -35,9 +35,9 @@ function MerchantBranchItem({ key, merchantBranchs, idx }) {
 			<td>{idx}</td>
 			<td>{branchID}</td>
 			<td>{branchName}</td>
-			<td>{cityID}</td>
+			<td>{city}</td>
 			<td>{branchWorkingHoursID}</td>
-			<td>{cityID}</td>
+			<td>{city}</td>
 			<td>{timezone}</td>
 			<td>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</td>
 		</tr>

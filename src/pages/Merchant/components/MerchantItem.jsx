@@ -12,7 +12,7 @@ MerchantItem.propTypes = {
 	idx: PropTypes.number,
 };
 
-function MerchantItem({ merchant, idx }) {
+function MerchantItem({ merchant, idx, setMerchantID }) {
 	const {
 		merchantID,
 		merchantName,
@@ -50,7 +50,15 @@ function MerchantItem({ merchant, idx }) {
 				<td>{picNumber}</td>
 				<td>{picEmail}</td>
 				<td>{merchantDescription}</td>
-				<td>{status}</td>
+				<td
+					style={{
+						color: `${
+							status=='ACTIVE' ? 'green' : 'red'
+						}`,
+					}}
+				>
+					{status}
+				</td>
 				<td>{joinDate}</td>
 				<td>{createdAt}</td>
 				<td>{updatedAt}</td>
@@ -62,14 +70,16 @@ function MerchantItem({ merchant, idx }) {
 								style={{
 									color: 'rgb(255, 210, 48)',
 								}}
-								onClick={() => console.log('edit')}
+								onClick={() => setMerchantID(merchantID)}
 							></i>
 							<i
 								className='bi bi-trash-fill h3 cursor-pointer m-2'
 								style={{
 									color: 'rgb(255, 0, 0)',
 								}}
-								onClick={() => console.log('delete')}
+								onClick={() => setMerchantID(merchantID)}
+								data-bs-toggle='modal'
+								data-bs-target={`#deleteMerchantModal`}
 							></i>
 						</div>
 					</div>
@@ -158,7 +168,7 @@ function MerchantItem({ merchant, idx }) {
 											}}
 											data-bs-toggle='modal'
 											data-bs-target={`#createMerchantBranchModal`}
-											onClick={()=>console.log('A')}
+											onClick={() => console.log('A')}
 										></i>
 									</td>
 								</tr>
@@ -178,7 +188,7 @@ function MerchantItem({ merchant, idx }) {
 												}}
 											>
 												<div className='row'>
-													<table className='table text-center'>
+													<table className='table text-center table-responsive align-middle'>
 														<thead>
 															<tr>
 																<th>
