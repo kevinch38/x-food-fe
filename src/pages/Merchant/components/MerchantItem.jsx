@@ -7,6 +7,7 @@ import { merchantBranchAction } from '../../../slices/merchantBranchSlice';
 import EmptyState from '../../../components/EmptyState';
 import CreateMerchantBranchModal from './CreateMerchantBranchModal';
 import { useState } from 'react';
+import DeleteMerchantBranchModal from './DeleteMerchantBranchModal';
 
 MerchantItem.propTypes = {
 	merchant: PropTypes.any,
@@ -168,8 +169,9 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 											style={{
 												color: 'rgb(101, 213, 26)',
 											}}
+											onClick={()=>setMerchantBranchID(null)}
 											data-bs-toggle='modal'
-											data-bs-target={`#createMerchantBranchModal${merchantID}${idx}`}
+											data-bs-target={`#createMerchantBranchModal${merchantID}`}
 										></i>
 									</td>
 								</tr>
@@ -272,30 +274,17 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 									<td></td>
 								</tr>
 							</table>
-							{/* <form
-								className='form'
-								onSubmit={(e) => handleOnSubmit(e)}
-							>
-								<label htmlFor='comment'>Leave a comment</label>
-								<textarea
-									name='comment'
-									id=''
-									className='w-100 h-25'
-									onChange={(e) => handleChange(e)}
-								></textarea>
-								<button
-									type='submit'
-									className='btn btn-primary'
-								>
-									Add Comment
-								</button>
-							</form> */}
 						</div>
 					</div>
 				</div>
 			</div>
 			<CreateMerchantBranchModal
 				onGetMerchantBranchs={onGetMerchantBranchs}
+				idx={idx}
+				merchantID={merchantID}
+				merchantBranchID={merchantBranchID}
+			/>
+			<DeleteMerchantBranchModal
 				idx={idx}
 				merchantID={merchantID}
 				merchantBranchID={merchantBranchID}

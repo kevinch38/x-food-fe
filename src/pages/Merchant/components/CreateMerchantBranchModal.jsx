@@ -8,6 +8,7 @@ import {
 import { useEffect } from 'react';
 import validationSchemaBranch from './validationSchemaBranch';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 
 export default function CreateMerchantBranchModal({
 	merchantID,
@@ -18,6 +19,7 @@ export default function CreateMerchantBranchModal({
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
 	const { merchantBranchs } = useSelector((state) => state.merchantBranch);
+	const [key, setKey] = useState();
 
 	const {
 		values: { branchName, cityID, picName, picNumber, picEmail },
@@ -33,7 +35,7 @@ export default function CreateMerchantBranchModal({
 		setFieldValue,
 	} = useFormik({
 		initialValues: {
-			merchantBranchID: null,
+			branchID: null,
 			merchantID: merchantID,
 			branchName: '',
 			branchWorkingHoursID: '1',
@@ -50,7 +52,7 @@ export default function CreateMerchantBranchModal({
 				const data = {
 					...values,
 				};
-				delete data.merchantBranchID;
+				delete data.branchID;
 				dispatch(
 					merchantBranchAction(async () => {
 						const now = new Date();
@@ -82,11 +84,14 @@ export default function CreateMerchantBranchModal({
 						return { data: a };
 					})
 				);
+				handleReset();
+				clearImage();
 				return;
 			}
 
 			dispatch(
 				merchantBranchAction(async () => {
+					console.log(values);
 					const result =
 						await merchantBranchService.updateMerchantBranch({
 							...values,
@@ -96,26 +101,31 @@ export default function CreateMerchantBranchModal({
 				})
 			);
 			handleReset();
+			clearImage();
 			return;
 		},
 		validationSchema: validationSchemaBranch(),
 	});
+	const clearImage = () => {
+		let randomString = Math.random().toString(36);
+		setKey(randomString);
+	};
 
 	useEffect(() => {
 		if (merchantBranchID) {
+			console.log('UWO');
 			const onGetMerchantBranchById = async () => {
 				const result = await dispatch(
 					selectMerchantBranchAction(() =>
-						merchantBranchService.fetchMerchantBranchById(
+						merchantBranchService.fetchMerchantBranchByBranchId(
 							merchantBranchID
 						)
 					)
 				);
-
+				console.log(result.payload);
 				if (result.payload) {
 					const {
-						merchantID,
-						merchantBranchID,
+						branchID,
 						branchName,
 						address,
 						timezone,
@@ -126,8 +136,7 @@ export default function CreateMerchantBranchModal({
 						picEmail,
 					} = result.payload.data;
 					setValues({
-						merchantID: merchantID,
-						merchantBranchID: merchantBranchID,
+						branchID: branchID,
 						branchName: branchName,
 						address: address,
 						timezone: timezone,
@@ -140,18 +149,31 @@ export default function CreateMerchantBranchModal({
 				}
 			};
 			onGetMerchantBranchById();
+		} else {
+			setValues({
+				branchID: null,
+				merchantID: merchantID,
+				branchName: '',
+				branchWorkingHoursID: '1',
+				cityID: '8a74ff868c909304018c90933307000b',
+				picName: '',
+				picNumber: '',
+				picEmail: '',
+				image: null,
+			});
 		}
-	}, [dispatch, setValues, merchantBranchService, merchantBranchID]);
+	}, [dispatch, setValues, merchantBranchService, merchantBranchID, merchantID]);
 
 	const handleChangeFile = (e) => {
 		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
 	};
+	// console.log();
 	return (
 		<div
 			className='modal fade'
-			id={`createMerchantBranchModal${merchantID}${idx}`}
+			id={`createMerchantBranchModal${merchantID}`}
 			tabIndex='-1'
-			aria-labelledby={`createMerchantBranchModal${merchantID}${idx}`}
+			aria-labelledby={`createMerchantBranchModal${merchantID}`}
 			aria-hidden='true'
 			style={{
 				borderRadius: '50px',
@@ -173,7 +195,11 @@ export default function CreateMerchantBranchModal({
 								className='btn-close'
 								// data-bs-dismiss='modal'
 								aria-label='Close'
-								onClick={() => {handleReset;onGetMerchantBranchs(merchantID)}}
+								onClick={() => {
+									clearImage();
+									handleReset();
+									onGetMerchantBranchs(merchantID);
+								}}
 								data-bs-toggle='modal'
 								data-bs-target={`#exampleModal${idx}`}
 							></button>
@@ -333,6 +359,7 @@ export default function CreateMerchantBranchModal({
 														errors.image &&
 														'is-invalid'
 													}`}
+													key={key}
 													type='file'
 													accept='.png,.jpeg,.jpg'
 													name='image'
@@ -347,8 +374,8 @@ export default function CreateMerchantBranchModal({
 												disabled={!isValid || !dirty}
 												className='btn bg-dark text-white pe-3 ps-3'
 												type='submit'
-												data-bs-dismiss='modal'
-												onClick={handleReset}
+												data-bs-toggle='modal'
+												data-bs-target={`#exampleModal${idx}`}
 											>
 												Submit
 											</button>

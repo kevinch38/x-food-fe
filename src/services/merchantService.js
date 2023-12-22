@@ -28,7 +28,7 @@ const MerchantService = () => {
 
     
     const updateMerchant = async (merchant) => {
-        console.log(merchant);
+        console.log(merchant.logoImage);
         const formData = new FormData();
         formData.append('merchantID', merchant.merchantID);
         formData.append('merchantName', merchant.merchantName);

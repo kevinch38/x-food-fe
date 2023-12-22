@@ -43,7 +43,7 @@ const MerchantList = () => {
 			dispatch(
 				merchantAction(async () => {
 					const result = await merchantService.fetchMerchants({
-						paging:true,
+						paging: true,
 						page: currentPage,
 						size: currentSize,
 					});
@@ -61,7 +61,6 @@ const MerchantList = () => {
 			setSearchParam(searchParam);
 		}
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
-	
 
 	return (
 		<div
@@ -114,11 +113,9 @@ const MerchantList = () => {
 					style={{
 						color: 'rgb(101, 213, 26)',
 					}}
-					onClick={()=>setMerchantID(null)}
-					
+					onClick={() => setMerchantID(null)}
 					data-bs-toggle='modal'
 					data-bs-target={`#createMerchantModal`}
-					
 				></i>
 			</div>
 
@@ -163,8 +160,11 @@ const MerchantList = () => {
 					<EmptyState />
 				</div>
 			)}
-			<CreateMerchantModal merchantID={merchantID}/>
-			<DeleteMerchantModal merchantID={merchantID}/>
+			<CreateMerchantModal merchantID={merchantID} />
+			<DeleteMerchantModal
+				setMerchantID={setMerchantID}
+				merchantID={merchantID}
+			/>
 		</div>
 	);
 };

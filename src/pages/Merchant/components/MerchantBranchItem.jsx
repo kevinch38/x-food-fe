@@ -14,7 +14,7 @@ function MerchantBranchItem({
 	setMerchantBranchID,
 }) {
 	const {
-		merchant,
+		merchantID,
 		branchID,
 		branchName,
 		picEmail,
@@ -55,14 +55,16 @@ function MerchantBranchItem({
 								}}
 								onClick={() => {setMerchantBranchID(branchID)}}
 								data-bs-toggle='modal'
-								data-bs-target={`#createMerchantBranchModal${merchant}${idx}`}
+								data-bs-target={`#createMerchantBranchModal${merchantID}`}
 							></i>
 							<i
 								className='bi bi-trash-fill h3 cursor-pointer m-2'
 								style={{
 									color: 'rgb(255, 0, 0)',
 								}}
-								onClick={() => console.log('delete')}
+								onClick={() => {setMerchantBranchID(branchID)}}
+								data-bs-toggle='modal'
+								data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
 							></i>
 						</div>
 					</div>

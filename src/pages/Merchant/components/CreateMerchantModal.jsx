@@ -8,11 +8,13 @@ import {
 import { useEffect } from 'react';
 import validationSchema from './validationSchema';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 
 export default function CreateMerchantModal({ merchantID }) {
 	const dispatch = useDispatch();
 	const { merchantService } = useContext(ServiceContext);
 	const { merchants } = useSelector((state) => state.merchant);
+	const [key, setKey] = useState();
 
 	const {
 		values: {
@@ -81,9 +83,11 @@ export default function CreateMerchantModal({ merchantID }) {
 						return { data: a };
 					})
 				);
+				handleReset();
+				clearImage();
 				return;
 			}
-
+			// console.log(values);
 			dispatch(
 				merchantAction(async () => {
 					const result = await merchantService.updateMerchant({
@@ -94,18 +98,8 @@ export default function CreateMerchantModal({ merchantID }) {
 				})
 			);
 			handleReset();
+			clearImage();
 			return;
-
-			// dispatch(
-			// 	merchantAction(async () => {
-			// 		await merchantService.updateMerchant(values);
-			// 		// if (result.statusCode === 200) {
-			// 		// 	navigate('/backoffice/menus');
-			// 		// }
-			// 		return null;
-			// 	})
-			// );
-			// console.log(values);
 		},
 		validationSchema: validationSchema(),
 	});
@@ -139,11 +133,26 @@ export default function CreateMerchantModal({ merchantID }) {
 				}
 			};
 			onGetMerchantById();
+		} else {
+			setValues({
+				merchantID: null,
+				merchantName: '',
+				picName: '',
+				merchantDescription: '',
+				picNumber: '',
+				picEmail: '',
+				logoImage: null,
+				image: null,
+			});
 		}
 	}, [dispatch, setValues, merchantID, merchantService]);
 
 	const handleChangeFile = (e) => {
 		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
+	};
+	const clearImage = () => {
+		let randomString = Math.random().toString(36);
+		setKey(randomString);
 	};
 
 	return (
@@ -169,7 +178,10 @@ export default function CreateMerchantModal({ merchantID }) {
 						<div className='d-flex justify-content-between'>
 							<h1 className='modal-title fw-bold'>Merchant</h1>
 							<button
-								onClick={handleReset}
+								onClick={() => {
+									handleReset();
+									clearImage();
+								}}
 								type='button'
 								className='btn-close'
 								data-bs-dismiss='modal'
@@ -328,6 +340,7 @@ export default function CreateMerchantModal({ merchantID }) {
 													errors.logoImage &&
 													'is-invalid'
 												}`}
+												key={key}
 												type='file'
 												accept='.png,.jpeg,.jpg'
 												name='logoImage'
@@ -353,6 +366,7 @@ export default function CreateMerchantModal({ merchantID }) {
 														errors.image &&
 														'is-invalid'
 													}`}
+													key={key}
 													type='file'
 													accept='.png,.jpeg,.jpg'
 													name='image'
@@ -368,7 +382,6 @@ export default function CreateMerchantModal({ merchantID }) {
 												className='btn bg-dark text-white'
 												type='submit'
 												data-bs-dismiss='modal'
-												onClick={handleReset}
 											>
 												Submit
 											</button>
