@@ -12,20 +12,34 @@ const MerchantService = () => {
     }
 
     const saveMerchant = async (merchant) => {
-        console.log(merchant.joinDate);
-        // const formData = new FormData();
-        // formData.append('id', merchant.id);
-        // formData.append('name', merchant.name);
-        // formData.append('price', merchant.price);
-        // formData.append('category', merchant.category);
-        // formData.append('image', merchant.image);
-        // const { data } = await axiosInstance.post('/api/merchants', formData);
-        // return data;
+        const formData = new FormData();
+        formData.append('merchantName', merchant.merchantName);
+        formData.append('merchantDescription', merchant.merchantDescription);
+        formData.append('picName', merchant.picName);
+        formData.append('picNumber', merchant.picNumber);
+        formData.append('picEmail', merchant.picEmail);
+        formData.append('image', merchant.image);
+        formData.append('logoImage', merchant.logoImage);
+        formData.append('joinDate', merchant.joinDate);
+        formData.append('notes', merchant.notes);
+        const { data } = await axiosInstance.post('/api/merchants', formData);
+        return data;
     }
 
     
     const updateMerchant = async (merchant) => {
-        const { data } = await axiosInstance.put('/api/merchants', merchant);
+        console.log(merchant);
+        const formData = new FormData();
+        formData.append('merchantID', merchant.merchantID);
+        formData.append('merchantName', merchant.merchantName);
+        formData.append('merchantDescription', merchant.merchantDescription);
+        formData.append('picName', merchant.picName);
+        formData.append('picNumber', merchant.picNumber);
+        formData.append('picEmail', merchant.picEmail);
+        formData.append('image', merchant.image);
+        formData.append('logoImage', merchant.logoImage);
+        formData.append('notes', merchant.notes);
+        const { data } = await axiosInstance.put('/api/merchants', formData);
         return data;
     }
 

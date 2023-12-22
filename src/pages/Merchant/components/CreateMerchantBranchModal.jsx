@@ -1,27 +1,26 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
 import {
 	merchantBranchAction,
 	selectMerchantBranchAction,
 } from '../../../slices/merchantBranchSlice';
 import { useEffect } from 'react';
-import validationSchema from './validationSchema';
+import validationSchemaBranch from './validationSchemaBranch';
 import { useFormik } from 'formik';
 
-export default function CreateMerchantBranchModal({merchantBranchID}) {
+export default function CreateMerchantBranchModal({
+	merchantID,
+	merchantBranchID,
+	idx,
+	onGetMerchantBranchs,
+}) {
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
+	const { merchantBranchs } = useSelector((state) => state.merchantBranch);
 
 	const {
-		values: {
-			merchantBranchName,
-			picName,
-			merchantBranchDescription,
-			picNumber,
-			picEmail,
-		},
+		values: { branchName, cityID, picName, picNumber, picEmail },
 		errors,
 		dirty,
 		isValid,
@@ -31,14 +30,18 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 		handleSubmit,
 		handleReset,
 		setValues,
+		setFieldValue,
 	} = useFormik({
 		initialValues: {
 			merchantBranchID: null,
-			merchantBranchName: '',
+			merchantID: merchantID,
+			branchName: '',
+			branchWorkingHoursID: '1',
+			cityID: '8a74ff868c909304018c90933307000b',
 			picName: '',
-			merchantBranchDescription: '',
 			picNumber: '',
 			picEmail: '',
+			image: null,
 		},
 		onSubmit: async (values) => {
 			if (!isValid) return;
@@ -50,32 +53,52 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 				delete data.merchantBranchID;
 				dispatch(
 					merchantBranchAction(async () => {
-						await merchantBranchService.saveMerchantBranch({
-							...data,
-							joinDate: '1999-07-05',
-						});
-						// if (result.statusCode === 201) {
-						// 	navigate('/backoffice/menus');
-						// }
-						return null;
+						const now = new Date();
+						const year = now.getFullYear();
+						const month = (now.getMonth() + 1)
+							.toString()
+							.padStart(2, '0');
+						const day = now.getDate().toString().padStart(2, '0');
+						const hours = now
+							.getHours()
+							.toString()
+							.padStart(2, '0');
+						const minutes = now
+							.getMinutes()
+							.toString()
+							.padStart(2, '0');
+						const seconds = now
+							.getSeconds()
+							.toString()
+							.padStart(2, '0');
+						const joinDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+						const result =
+							await merchantBranchService.saveMerchantBranch({
+								...data,
+								joinDate: joinDate,
+							});
+						const a = [...merchantBranchs, result.data];
+						return { data: a };
 					})
 				);
-				handleReset();
 				return;
 			}
 
 			dispatch(
 				merchantBranchAction(async () => {
-					await merchantBranchService.updateMerchantBranch(values);
-					// if (result.statusCode === 200) {
-					// 	navigate('/backoffice/menus');
-					// }
-					return null;
+					const result =
+						await merchantBranchService.updateMerchantBranch({
+							...values,
+						});
+					const a = [...merchantBranchs, result.data];
+					return { data: a };
 				})
 			);
 			handleReset();
+			return;
 		},
-		validationSchema: validationSchema(),
+		validationSchema: validationSchemaBranch(),
 	});
 
 	useEffect(() => {
@@ -83,24 +106,34 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 			const onGetMerchantBranchById = async () => {
 				const result = await dispatch(
 					selectMerchantBranchAction(() =>
-						merchantBranchService.fetchMerchantBranchById(merchantBranchID)
+						merchantBranchService.fetchMerchantBranchById(
+							merchantBranchID
+						)
 					)
 				);
 
 				if (result.payload) {
 					const {
+						merchantID,
 						merchantBranchID,
-						merchantBranchName,
+						branchName,
+						address,
+						timezone,
+						branchWorkingHoursID,
+						cityID,
 						picName,
-						merchantBranchDescription,
 						picNumber,
 						picEmail,
 					} = result.payload.data;
 					setValues({
-						id: merchantBranchID,
-						merchantBranchName: merchantBranchName,
+						merchantID: merchantID,
+						merchantBranchID: merchantBranchID,
+						branchName: branchName,
+						address: address,
+						timezone: timezone,
+						branchWorkingHoursID: branchWorkingHoursID,
+						cityID: cityID,
 						picName: picName,
-						merchantBranchDescription: merchantBranchDescription,
 						picNumber: picNumber,
 						picEmail: picEmail,
 					});
@@ -108,14 +141,17 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 			};
 			onGetMerchantBranchById();
 		}
-	}, [dispatch, setValues, merchantBranchID, merchantBranchService]);
+	}, [dispatch, setValues, merchantBranchService, merchantBranchID]);
 
+	const handleChangeFile = (e) => {
+		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
+	};
 	return (
 		<div
 			className='modal fade'
-			id={`createMerchantBranchModal`}
+			id={`createMerchantBranchModal${merchantID}${idx}`}
 			tabIndex='-1'
-			aria-labelledby={`createMerchantBranchModal`}
+			aria-labelledby={`createMerchantBranchModal${merchantID}${idx}`}
 			aria-hidden='true'
 			style={{
 				borderRadius: '50px',
@@ -131,13 +167,15 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 				<div className='p-5 modal-content border-0'>
 					<div className='row'>
 						<div className='d-flex justify-content-between'>
-							<h1 className='modal-title fw-bold'>MerchantBranch</h1>
+							<h1 className='modal-title fw-bold'>Branch</h1>
 							<button
 								type='button'
 								className='btn-close'
-								data-bs-dismiss='modal'
+								// data-bs-dismiss='modal'
 								aria-label='Close'
-								onClick={handleReset}
+								onClick={() => {handleReset;onGetMerchantBranchs(merchantID)}}
+								data-bs-toggle='modal'
+								data-bs-target={`#exampleModal${idx}`}
 							></button>
 						</div>
 					</div>
@@ -155,7 +193,8 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 									color: 'rgb(84, 84, 84)',
 								}}
 							></i>
-							Create New MerchantBranch
+							{`${merchantBranchID ? 'Update' : 'Create New'}`}{' '}
+							Branch
 						</div>
 						<h3 className='fw-bold mt-5 position-relative mb-0'>
 							Personal Information
@@ -185,8 +224,11 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 											<input
 												className={`form-control`}
 												type='text'
-												placeholder='ID (Generated)'
-												name='merchantBranchID'
+												placeholder=''
+												name='merchantID'
+												value={`Merchant ID: ${
+													merchantID ? merchantID : ''
+												}`}
 												disabled
 											/>
 										</td>
@@ -202,7 +244,7 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Name'
+												placeholder='PIC Name:'
 												name='picName'
 											/>
 										</td>
@@ -212,16 +254,16 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 											<input
 												onChange={handleChange}
 												onBlur={handleBlur}
-												value={merchantBranchName}
-												id='merchantBranchName'
+												value={branchName}
+												id='branchName'
 												className={`form-control  ${
-													touched.merchantBranchName &&
-													errors.merchantBranchName &&
+													touched.branchName &&
+													errors.branchName &&
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='Name'
-												name='merchantBranchName'
+												placeholder='Branch Name:'
+												name='branchName'
 											/>
 										</td>
 										<td>
@@ -236,7 +278,7 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Number'
+												placeholder='PIC Number:'
 												name='picNumber'
 											/>
 										</td>
@@ -246,16 +288,16 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 											<input
 												onChange={handleChange}
 												onBlur={handleBlur}
-												value={merchantBranchDescription}
-												id='merchantBranchDescription'
+												value={cityID}
+												id='cityID'
 												className={`form-control  ${
-													touched.merchantBranchDescription &&
-													errors.merchantBranchDescription &&
+													touched.cityID &&
+													errors.cityID &&
 													'is-invalid'
 												}`}
 												type='text'
 												placeholder='Description'
-												name='merchantBranchDescription'
+												name='cityID'
 											/>
 										</td>
 										<td>
@@ -276,12 +318,37 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 										</td>
 									</tr>
 									<tr>
+										<td className='w-50'>
+											<div className='d-flex justify-content-between ps-0 pe-0'>
+												<label
+													htmlFor='image'
+													className='h-auto'
+												>
+													Merchant Branch Image:
+												</label>
+
+												<input
+													className={`form-control text-normal w-50 ${
+														touched.image &&
+														errors.image &&
+														'is-invalid'
+													}`}
+													type='file'
+													accept='.png,.jpeg,.jpg'
+													name='image'
+													id='image'
+													onChange={handleChangeFile}
+													onBlur={handleBlur}
+												/>
+											</div>
+										</td>
 										<td>
 											<button
 												disabled={!isValid || !dirty}
 												className='btn bg-dark text-white pe-3 ps-3'
 												type='submit'
-                                                data-bs-dismiss='modal'
+												data-bs-dismiss='modal'
+												onClick={handleReset}
 											>
 												Submit
 											</button>

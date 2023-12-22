@@ -7,6 +7,7 @@ import { merchantAction } from '../../../slices/merchantSlice';
 import CreateMerchantModal from './CreateMerchantModal';
 import EmptyState from '../../../components/EmptyState';
 import DeleteMerchantModal from './DeleteMerchantModal';
+import CreateMerchantBranchModal from './CreateMerchantBranchModal';
 
 const MerchantList = () => {
 	const [searchParam, setSearchParam] = useSearchParams();
@@ -15,6 +16,7 @@ const MerchantList = () => {
 	const { merchantService } = useContext(ServiceContext);
 
 	const [paging, setPaging] = useState({});
+	const [merchantID, setMerchantID] = useState();
 
 	let currentPage = parseInt(searchParam.get('page') || 1);
 	let currentSize = parseInt(searchParam.get('size') || 10);
@@ -60,7 +62,6 @@ const MerchantList = () => {
 		}
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
 	
-	const [merchantID, setMerchantID] = useState();
 
 	return (
 		<div
@@ -114,8 +115,10 @@ const MerchantList = () => {
 						color: 'rgb(101, 213, 26)',
 					}}
 					onClick={()=>setMerchantID(null)}
+					
 					data-bs-toggle='modal'
 					data-bs-target={`#createMerchantModal`}
+					
 				></i>
 			</div>
 

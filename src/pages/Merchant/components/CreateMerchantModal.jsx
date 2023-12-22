@@ -31,6 +31,7 @@ export default function CreateMerchantModal({ merchantID }) {
 		handleSubmit,
 		handleReset,
 		setValues,
+		setFieldValue,
 	} = useFormik({
 		initialValues: {
 			merchantID: null,
@@ -39,6 +40,8 @@ export default function CreateMerchantModal({ merchantID }) {
 			merchantDescription: '',
 			picNumber: '',
 			picEmail: '',
+			logoImage: null,
+			image: null,
 		},
 		onSubmit: async (values) => {
 			if (!isValid) return;
@@ -73,26 +76,36 @@ export default function CreateMerchantModal({ merchantID }) {
 						const result = await merchantService.saveMerchant({
 							...data,
 							joinDate: joinDate,
-							image: '',
 						});
 						const a = [...merchants, result.data];
 						return { data: a };
 					})
 				);
-				handleReset();
 				return;
 			}
 
 			dispatch(
 				merchantAction(async () => {
-					await merchantService.updateMerchant(values);
-					// if (result.statusCode === 200) {
-					// 	navigate('/backoffice/menus');
-					// }
-					return null;
+					const result = await merchantService.updateMerchant({
+						...values,
+					});
+					const a = [...merchants, result.data];
+					return { data: a };
 				})
 			);
 			handleReset();
+			return;
+
+			// dispatch(
+			// 	merchantAction(async () => {
+			// 		await merchantService.updateMerchant(values);
+			// 		// if (result.statusCode === 200) {
+			// 		// 	navigate('/backoffice/menus');
+			// 		// }
+			// 		return null;
+			// 	})
+			// );
+			// console.log(values);
 		},
 		validationSchema: validationSchema(),
 	});
@@ -116,7 +129,7 @@ export default function CreateMerchantModal({ merchantID }) {
 						picEmail,
 					} = result.payload.data;
 					setValues({
-						id: merchantID,
+						merchantID: merchantID,
 						merchantName: merchantName,
 						picName: picName,
 						merchantDescription: merchantDescription,
@@ -128,6 +141,10 @@ export default function CreateMerchantModal({ merchantID }) {
 			onGetMerchantById();
 		}
 	}, [dispatch, setValues, merchantID, merchantService]);
+
+	const handleChangeFile = (e) => {
+		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
+	};
 
 	return (
 		<div
@@ -152,11 +169,11 @@ export default function CreateMerchantModal({ merchantID }) {
 						<div className='d-flex justify-content-between'>
 							<h1 className='modal-title fw-bold'>Merchant</h1>
 							<button
+								onClick={handleReset}
 								type='button'
 								className='btn-close'
 								data-bs-dismiss='modal'
 								aria-label='Close'
-								onClick={handleReset}
 							></button>
 						</div>
 					</div>
@@ -174,7 +191,7 @@ export default function CreateMerchantModal({ merchantID }) {
 									color: 'rgb(84, 84, 84)',
 								}}
 							></i>
-							Create New Merchant
+							{`${merchantID ? 'Update' : 'Create New'}`} Merchant
 						</div>
 						<h3 className='fw-bold mt-5 position-relative mb-0'>
 							Personal Information
@@ -206,6 +223,9 @@ export default function CreateMerchantModal({ merchantID }) {
 												type='text'
 												placeholder='ID (Generated)'
 												name='merchantID'
+												value={`${
+													merchantID ? merchantID : ''
+												}`}
 												disabled
 											/>
 										</td>
@@ -221,7 +241,7 @@ export default function CreateMerchantModal({ merchantID }) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Name'
+												placeholder='PIC Name:'
 												name='picName'
 											/>
 										</td>
@@ -239,7 +259,7 @@ export default function CreateMerchantModal({ merchantID }) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='Name'
+												placeholder='Name:'
 												name='merchantName'
 											/>
 										</td>
@@ -255,7 +275,7 @@ export default function CreateMerchantModal({ merchantID }) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Number'
+												placeholder='PIC Number:'
 												name='picNumber'
 											/>
 										</td>
@@ -273,7 +293,7 @@ export default function CreateMerchantModal({ merchantID }) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='Description'
+												placeholder='Description:'
 												name='merchantDescription'
 											/>
 										</td>
@@ -289,18 +309,66 @@ export default function CreateMerchantModal({ merchantID }) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Email'
+												placeholder='PIC Email:'
 												name='picEmail'
 											/>
 										</td>
 									</tr>
 									<tr>
+										<td className='w-100 d-flex justify-content-between'>
+											<label
+												htmlFor='logoImage'
+												className='h-auto ps-0'
+											>
+												Merchant Logo:
+											</label>
+											<input
+												className={`form-control text-normal w-50 ${
+													touched.logoImage &&
+													errors.logoImage &&
+													'is-invalid'
+												}`}
+												type='file'
+												accept='.png,.jpeg,.jpg'
+												name='logoImage'
+												id='logoImage'
+												onChange={handleChangeFile}
+												onBlur={handleBlur}
+											/>
+										</td>
+									</tr>
+									<tr>
+										<td className='w-50'>
+											<div className='d-flex justify-content-between ps-0 pe-0'>
+												<label
+													htmlFor='image'
+													className='h-auto'
+												>
+													Merchant Image:
+												</label>
+
+												<input
+													className={`form-control text-normal w-50 ${
+														touched.image &&
+														errors.image &&
+														'is-invalid'
+													}`}
+													type='file'
+													accept='.png,.jpeg,.jpg'
+													name='image'
+													id='image'
+													onChange={handleChangeFile}
+													onBlur={handleBlur}
+												/>
+											</div>
+										</td>
 										<td>
 											<button
 												disabled={!isValid || !dirty}
-												className='btn bg-dark text-white pe-3 ps-3'
+												className='btn bg-dark text-white'
 												type='submit'
 												data-bs-dismiss='modal'
+												onClick={handleReset}
 											>
 												Submit
 											</button>
