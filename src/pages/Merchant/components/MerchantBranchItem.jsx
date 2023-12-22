@@ -31,7 +31,7 @@ function MerchantBranchItem({
 			<td>{idx}</td>
 			<td>{branchID}</td>
 			<td>{branchName}</td>
-			<td>{city}</td>
+			<td>{city.cityName}</td>
 			<td>{picName}</td>
 			<td>{picNumber}</td>
 			<td>{picEmail}</td>

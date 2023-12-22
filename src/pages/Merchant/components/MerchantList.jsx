@@ -7,7 +7,6 @@ import { merchantAction } from '../../../slices/merchantSlice';
 import CreateMerchantModal from './CreateMerchantModal';
 import EmptyState from '../../../components/EmptyState';
 import DeleteMerchantModal from './DeleteMerchantModal';
-import CreateMerchantBranchModal from './CreateMerchantBranchModal';
 
 const MerchantList = () => {
 	const [searchParam, setSearchParam] = useSearchParams();
@@ -127,9 +126,9 @@ const MerchantList = () => {
 								<th className='fw-normal'>No</th>
 								<th className='fw-normal'>ID</th>
 								<th className='fw-normal'>Name</th>
-								<th className='fw-normal'>PIC Name</th>
-								<th className='fw-normal'>PIC Number</th>
-								<th className='fw-normal'>PIC Email</th>
+								<th className='fw-normal' style={{minWidth:'100px'}}>PIC Name</th>
+								<th className='fw-normal' style={{minWidth:'100px'}}>PIC Number</th>
+								<th className='fw-normal' style={{minWidth:'100px'}}>PIC Email</th>
 								<th className='fw-normal'>Description</th>
 								<th className='fw-normal'>Status</th>
 								<th className='fw-normal'>Join Date</th>
@@ -160,7 +159,10 @@ const MerchantList = () => {
 					<EmptyState />
 				</div>
 			)}
-			<CreateMerchantModal merchantID={merchantID} />
+			<CreateMerchantModal
+				setMerchantID={setMerchantID}
+				merchantID={merchantID}
+			/>
 			<DeleteMerchantModal
 				setMerchantID={setMerchantID}
 				merchantID={merchantID}

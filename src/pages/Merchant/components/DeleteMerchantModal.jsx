@@ -1,9 +1,14 @@
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
 import {
 	merchantAction,
 } from '../../../slices/merchantSlice';
+
+DeleteMerchantModal.propTypes = {
+	merchantID: PropTypes.any,
+};
 
 export default function DeleteMerchantModal({ merchantID }) {
 	const dispatch = useDispatch();

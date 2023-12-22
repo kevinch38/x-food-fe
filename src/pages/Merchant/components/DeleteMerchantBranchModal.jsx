@@ -1,28 +1,35 @@
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
 import { merchantAction } from '../../../slices/merchantSlice';
 
+DeleteMerchantBranchModal.propTypes = {
+	merchantID: PropTypes.any,
+	merchantBranchID: PropTypes.any,
+	idx: PropTypes.any,
+	onGetMerchantBranchs: PropTypes.func,
+};
+
 export default function DeleteMerchantBranchModal({
-	setMerchantID,
+	onGetMerchantBranchs,
 	merchantID,
 	merchantBranchID,
 	idx,
 }) {
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
-	const { merchantBranchs } = useSelector((state) => state.merchant);
+	const { merchantBranchs } = useSelector((state) => state.merchantBranch);
 
 	const onDeleteMerchantBranch = (id) => {
-		console.log(id);
 		dispatch(
 			merchantAction(async () => {
 				await merchantBranchService.deleteMerchantBranch(id);
 
-				const a = merchantBranchs.filter(
+				merchantBranchs.filter(
 					(merchantBranch) => merchantBranch.branchID !== id
 				);
-				return { data: a };
+				await onGetMerchantBranchs(merchantID);
 			})
 		);
 	};
@@ -75,7 +82,6 @@ export default function DeleteMerchantBranchModal({
 										borderColor: 'rgb(217,217,217)',
 										backgroundColor: 'rgb(217,217,217)',
 									}}
-									onClick={() => setMerchantID(null)}
 									data-bs-toggle='modal'
 									data-bs-target={`#exampleModal${idx}`}
 									aria-label='Close'

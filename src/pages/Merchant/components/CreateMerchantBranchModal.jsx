@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
@@ -10,11 +11,20 @@ import validationSchemaBranch from './validationSchemaBranch';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 
+CreateMerchantBranchModal.propTypes = {
+	merchantID: PropTypes.any,
+	merchantBranchID: PropTypes.any,
+	idx: PropTypes.any,
+	onGetMerchantBranchs: PropTypes.func,
+	setMerchantBranchID: PropTypes.func,
+};
+
 export default function CreateMerchantBranchModal({
 	merchantID,
 	merchantBranchID,
 	idx,
 	onGetMerchantBranchs,
+	setMerchantBranchID,
 }) {
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
@@ -39,7 +49,7 @@ export default function CreateMerchantBranchModal({
 			merchantID: merchantID,
 			branchName: '',
 			branchWorkingHoursID: '1',
-			cityID: '8a74ff868c909304018c90933307000b',
+			cityID: '8a74ff868c9253e0018c92540ca4000f',
 			picName: '',
 			picNumber: '',
 			picEmail: '',
@@ -84,6 +94,7 @@ export default function CreateMerchantBranchModal({
 						return { data: a };
 					})
 				);
+				setMerchantBranchID(null)
 				handleReset();
 				clearImage();
 				return;
@@ -91,15 +102,13 @@ export default function CreateMerchantBranchModal({
 
 			dispatch(
 				merchantBranchAction(async () => {
-					console.log(values);
-					const result =
-						await merchantBranchService.updateMerchantBranch({
-							...values,
-						});
-					const a = [...merchantBranchs, result.data];
-					return { data: a };
+					await merchantBranchService.updateMerchantBranch({
+						...values,
+					});
+					await onGetMerchantBranchs(merchantID);
 				})
 			);
+			setMerchantBranchID(null)
 			handleReset();
 			clearImage();
 			return;
@@ -113,7 +122,6 @@ export default function CreateMerchantBranchModal({
 
 	useEffect(() => {
 		if (merchantBranchID) {
-			console.log('UWO');
 			const onGetMerchantBranchById = async () => {
 				const result = await dispatch(
 					selectMerchantBranchAction(() =>
@@ -122,7 +130,6 @@ export default function CreateMerchantBranchModal({
 						)
 					)
 				);
-				console.log(result.payload);
 				if (result.payload) {
 					const {
 						branchID,
@@ -130,18 +137,19 @@ export default function CreateMerchantBranchModal({
 						address,
 						timezone,
 						branchWorkingHoursID,
-						cityID,
+						city,
 						picName,
 						picNumber,
 						picEmail,
 					} = result.payload.data;
+					console.log(result.payload.data);
 					setValues({
 						branchID: branchID,
 						branchName: branchName,
 						address: address,
 						timezone: timezone,
 						branchWorkingHoursID: branchWorkingHoursID,
-						cityID: cityID,
+						cityID: city.cityID,
 						picName: picName,
 						picNumber: picNumber,
 						picEmail: picEmail,
@@ -155,14 +163,20 @@ export default function CreateMerchantBranchModal({
 				merchantID: merchantID,
 				branchName: '',
 				branchWorkingHoursID: '1',
-				cityID: '8a74ff868c909304018c90933307000b',
+				cityID: '8a74ff868c9253e0018c92540ca4000f',
 				picName: '',
 				picNumber: '',
 				picEmail: '',
 				image: null,
 			});
 		}
-	}, [dispatch, setValues, merchantBranchService, merchantBranchID, merchantID]);
+	}, [
+		dispatch,
+		setValues,
+		merchantBranchService,
+		merchantBranchID,
+		merchantID,
+	]);
 
 	const handleChangeFile = (e) => {
 		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
@@ -197,6 +211,7 @@ export default function CreateMerchantBranchModal({
 								aria-label='Close'
 								onClick={() => {
 									clearImage();
+									setMerchantBranchID(null);
 									handleReset();
 									onGetMerchantBranchs(merchantID);
 								}}
@@ -322,7 +337,7 @@ export default function CreateMerchantBranchModal({
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='Description'
+												placeholder='City'
 												name='cityID'
 											/>
 										</td>

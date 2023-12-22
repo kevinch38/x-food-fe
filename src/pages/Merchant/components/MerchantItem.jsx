@@ -11,6 +11,7 @@ import DeleteMerchantBranchModal from './DeleteMerchantBranchModal';
 
 MerchantItem.propTypes = {
 	merchant: PropTypes.any,
+	setMerchantID: PropTypes.func,
 	idx: PropTypes.number,
 };
 
@@ -203,16 +204,16 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 																<th scope='col'>
 																	Branch
 																</th>
-																<th scope='col'>
+																<th scope='col' style={{minWidth:'200px'}}>
 																	City
 																</th>
-																<th scope='col'>
+																<th scope='col' style={{minWidth:'100px'}}>
 																	PIC Name
 																</th>
-																<th scope='col'>
+																<th scope='col' style={{minWidth:'100px'}}>
 																	PIC Number
 																</th>
-																<th scope='col'>
+																<th scope='col' style={{minWidth:'100px'}}>
 																	PIC Email
 																</th>
 																<th scope='col'>
@@ -280,6 +281,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 			</div>
 			<CreateMerchantBranchModal
 				onGetMerchantBranchs={onGetMerchantBranchs}
+				setMerchantBranchID={setMerchantBranchID}
 				idx={idx}
 				merchantID={merchantID}
 				merchantBranchID={merchantBranchID}
@@ -288,6 +290,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 				idx={idx}
 				merchantID={merchantID}
 				merchantBranchID={merchantBranchID}
+				onGetMerchantBranchs={onGetMerchantBranchs}
 			/>
 		</>
 	);

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
@@ -10,7 +11,12 @@ import validationSchema from './validationSchema';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 
-export default function CreateMerchantModal({ merchantID }) {
+CreateMerchantModal.propTypes = {
+	merchantID: PropTypes.any,
+	setMerchantID: PropTypes.func,
+};
+
+export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 	const dispatch = useDispatch();
 	const { merchantService } = useContext(ServiceContext);
 	const { merchants } = useSelector((state) => state.merchant);
@@ -83,11 +89,11 @@ export default function CreateMerchantModal({ merchantID }) {
 						return { data: a };
 					})
 				);
+				setMerchantID(null)
 				handleReset();
 				clearImage();
 				return;
 			}
-			// console.log(values);
 			dispatch(
 				merchantAction(async () => {
 					const result = await merchantService.updateMerchant({
@@ -97,6 +103,7 @@ export default function CreateMerchantModal({ merchantID }) {
 					return { data: a };
 				})
 			);
+			setMerchantID(null)
 			handleReset();
 			clearImage();
 			return;
@@ -179,6 +186,7 @@ export default function CreateMerchantModal({ merchantID }) {
 							<h1 className='modal-title fw-bold'>Merchant</h1>
 							<button
 								onClick={() => {
+									setMerchantID(null)
 									handleReset();
 									clearImage();
 								}}
