@@ -5,6 +5,7 @@ import HistoryItem from "./HistoryItem";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { historyAction } from "../../../slices/historySlice";
 import EmptyState from "../../../components/EmptyState";
+import HistoryModal from "./HistoryModal";
 
 const HistoryList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -137,6 +138,7 @@ const HistoryList = () => {
           <EmptyState />
         </div>
       )}
+      
     </div>
   );
 };

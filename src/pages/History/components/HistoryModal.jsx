@@ -10,14 +10,37 @@ HistoryModal.propTypes = {
 function HistoryModal({ idx, orderID, topUp, paymentID }) {
   let details = <></>;
   if (orderID != null) {
+    const {
+      balanceID,
+      historyID,
+      methodID,
+      topUpAmount,
+      topUpFee,
+      topUpStatusID,
+      updatedAt,
+    } = topUp;
+    
     details = (
-      <>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
-      </>
+      <div className="d-flex mt-5">
+        <div style={{ width: "150px" }}>
+          <p>ID:</p>
+          <p>Balance ID:</p>
+          <p>Date:</p>
+          <p>Method:</p>
+          <p>Amount:</p>
+          <p>Top Up Fee:</p>
+          <p>Top Up Status:</p>
+        </div>
+        <div>
+          <p>| {historyID}</p>
+          <p>| {balanceID}</p>
+          <p>| {updatedAt}</p>
+          <p>| {methodID}</p>
+          <p>| {topUpAmount}</p>
+          <p>| {topUpFee}</p>
+          <p>| {topUpStatusID}</p>
+        </div>
+      </div>
     );
   } else if (topUp != null) {
     const {
@@ -32,28 +55,59 @@ function HistoryModal({ idx, orderID, topUp, paymentID }) {
 
     details = (
       <div className="d-flex mt-5">
-        <div style={{width:'150px'}}>
-            <p>ID:</p>
-            <p>Balance ID:</p>
-            <p>Date:</p>
-            <p>Method:</p>
-            <p>Amount:</p>
-            <p>Top Up Fee:</p>
-            <p>Top Up Status:</p>
+        <div style={{ width: "150px" }}>
+          <p>ID:</p>
+          <p>Balance ID:</p>
+          <p>Date:</p>
+          <p>Method:</p>
+          <p>Amount:</p>
+          <p>Top Up Fee:</p>
+          <p>Top Up Status:</p>
         </div>
         <div>
-            <p>| {historyID}</p>
-            <p>| {balanceID}</p>
-            <p>| {updatedAt}</p>
-            <p>| {methodID}</p>
-            <p>| {topUpAmount}</p>
-            <p>| {topUpFee}</p>
-            <p>| {topUpStatusID}</p>
+          <p>| {historyID}</p>
+          <p>| {balanceID}</p>
+          <p>| {updatedAt}</p>
+          <p>| {methodID}</p>
+          <p>| {topUpAmount}</p>
+          <p>| {topUpFee}</p>
+          <p>| {topUpStatusID}</p>
         </div>
       </div>
     );
   } else if (paymentID != null) {
-    details = <></>;
+    const {
+      balanceID,
+      historyID,
+      methodID,
+      topUpAmount,
+      topUpFee,
+      topUpStatusID,
+      updatedAt,
+    } = topUp;
+
+    details = (
+      <div className="d-flex mt-5">
+        <div style={{ width: "150px" }}>
+          <p>ID:</p>
+          <p>Balance ID:</p>
+          <p>Date:</p>
+          <p>Method:</p>
+          <p>Amount:</p>
+          <p>Top Up Fee:</p>
+          <p>Top Up Status:</p>
+        </div>
+        <div>
+          <p>| {historyID}</p>
+          <p>| {balanceID}</p>
+          <p>| {updatedAt}</p>
+          <p>| {methodID}</p>
+          <p>| {topUpAmount}</p>
+          <p>| {topUpFee}</p>
+          <p>| {topUpStatusID}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -90,10 +144,12 @@ function HistoryModal({ idx, orderID, topUp, paymentID }) {
             <button
               type="button"
               className="btn btn-lg align-self-center m-4 text-white rounded-5"
-              style={{background:'#D9D9D9', width:'150px'}}
+              style={{ background: "#D9D9D9", width: "150px" }}
               data-bs-dismiss="modal"
               tabIndex="-1"
-            >Back</button>
+            >
+              Back
+            </button>
           </div>
         </div>
       </div>

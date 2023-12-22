@@ -33,6 +33,12 @@ function HistoryItem({ history, idx }) {
         <td>{updatedAt}</td>
         <td className=" ms-5">
           <div className="p-2">
+            <HistoryModal
+              idx={idx}
+              orderID={orderID}
+              paymentID={paymentID}
+              topUp={topUp}
+            />
             <div className="d-flex flex-column align-items-center justify-content-center pt-2">
               <i
                 className="bi bi-list-ul h3 cursor-pointer"
@@ -43,12 +49,6 @@ function HistoryItem({ history, idx }) {
           </div>
         </td>
       </tr>
-      <HistoryModal
-        idx={idx}
-        orderID={orderID}
-        paymentID={paymentID}
-        topUp={topUp}
-      />
     </>
   );
 }

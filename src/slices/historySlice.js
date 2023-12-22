@@ -13,7 +13,6 @@ const historySlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(historyAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                console.log(payload)
                 state.histories = payload.data;
             }
         });
