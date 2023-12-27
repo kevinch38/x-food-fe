@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
 import {
@@ -28,7 +28,6 @@ export default function CreateMerchantBranchModal({
 }) {
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
-	const { merchantBranchs } = useSelector((state) => state.merchantBranch);
 	const [key, setKey] = useState();
 
 	const {
@@ -85,16 +84,14 @@ export default function CreateMerchantBranchModal({
 							.padStart(2, '0');
 						const joinDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 
-						const result =
-							await merchantBranchService.saveMerchantBranch({
-								...data,
-								joinDate: joinDate,
-							});
-						const a = [...merchantBranchs, result.data];
-						return { data: a };
+						await merchantBranchService.saveMerchantBranch({
+							...data,
+							joinDate: joinDate,
+						});
+						await onGetMerchantBranchs(merchantID);
 					})
 				);
-				setMerchantBranchID(null)
+				setMerchantBranchID(null);
 				handleReset();
 				clearImage();
 				return;
@@ -108,7 +105,7 @@ export default function CreateMerchantBranchModal({
 					await onGetMerchantBranchs(merchantID);
 				})
 			);
-			setMerchantBranchID(null)
+			setMerchantBranchID(null);
 			handleReset();
 			clearImage();
 			return;

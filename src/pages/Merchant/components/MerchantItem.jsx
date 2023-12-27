@@ -65,28 +65,30 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 				<td>{createdAt}</td>
 				<td>{updatedAt}</td>
 				<td>
-					<div className='p-2 d-flex justify-content-between w-100'>
-						<div className='btn-group justify-content-between'>
-							<i
-								className='bi bi-pencil-fill h3 cursor-pointer m-2'
-								style={{
-									color: 'rgb(255, 210, 48)',
-								}}
-								onClick={() => setMerchantID(merchantID)}
-								data-bs-toggle='modal'
-								data-bs-target={`#createMerchantModal`}
-							></i>
-							<i
-								className='bi bi-trash-fill h3 cursor-pointer m-2'
-								style={{
-									color: 'rgb(255, 0, 0)',
-								}}
-								onClick={() => setMerchantID(merchantID)}
-								data-bs-toggle='modal'
-								data-bs-target={`#deleteMerchantModal`}
-							></i>
+					{status == 'ACTIVE' && (
+						<div className='p-2 d-flex justify-content-between w-100'>
+							<div className='btn-group justify-content-between'>
+								<i
+									className='bi bi-pencil-fill h3 cursor-pointer m-2'
+									style={{
+										color: 'rgb(255, 210, 48)',
+									}}
+									onClick={() => setMerchantID(merchantID)}
+									data-bs-toggle='modal'
+									data-bs-target={`#createMerchantModal`}
+								></i>
+								<i
+									className='bi bi-trash-fill h3 cursor-pointer m-2'
+									style={{
+										color: 'rgb(255, 0, 0)',
+									}}
+									onClick={() => setMerchantID(merchantID)}
+									data-bs-toggle='modal'
+									data-bs-target={`#deleteMerchantModal`}
+								></i>
+							</div>
 						</div>
-					</div>
+					)}
 				</td>
 				<td className=' ms-5'>
 					<div className='p-2'>
@@ -165,15 +167,19 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 
 									<td className='pb-4'> | {note}</td>
 									<td>
-										<i
-											className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
-											style={{
-												color: 'rgb(101, 213, 26)',
-											}}
-											onClick={()=>setMerchantBranchID(null)}
-											data-bs-toggle='modal'
-											data-bs-target={`#createMerchantBranchModal${merchantID}`}
-										></i>
+										{status == 'ACTIVE' && (
+											<i
+												className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
+												style={{
+													color: 'rgb(101, 213, 26)',
+												}}
+												onClick={() =>
+													setMerchantBranchID(null)
+												}
+												data-bs-toggle='modal'
+												data-bs-target={`#createMerchantBranchModal${merchantID}`}
+											></i>
+										)}
 									</td>
 								</tr>
 								<tr>
@@ -204,16 +210,40 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 																<th scope='col'>
 																	Branch
 																</th>
-																<th scope='col' style={{minWidth:'200px'}}>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'200px',
+																	}}
+																>
 																	City
 																</th>
-																<th scope='col' style={{minWidth:'100px'}}>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'100px',
+																	}}
+																>
 																	PIC Name
 																</th>
-																<th scope='col' style={{minWidth:'100px'}}>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'100px',
+																	}}
+																>
 																	PIC Number
 																</th>
-																<th scope='col' style={{minWidth:'100px'}}>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'100px',
+																	}}
+																>
 																	PIC Email
 																</th>
 																<th scope='col'>
