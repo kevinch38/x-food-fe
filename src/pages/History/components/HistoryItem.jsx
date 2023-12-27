@@ -15,8 +15,8 @@ function HistoryItem({ history, idx }) {
     debit,
     accountID,
     updatedAt,
-    orderID,
-    paymentID,
+    order,
+    payment,
     topUp,
   } = history;
 
@@ -35,8 +35,8 @@ function HistoryItem({ history, idx }) {
           <div className="p-2">
             <HistoryModal
               idx={idx}
-              orderID={orderID}
-              paymentID={paymentID}
+              order={order}
+              payment={payment}
               topUp={topUp}
             />
             <div className="d-flex flex-column align-items-center justify-content-center pt-2">

@@ -5,7 +5,6 @@ import HistoryItem from "./HistoryItem";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { historyAction } from "../../../slices/historySlice";
 import EmptyState from "../../../components/EmptyState";
-import HistoryModal from "./HistoryModal";
 
 const HistoryList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -30,11 +29,6 @@ const HistoryList = () => {
     setSearchParam(searchParam);
   };
 
-  // useEffect(() => {
-  // 	currentPage = parseInt(searchParam.get('page') || 1);
-  // 	currentSize = parseInt(searchParam.get('size') || 10);
-  // }, [paging]);
-
   useEffect(() => {
     const onGetHistories = () => {
       dispatch(
@@ -51,12 +45,6 @@ const HistoryList = () => {
     onGetHistories();
   }, [currentPage, currentSize, dispatch, historyService, histories.length]);
 
-  useEffect(() => {
-    if (currentPage < 1 || currentPage > paging.totalPages) {
-      searchParam.set("page", 1);
-      setSearchParam(searchParam);
-    }
-  }, [currentPage, paging.totalPages, searchParam, setSearchParam]);
 
   return (
     <div

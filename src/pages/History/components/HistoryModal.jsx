@@ -2,43 +2,46 @@ import PropTypes from "prop-types";
 
 HistoryModal.propTypes = {
   idx: PropTypes.number,
-  orderID: PropTypes.string,
+  order: PropTypes.object,
   topUp: PropTypes.object,
-  paymentID: PropTypes.string,
+  payment: PropTypes.object,
 };
 
-function HistoryModal({ idx, orderID, topUp, paymentID }) {
+function HistoryModal({ idx, order, topUp, payment }) {
   let details = <></>;
-  if (orderID != null) {
+  if (order != null) {
     const {
-      balanceID,
-      historyID,
-      methodID,
-      topUpAmount,
-      topUpFee,
-      topUpStatusID,
+      orderID,
+      accountID,
+      orderValue,
+      notes,
+      tableNumber,
+      orderStatus,
+      branchID,
       updatedAt,
-    } = topUp;
+    } = order;
     
     details = (
       <div className="d-flex mt-5">
         <div style={{ width: "150px" }}>
           <p>ID:</p>
-          <p>Balance ID:</p>
+          <p>Account ID:</p>
           <p>Date:</p>
-          <p>Method:</p>
-          <p>Amount:</p>
-          <p>Top Up Fee:</p>
-          <p>Top Up Status:</p>
-        </div>
+          <p>Order Value:</p>
+          <p>Notes:</p>
+          <p>Table Number:</p>
+          <p>Order Status:</p>
+          <p>Branch ID:</p>
+          </div>
         <div>
-          <p>| {historyID}</p>
-          <p>| {balanceID}</p>
+          <p>| {orderID}</p>
+          <p>| {accountID}</p>
           <p>| {updatedAt}</p>
-          <p>| {methodID}</p>
-          <p>| {topUpAmount}</p>
-          <p>| {topUpFee}</p>
-          <p>| {topUpStatusID}</p>
+          <p>| {orderValue}</p>
+          <p>| {notes}</p>
+          <p>| {tableNumber}</p>
+          <p>| {orderStatus}</p>
+          <p>| {branchID}</p>
         </div>
       </div>
     );
@@ -75,36 +78,42 @@ function HistoryModal({ idx, orderID, topUp, paymentID }) {
         </div>
       </div>
     );
-  } else if (paymentID != null) {
+  } else if (payment != null) {
     const {
-      balanceID,
-      historyID,
-      methodID,
-      topUpAmount,
-      topUpFee,
-      topUpStatusID,
+      paymentID,
+      accountID,
+      paymentAmount,
+      paymentType,
       updatedAt,
-    } = topUp;
+      expiredAt,
+      paymentStatus,
+      friendID,
+      orderID,
+    } = payment;
 
     details = (
       <div className="d-flex mt-5">
         <div style={{ width: "150px" }}>
           <p>ID:</p>
-          <p>Balance ID:</p>
-          <p>Date:</p>
-          <p>Method:</p>
+          <p>Account ID:</p>
           <p>Amount:</p>
-          <p>Top Up Fee:</p>
-          <p>Top Up Status:</p>
+          <p>Type:</p>
+          <p>Date:</p>
+          <p>Expired At:</p>
+          <p>Status:</p>
+          <p>Friend ID:</p>
+          <p>Order ID:</p>
         </div>
         <div>
-          <p>| {historyID}</p>
-          <p>| {balanceID}</p>
+          <p>| {paymentID}</p>
+          <p>| {accountID}</p>
+          <p>| {paymentAmount}</p>
+          <p>| {paymentType}</p>
           <p>| {updatedAt}</p>
-          <p>| {methodID}</p>
-          <p>| {topUpAmount}</p>
-          <p>| {topUpFee}</p>
-          <p>| {topUpStatusID}</p>
+          <p>| {expiredAt}</p>
+          <p>| {paymentStatus}</p>
+          <p>| {friendID}</p>
+          <p>| {orderID}</p>
         </div>
       </div>
     );
