@@ -62,23 +62,23 @@ const MerchantList = () => {
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
 
 	return (
+		<>
 		<div
-			className='m-4 container-fluid table-responsive'
-			style={{ overflowX: 'scroll' }}
+			className='mt-0 m-4 container-fluid mb-0'
 		>
-			<div className='d-flex w-100'>
+			<div className='d-flex w-100 mt-0 mb-0'>
 				<nav aria-label='page navigation example'>
-					<ul className='pagination'>
+					<ul className='pagination d-flex align-items-center mt-3'>
 						<li key={currentPage} className='page-item'>
 							<div
-								className={`page-link text-black`}
+								className={`text-black h5 ${paging.totalPages ? `me-2` : ` me-3`}`}
 								to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
 							>
 								{currentPage}/{paging.totalPages}
 							</div>
 						</li>
 						<li
-							className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
+							className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle ${
 								currentPage == 1 && 'disabled'
 							}`}
 							onClick={() => {
@@ -87,7 +87,7 @@ const MerchantList = () => {
 						/>
 
 						<li
-							className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
+							className={`h2 text-black cursor-pointer bi bi-arrow-right-circle ${
 								currentPage >= paging.totalPages && 'disabled'
 							}`}
 							onClick={() => {
@@ -96,19 +96,25 @@ const MerchantList = () => {
 						/>
 					</ul>
 				</nav>
-				<div className='container'>
+				<div className='container mt-1 mb-0 p-0'>
 					<input
-						className='form-control h-75 '
+						className='form-control h-75 mb-0'
 						type='text'
 						placeholder='Search...'
 					/>
 				</div>
 			</div>
+			</div>
+			<hr className='mt-0'/>
+			<div
+			className='mt-0 m-0 container-fluid table-responsive'
+			style={{ overflowX: 'scroll' }}
+		>
 
 			<div className='d-flex justify-content-between align-items-center'>
 				<h2 className='fw-bold'>Merchant List</h2>
 				<i
-					className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
+					className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4'
 					style={{
 						color: 'rgb(101, 213, 26)',
 					}}
@@ -168,6 +174,7 @@ const MerchantList = () => {
 				merchantID={merchantID}
 			/>
 		</div>
+		</>
 	);
 };
 export default MerchantList;
