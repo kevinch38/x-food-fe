@@ -8,6 +8,9 @@ import EmptyState from '../../../components/EmptyState';
 import CreateMerchantBranchModal from './CreateMerchantBranchModal';
 import { useState } from 'react';
 import DeleteMerchantBranchModal from './DeleteMerchantBranchModal';
+import { useSearchParams } from 'react-router-dom';
+import { useDebounce } from '@uidotdev/usehooks';
+import { useEffect } from 'react';
 
 MerchantItem.propTypes = {
 	merchant: PropTypes.any,
@@ -38,11 +41,45 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 		dispatch(
 			merchantBranchAction(async () => {
 				const result =
-					await merchantBranchService.fetchMerchantBranchById(id);
+					await merchantBranchService.fetchMerchantBranchById(
+						id,
+						debounceSearch
+					);
 				return result;
 			})
 		);
 	};
+	// const onGetMerchantBranchs2 = (id) => {
+	// 	dispatch(
+	// 		merchantBranchAction(async () => {
+	// 			const result =
+	// 				await merchantBranchService.fetchMerchantBranchById(id);
+	// 			return result;
+	// 		})
+	// 	);
+	// };
+	// merchantName: debounceSearch,
+
+	const [searchParam, setSearchParam] = useSearchParams();
+
+	const [searchState, setSearchState] = useState(
+		searchParam.get('searchBranch') || ''
+	);
+	const debounceSearch = useDebounce(searchState, 300);
+
+	const handleChange = (e) => {
+		const { value } = e.target;
+		setSearchState(value);
+
+		if (value.trim() === '') {
+			searchParam.delete('searchBranch');
+			setSearchParam(searchParam);
+		}
+	};
+	useEffect(() => {
+		onGetMerchantBranchs(merchantID);
+	}, [debounceSearch.toString()]);
+	console.log(debounceSearch.toString());
 
 	return (
 		<>
@@ -126,6 +163,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 							className='btn-close align-self-end m-4'
 							data-bs-dismiss='modal'
 							aria-label='Close'
+							onClick={() => setSearchState('')}
 						></button>
 						<h1 className='modal-title fw-bold text-center'>
 							Merchant Details
@@ -136,9 +174,18 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 								textAlign: 'left',
 							}}
 						>
-							<table className='table' style={{}}>
+							<table className='table'>
 								<tr>
-									<td>ID:</td>
+									<td
+										className={`${
+											merchantBranchs &&
+											merchantBranchs.length !== 0
+												? 'w-100'
+												: ''
+										}`}
+									>
+										ID:
+									</td>
 
 									<td> | {merchantID}</td>
 								</tr>
@@ -173,9 +220,10 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 												style={{
 													color: 'rgb(101, 213, 26)',
 												}}
-												onClick={() =>
-													setMerchantBranchID(null)
-												}
+												onClick={() => {
+													setMerchantBranchID(null);
+													setSearchState('');
+												}}
 												data-bs-toggle='modal'
 												data-bs-target={`#createMerchantBranchModal${merchantID}`}
 											></i>
@@ -299,7 +347,23 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 									<td>Filter By</td>
 								</tr>
 								<tr>
-									<td>Search</td>
+									<td>
+										<div
+											className='m-0 ps-0'
+											style={{ maxWidth: '80px' }}
+										>
+											<input
+												onChange={handleChange}
+												className='form-control m-0'
+												type='text'
+												name='searchBranch'
+												id='searchBranch'
+												value={searchState}
+												placeholder='Search By Merchant Name'
+												style={{ width: 'auto' }}
+											/>
+										</div>
+									</td>
 								</tr>
 								<tr>
 									<td></td>
