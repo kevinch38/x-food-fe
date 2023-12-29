@@ -1,7 +1,15 @@
+import AccountService from "./accountService";
+import MerchantBranchService from "./merchantBranchService";
+import MerchantService from "./merchantService";
+import PromotionService from "./promotionService";
+
 const ServiceFactory = () => {
-    return {
-        
-    }
-}
+  return {
+    accountService: AccountService(),
+    promotionService:PromotionService(),
+    merchantService:MerchantService(),
+    merchantBranchService:MerchantBranchService(),
+  };
+};
 
 export default ServiceFactory;
