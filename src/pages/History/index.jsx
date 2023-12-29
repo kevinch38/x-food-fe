@@ -1,7 +1,7 @@
 import HistoryList from "./components/HistoryList";
 
-const Merchant = () => {
+const History = () => {
   return <HistoryList />;
 };
 
-export default Merchant;
+export default History;

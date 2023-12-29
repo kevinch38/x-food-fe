@@ -45,53 +45,53 @@ const HistoryList = () => {
     onGetHistories();
   }, [currentPage, currentSize, dispatch, historyService, histories.length]);
 
-
   return (
-    <div
-      className="m-4 container-fluid table-responsive"
-      style={{ overflowX: "scroll" }}
-    >
-      <div className="d-flex w-100">
-        <nav aria-label="page navigation example">
-          <ul className="pagination">
-            <li key={currentPage} className="page-item">
-              <div
-                className={`page-link text-black`}
-                to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
-              >
-                {currentPage}/{paging.totalPages}
-              </div>
-            </li>
-            <li
-              className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
-                currentPage == 1 && "disabled"
-              }`}
-              onClick={() => {
-                onPrevious(currentPage);
-              }}
+    <div className="m-4">
+      {histories && histories.length !== 0 && (
+        <div className="d-flex">
+          <nav aria-label="page navigation example">
+            <ul className="pagination">
+              <li key={currentPage} className="page-item">
+                <div
+                  className={`page-link text-black`}
+                  to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
+                >
+                  {currentPage}/{paging.totalPages}
+                </div>
+              </li>
+              <li
+                className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
+                  currentPage === 1 && "disabled"
+                }`}
+                onClick={() => {
+                  onPrevious(currentPage);
+                }}
+              />
+              <li
+                className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
+                  currentPage >= paging.totalPages && "disabled"
+                }`}
+                onClick={() => {
+                  onNext(currentPage);
+                }}
+              />
+            </ul>
+          </nav>
+          <div className="container">
+            <input
+              className="form-control h-75 "
+              type="text"
+              placeholder="Search..."
             />
-
-            <li
-              className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
-                currentPage >= paging.totalPages && "disabled"
-              }`}
-              onClick={() => {
-                onNext(currentPage);
-              }}
-            />
-          </ul>
-        </nav>
-        <div className="container">
-          <input
-            className="form-control h-75 "
-            type="text"
-            placeholder="Search..."
-          />
+          </div>
         </div>
-      </div>
+      )}
 
       {histories && histories.length !== 0 ? (
         <>
+          <div className="d-flex justify-content-between align-items-center">
+            <h2>History List</h2>
+          </div>
           <table className="table text-center">
             <thead>
               <tr>
@@ -107,17 +107,9 @@ const HistoryList = () => {
               </tr>
             </thead>
             <tbody className="table-group-divider">
-              {histories &&
-                histories.length !== 0 &&
-                histories.map((history, idx) => {
-                  return (
-                    <HistoryItem
-                      key={history.historyID}
-                      history={history}
-                      idx={++idx}
-                    />
-                  );
-                })}
+              {histories.map((history, idx) => (
+                <HistoryItem key={history.historyID} history={history} idx={++idx} />
+              ))}
             </tbody>
           </table>
         </>
@@ -126,8 +118,8 @@ const HistoryList = () => {
           <EmptyState />
         </div>
       )}
-      
     </div>
   );
 };
+
 export default HistoryList;
