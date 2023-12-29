@@ -18,7 +18,6 @@ function HistoryModal({ idx, order, topUp, payment }) {
       tableNumber,
       orderStatus,
       branchID,
-      updatedAt,
     } = order;
     
     details = (
@@ -26,7 +25,6 @@ function HistoryModal({ idx, order, topUp, payment }) {
         <div style={{ width: "150px" }}>
           <p>ID:</p>
           <p>Account ID:</p>
-          <p>Date:</p>
           <p>Order Value:</p>
           <p>Notes:</p>
           <p>Table Number:</p>
@@ -36,7 +34,6 @@ function HistoryModal({ idx, order, topUp, payment }) {
         <div>
           <p>| {orderID}</p>
           <p>| {accountID}</p>
-          <p>| {updatedAt}</p>
           <p>| {orderValue}</p>
           <p>| {notes}</p>
           <p>| {tableNumber}</p>
@@ -49,7 +46,7 @@ function HistoryModal({ idx, order, topUp, payment }) {
     const {
       balanceID,
       historyID,
-      methodID,
+      method,
       topUpAmount,
       topUpFee,
       topUpStatusID,
@@ -71,7 +68,7 @@ function HistoryModal({ idx, order, topUp, payment }) {
           <p>| {historyID}</p>
           <p>| {balanceID}</p>
           <p>| {updatedAt}</p>
-          <p>| {methodID}</p>
+          <p>| {method}</p>
           <p>| {topUpAmount}</p>
           <p>| {topUpFee}</p>
           <p>| {topUpStatusID}</p>

@@ -7,10 +7,11 @@ const HistoryService = () => {
         return data;
     }
 
-    const fetchHistories = async () => {
-        const { data } = await axiosInstance.get(`/api/histories?paging=true`);
+    const fetchHistories = async (queryParams) => {
+        const { data } = await axiosInstance.get(`/api/histories` , { params: queryParams });
+        console.log(queryParams)
         return data;
-    }
+      };
 
 
     return {

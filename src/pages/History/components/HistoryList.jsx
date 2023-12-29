@@ -15,35 +15,50 @@ const HistoryList = () => {
   const [paging, setPaging] = useState({});
 
   let currentPage = parseInt(searchParam.get("page") || 1);
-  let currentSize = parseInt(searchParam.get("size") || 10);
-
-  const onNext = () => {
-    if (currentPage === paging.totalPages) return;
-    searchParam.set("page", currentPage + 1);
-    setSearchParam(searchParam);
-  };
-
-  const onPrevious = () => {
-    if (currentPage === 1) return;
-    searchParam.set("page", currentPage - 1);
-    setSearchParam(searchParam);
-  };
+  let currentSize = parseInt(searchParam.get("size") || 9);
 
   useEffect(() => {
     const onGetHistories = () => {
       dispatch(
         historyAction(async () => {
           const result = await historyService.fetchHistories({
+            paging: true,
             page: currentPage,
             size: currentSize,
           });
+  
           setPaging(result.paging);
+          console.log(result)
           return result;
         })
       );
     };
+  
     onGetHistories();
-  }, [currentPage, currentSize, dispatch, historyService, histories.length]);
+  }, [currentPage, currentSize, dispatch, historyService, searchParam, setSearchParam]);
+  
+  useEffect(() => {
+    if (currentPage < 1 || currentPage > paging.totalPages) {
+      searchParam.set("page", 1);
+      setSearchParam(searchParam);
+    }
+  }, [currentPage, paging.totalPages, searchParam, setSearchParam]);
+  
+  const onNext = () => {
+    if (currentPage < paging.totalPages) {
+      const nextPage = currentPage + 1;
+      searchParam.set("page", nextPage);
+      setSearchParam(searchParam);
+    }
+  };
+
+  const onPrevious = () => {
+    if (currentPage > 1) {
+      const prevPage = currentPage - 1;
+      searchParam.set("page", prevPage);
+      setSearchParam(searchParam);
+    }
+  };
 
   return (
     <div className="m-4">
@@ -51,11 +66,8 @@ const HistoryList = () => {
         <div className="d-flex">
           <nav aria-label="page navigation example">
             <ul className="pagination">
-              <li key={currentPage} className="page-item">
-                <div
-                  className={`page-link text-black`}
-                  to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
-                >
+              <li className="page-item">
+                <div className="page-link text-black">
                   {currentPage}/{paging.totalPages}
                 </div>
               </li>
@@ -63,23 +75,19 @@ const HistoryList = () => {
                 className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
                   currentPage === 1 && "disabled"
                 }`}
-                onClick={() => {
-                  onPrevious(currentPage);
-                }}
-              />
+                onClick={onPrevious}
+              ></li>
               <li
                 className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
                   currentPage >= paging.totalPages && "disabled"
                 }`}
-                onClick={() => {
-                  onNext(currentPage);
-                }}
-              />
+                onClick={onNext}
+              ></li>
             </ul>
           </nav>
           <div className="container">
             <input
-              className="form-control h-75 "
+              className="form-control h-75"
               type="text"
               placeholder="Search..."
             />
@@ -108,7 +116,11 @@ const HistoryList = () => {
             </thead>
             <tbody className="table-group-divider">
               {histories.map((history, idx) => (
-                <HistoryItem key={history.historyID} history={history} idx={++idx} />
+                <HistoryItem
+                  key={history.historyID}
+                  history={history}
+                  idx={++idx}
+                />
               ))}
             </tbody>
           </table>

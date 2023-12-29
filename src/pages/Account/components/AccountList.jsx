@@ -13,7 +13,7 @@ const AccountList = () => {
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 1);
+  const currentSize = parseInt(searchParam.get("size") || 9);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
