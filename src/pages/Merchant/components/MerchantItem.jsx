@@ -6,13 +6,17 @@ import { ServiceContext } from '../../../context/ServiceContext';
 import { merchantBranchAction } from '../../../slices/merchantBranchSlice';
 import EmptyState from '../../../components/EmptyState';
 import CreateMerchantBranchModal from './CreateMerchantBranchModal';
+import { useState } from 'react';
+import DeleteMerchantBranchModal from './DeleteMerchantBranchModal';
 
 MerchantItem.propTypes = {
 	merchant: PropTypes.any,
+	setMerchantID: PropTypes.func,
 	idx: PropTypes.number,
 };
 
-function MerchantItem({ merchant, idx }) {
+function MerchantItem({ merchant, idx, setMerchantID }) {
+	const [merchantBranchID, setMerchantBranchID] = useState();
 	const {
 		merchantID,
 		merchantName,
@@ -50,29 +54,41 @@ function MerchantItem({ merchant, idx }) {
 				<td>{picNumber}</td>
 				<td>{picEmail}</td>
 				<td>{merchantDescription}</td>
-				<td>{status}</td>
+				<td
+					style={{
+						color: `${status == 'ACTIVE' ? 'green' : 'red'}`,
+					}}
+				>
+					{status}
+				</td>
 				<td>{joinDate}</td>
 				<td>{createdAt}</td>
 				<td>{updatedAt}</td>
 				<td>
-					<div className='p-2 d-flex justify-content-between w-100'>
-						<div className='btn-group justify-content-between'>
-							<i
-								className='bi bi-pencil-fill h3 cursor-pointer m-2'
-								style={{
-									color: 'rgb(255, 210, 48)',
-								}}
-								onClick={() => console.log('edit')}
-							></i>
-							<i
-								className='bi bi-trash-fill h3 cursor-pointer m-2'
-								style={{
-									color: 'rgb(255, 0, 0)',
-								}}
-								onClick={() => console.log('delete')}
-							></i>
+					{status == 'ACTIVE' && (
+						<div className='p-2 d-flex justify-content-between w-100'>
+							<div className='btn-group justify-content-between'>
+								<i
+									className='bi bi-pencil-fill h3 cursor-pointer m-2'
+									style={{
+										color: 'rgb(255, 210, 48)',
+									}}
+									onClick={() => setMerchantID(merchantID)}
+									data-bs-toggle='modal'
+									data-bs-target={`#createMerchantModal`}
+								></i>
+								<i
+									className='bi bi-trash-fill h3 cursor-pointer m-2'
+									style={{
+										color: 'rgb(255, 0, 0)',
+									}}
+									onClick={() => setMerchantID(merchantID)}
+									data-bs-toggle='modal'
+									data-bs-target={`#deleteMerchantModal`}
+								></i>
+							</div>
 						</div>
-					</div>
+					)}
 				</td>
 				<td className=' ms-5'>
 					<div className='p-2'>
@@ -151,15 +167,19 @@ function MerchantItem({ merchant, idx }) {
 
 									<td className='pb-4'> | {note}</td>
 									<td>
-										<i
-											className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
-											style={{
-												color: 'rgb(101, 213, 26)',
-											}}
-											data-bs-toggle='modal'
-											data-bs-target={`#createMerchantBranchModal`}
-											onClick={()=>console.log('A')}
-										></i>
+										{status == 'ACTIVE' && (
+											<i
+												className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
+												style={{
+													color: 'rgb(101, 213, 26)',
+												}}
+												onClick={() =>
+													setMerchantBranchID(null)
+												}
+												data-bs-toggle='modal'
+												data-bs-target={`#createMerchantBranchModal${merchantID}`}
+											></i>
+										)}
 									</td>
 								</tr>
 								<tr>
@@ -178,22 +198,9 @@ function MerchantItem({ merchant, idx }) {
 												}}
 											>
 												<div className='row'>
-													<table className='table text-center'>
+													<table className='table text-center table-responsive align-middle'>
 														<thead>
 															<tr>
-																<th>
-																	<div className='custom-control custom-checkbox'>
-																		<input
-																			type='checkbox'
-																			className='custom-control-input'
-																			id={`customCheck0`}
-																		/>
-																		<label
-																			className='custom-control-label'
-																			htmlFor={`customCheck0`}
-																		></label>
-																	</div>
-																</th>
 																<th scope='col'>
 																	NO
 																</th>
@@ -203,16 +210,40 @@ function MerchantItem({ merchant, idx }) {
 																<th scope='col'>
 																	Branch
 																</th>
-																<th scope='col'>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'200px',
+																	}}
+																>
 																	City
 																</th>
-																<th scope='col'>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'100px',
+																	}}
+																>
 																	PIC Name
 																</th>
-																<th scope='col'>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'100px',
+																	}}
+																>
 																	PIC Number
 																</th>
-																<th scope='col'>
+																<th
+																	scope='col'
+																	style={{
+																		minWidth:
+																			'100px',
+																	}}
+																>
 																	PIC Email
 																</th>
 																<th scope='col'>
@@ -223,6 +254,9 @@ function MerchantItem({ merchant, idx }) {
 																</th>
 																<th scope='col'>
 																	Created At
+																</th>
+																<th scope='col'>
+																	Action
 																</th>
 															</tr>
 														</thead>
@@ -242,6 +276,9 @@ function MerchantItem({ merchant, idx }) {
 																			}
 																			idx={
 																				++idx
+																			}
+																			setMerchantBranchID={
+																				setMerchantBranchID
 																			}
 																		/>
 																	);
@@ -265,59 +302,26 @@ function MerchantItem({ merchant, idx }) {
 									<td>Search</td>
 								</tr>
 								<tr>
-									<td>
-										<div className='p-2 row'>
-											<div className='p-2 d-flex justify-content-between w-100'>
-												<div className='btn-group justify-content-between'>
-													<i
-														className='bi bi-pencil-fill h3 cursor-pointer m-2'
-														style={{
-															color: 'rgb(255, 210, 48)',
-														}}
-														onClick={() =>
-															console.log('edit')
-														}
-													></i>
-													<i
-														className='bi bi-trash-fill h3 cursor-pointer m-2'
-														style={{
-															color: 'rgb(255, 0, 0)',
-														}}
-														onClick={() =>
-															console.log(
-																'delete'
-															)
-														}
-													></i>
-												</div>
-											</div>
-										</div>
-									</td>
+									<td></td>
 								</tr>
 							</table>
-							{/* <form
-								className='form'
-								onSubmit={(e) => handleOnSubmit(e)}
-							>
-								<label htmlFor='comment'>Leave a comment</label>
-								<textarea
-									name='comment'
-									id=''
-									className='w-100 h-25'
-									onChange={(e) => handleChange(e)}
-								></textarea>
-								<button
-									type='submit'
-									className='btn btn-primary'
-								>
-									Add Comment
-								</button>
-							</form> */}
 						</div>
 					</div>
 				</div>
-				<CreateMerchantBranchModal />
 			</div>
+			<CreateMerchantBranchModal
+				onGetMerchantBranchs={onGetMerchantBranchs}
+				setMerchantBranchID={setMerchantBranchID}
+				idx={idx}
+				merchantID={merchantID}
+				merchantBranchID={merchantBranchID}
+			/>
+			<DeleteMerchantBranchModal
+				idx={idx}
+				merchantID={merchantID}
+				merchantBranchID={merchantBranchID}
+				onGetMerchantBranchs={onGetMerchantBranchs}
+			/>
 		</>
 	);
 }

@@ -1,27 +1,37 @@
+import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { ServiceContext } from '../../../context/ServiceContext';
 import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
 import {
 	merchantBranchAction,
 	selectMerchantBranchAction,
 } from '../../../slices/merchantBranchSlice';
 import { useEffect } from 'react';
-import validationSchema from './validationSchema';
+import validationSchemaBranch from './validationSchemaBranch';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 
-export default function CreateMerchantBranchModal({merchantBranchID}) {
+CreateMerchantBranchModal.propTypes = {
+	merchantID: PropTypes.any,
+	merchantBranchID: PropTypes.any,
+	idx: PropTypes.any,
+	onGetMerchantBranchs: PropTypes.func,
+	setMerchantBranchID: PropTypes.func,
+};
+
+export default function CreateMerchantBranchModal({
+	merchantID,
+	merchantBranchID,
+	idx,
+	onGetMerchantBranchs,
+	setMerchantBranchID,
+}) {
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
+	const [key, setKey] = useState();
 
 	const {
-		values: {
-			merchantBranchName,
-			picName,
-			merchantBranchDescription,
-			picNumber,
-			picEmail,
-		},
+		values: { branchName, cityID, picName, picNumber, picEmail },
 		errors,
 		dirty,
 		isValid,
@@ -31,14 +41,18 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 		handleSubmit,
 		handleReset,
 		setValues,
+		setFieldValue,
 	} = useFormik({
 		initialValues: {
-			merchantBranchID: null,
-			merchantBranchName: '',
+			branchID: null,
+			merchantID: merchantID,
+			branchName: '',
+			branchWorkingHoursID: '1',
+			cityID: '8a74ff868c9253e0018c92540ca4000f',
 			picName: '',
-			merchantBranchDescription: '',
 			picNumber: '',
 			picEmail: '',
+			image: null,
 		},
 		onSubmit: async (values) => {
 			if (!isValid) return;
@@ -47,75 +61,130 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 				const data = {
 					...values,
 				};
-				delete data.merchantBranchID;
+				delete data.branchID;
 				dispatch(
 					merchantBranchAction(async () => {
+						const now = new Date();
+						const year = now.getFullYear();
+						const month = (now.getMonth() + 1)
+							.toString()
+							.padStart(2, '0');
+						const day = now.getDate().toString().padStart(2, '0');
+						const hours = now
+							.getHours()
+							.toString()
+							.padStart(2, '0');
+						const minutes = now
+							.getMinutes()
+							.toString()
+							.padStart(2, '0');
+						const seconds = now
+							.getSeconds()
+							.toString()
+							.padStart(2, '0');
+						const joinDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
 						await merchantBranchService.saveMerchantBranch({
 							...data,
-							joinDate: '1999-07-05',
+							joinDate: joinDate,
 						});
-						// if (result.statusCode === 201) {
-						// 	navigate('/backoffice/menus');
-						// }
-						return null;
+						await onGetMerchantBranchs(merchantID);
 					})
 				);
+				setMerchantBranchID(null);
 				handleReset();
+				clearImage();
 				return;
 			}
 
 			dispatch(
 				merchantBranchAction(async () => {
-					await merchantBranchService.updateMerchantBranch(values);
-					// if (result.statusCode === 200) {
-					// 	navigate('/backoffice/menus');
-					// }
-					return null;
+					await merchantBranchService.updateMerchantBranch({
+						...values,
+					});
+					await onGetMerchantBranchs(merchantID);
 				})
 			);
+			setMerchantBranchID(null);
 			handleReset();
+			clearImage();
+			return;
 		},
-		validationSchema: validationSchema(),
+		validationSchema: validationSchemaBranch(),
 	});
+	const clearImage = () => {
+		let randomString = Math.random().toString(36);
+		setKey(randomString);
+	};
 
 	useEffect(() => {
 		if (merchantBranchID) {
 			const onGetMerchantBranchById = async () => {
 				const result = await dispatch(
 					selectMerchantBranchAction(() =>
-						merchantBranchService.fetchMerchantBranchById(merchantBranchID)
+						merchantBranchService.fetchMerchantBranchByBranchId(
+							merchantBranchID
+						)
 					)
 				);
-
 				if (result.payload) {
 					const {
-						merchantBranchID,
-						merchantBranchName,
+						branchID,
+						branchName,
+						address,
+						timezone,
+						branchWorkingHoursID,
+						city,
 						picName,
-						merchantBranchDescription,
 						picNumber,
 						picEmail,
 					} = result.payload.data;
+					console.log(result.payload.data);
 					setValues({
-						id: merchantBranchID,
-						merchantBranchName: merchantBranchName,
+						branchID: branchID,
+						branchName: branchName,
+						address: address,
+						timezone: timezone,
+						branchWorkingHoursID: branchWorkingHoursID,
+						cityID: city.cityID,
 						picName: picName,
-						merchantBranchDescription: merchantBranchDescription,
 						picNumber: picNumber,
 						picEmail: picEmail,
 					});
 				}
 			};
 			onGetMerchantBranchById();
+		} else {
+			setValues({
+				branchID: null,
+				merchantID: merchantID,
+				branchName: '',
+				branchWorkingHoursID: '1',
+				cityID: '8a74ff868c9253e0018c92540ca4000f',
+				picName: '',
+				picNumber: '',
+				picEmail: '',
+				image: null,
+			});
 		}
-	}, [dispatch, setValues, merchantBranchID, merchantBranchService]);
+	}, [
+		dispatch,
+		setValues,
+		merchantBranchService,
+		merchantBranchID,
+		merchantID,
+	]);
 
+	const handleChangeFile = (e) => {
+		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
+	};
+	// console.log();
 	return (
 		<div
 			className='modal fade'
-			id={`createMerchantBranchModal`}
+			id={`createMerchantBranchModal${merchantID}`}
 			tabIndex='-1'
-			aria-labelledby={`createMerchantBranchModal`}
+			aria-labelledby={`createMerchantBranchModal${merchantID}`}
 			aria-hidden='true'
 			style={{
 				borderRadius: '50px',
@@ -131,13 +200,20 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 				<div className='p-5 modal-content border-0'>
 					<div className='row'>
 						<div className='d-flex justify-content-between'>
-							<h1 className='modal-title fw-bold'>MerchantBranch</h1>
+							<h1 className='modal-title fw-bold'>Branch</h1>
 							<button
 								type='button'
 								className='btn-close'
-								data-bs-dismiss='modal'
+								// data-bs-dismiss='modal'
 								aria-label='Close'
-								onClick={handleReset}
+								onClick={() => {
+									clearImage();
+									setMerchantBranchID(null);
+									handleReset();
+									onGetMerchantBranchs(merchantID);
+								}}
+								data-bs-toggle='modal'
+								data-bs-target={`#exampleModal${idx}`}
 							></button>
 						</div>
 					</div>
@@ -155,7 +231,8 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 									color: 'rgb(84, 84, 84)',
 								}}
 							></i>
-							Create New MerchantBranch
+							{`${merchantBranchID ? 'Update' : 'Create New'}`}{' '}
+							Branch
 						</div>
 						<h3 className='fw-bold mt-5 position-relative mb-0'>
 							Personal Information
@@ -185,8 +262,11 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 											<input
 												className={`form-control`}
 												type='text'
-												placeholder='ID (Generated)'
-												name='merchantBranchID'
+												placeholder=''
+												name='merchantID'
+												value={`Merchant ID: ${
+													merchantID ? merchantID : ''
+												}`}
 												disabled
 											/>
 										</td>
@@ -202,7 +282,7 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Name'
+												placeholder='PIC Name:'
 												name='picName'
 											/>
 										</td>
@@ -212,16 +292,16 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 											<input
 												onChange={handleChange}
 												onBlur={handleBlur}
-												value={merchantBranchName}
-												id='merchantBranchName'
+												value={branchName}
+												id='branchName'
 												className={`form-control  ${
-													touched.merchantBranchName &&
-													errors.merchantBranchName &&
+													touched.branchName &&
+													errors.branchName &&
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='Name'
-												name='merchantBranchName'
+												placeholder='Branch Name:'
+												name='branchName'
 											/>
 										</td>
 										<td>
@@ -236,7 +316,7 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='PIC Number'
+												placeholder='PIC Number:'
 												name='picNumber'
 											/>
 										</td>
@@ -246,16 +326,16 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 											<input
 												onChange={handleChange}
 												onBlur={handleBlur}
-												value={merchantBranchDescription}
-												id='merchantBranchDescription'
+												value={cityID}
+												id='cityID'
 												className={`form-control  ${
-													touched.merchantBranchDescription &&
-													errors.merchantBranchDescription &&
+													touched.cityID &&
+													errors.cityID &&
 													'is-invalid'
 												}`}
 												type='text'
-												placeholder='Description'
-												name='merchantBranchDescription'
+												placeholder='City'
+												name='cityID'
 											/>
 										</td>
 										<td>
@@ -276,12 +356,38 @@ export default function CreateMerchantBranchModal({merchantBranchID}) {
 										</td>
 									</tr>
 									<tr>
+										<td className='w-50'>
+											<div className='d-flex justify-content-between ps-0 pe-0'>
+												<label
+													htmlFor='image'
+													className='h-auto'
+												>
+													Merchant Branch Image:
+												</label>
+
+												<input
+													className={`form-control text-normal w-50 ${
+														touched.image &&
+														errors.image &&
+														'is-invalid'
+													}`}
+													key={key}
+													type='file'
+													accept='.png,.jpeg,.jpg'
+													name='image'
+													id='image'
+													onChange={handleChangeFile}
+													onBlur={handleBlur}
+												/>
+											</div>
+										</td>
 										<td>
 											<button
 												disabled={!isValid || !dirty}
 												className='btn bg-dark text-white pe-3 ps-3'
 												type='submit'
-                                                data-bs-dismiss='modal'
+												data-bs-toggle='modal'
+												data-bs-target={`#exampleModal${idx}`}
 											>
 												Submit
 											</button>

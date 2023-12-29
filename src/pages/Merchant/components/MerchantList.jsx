@@ -6,6 +6,7 @@ import { ServiceContext } from '../../../context/ServiceContext';
 import { merchantAction } from '../../../slices/merchantSlice';
 import CreateMerchantModal from './CreateMerchantModal';
 import EmptyState from '../../../components/EmptyState';
+import DeleteMerchantModal from './DeleteMerchantModal';
 
 const MerchantList = () => {
 	const [searchParam, setSearchParam] = useSearchParams();
@@ -14,6 +15,7 @@ const MerchantList = () => {
 	const { merchantService } = useContext(ServiceContext);
 
 	const [paging, setPaging] = useState({});
+	const [merchantID, setMerchantID] = useState();
 
 	let currentPage = parseInt(searchParam.get('page') || 1);
 	let currentSize = parseInt(searchParam.get('size') || 10);
@@ -40,6 +42,7 @@ const MerchantList = () => {
 			dispatch(
 				merchantAction(async () => {
 					const result = await merchantService.fetchMerchants({
+						paging: true,
 						page: currentPage,
 						size: currentSize,
 					});
@@ -57,26 +60,25 @@ const MerchantList = () => {
 			setSearchParam(searchParam);
 		}
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
-	console.log(merchants.length);
 
 	return (
+		<>
 		<div
-			className='m-4 container-fluid table-responsive'
-			style={{ overflowX: 'scroll' }}
+			className='mt-0 m-4 container-fluid mb-0'
 		>
-			<div className='d-flex w-100'>
+			<div className='d-flex w-100 mt-0 mb-0'>
 				<nav aria-label='page navigation example'>
-					<ul className='pagination'>
+					<ul className='pagination d-flex align-items-center mt-3'>
 						<li key={currentPage} className='page-item'>
 							<div
-								className={`page-link text-black`}
+								className={`text-black h5 ${paging.totalPages ? `me-2` : ` me-3`}`}
 								to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
 							>
 								{currentPage}/{paging.totalPages}
 							</div>
 						</li>
 						<li
-							className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
+							className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle ${
 								currentPage == 1 && 'disabled'
 							}`}
 							onClick={() => {
@@ -85,7 +87,7 @@ const MerchantList = () => {
 						/>
 
 						<li
-							className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
+							className={`h2 text-black cursor-pointer bi bi-arrow-right-circle ${
 								currentPage >= paging.totalPages && 'disabled'
 							}`}
 							onClick={() => {
@@ -94,22 +96,29 @@ const MerchantList = () => {
 						/>
 					</ul>
 				</nav>
-				<div className='container'>
+				<div className='container mt-1 mb-0 p-0'>
 					<input
-						className='form-control h-75 '
+						className='form-control h-75 mb-0'
 						type='text'
 						placeholder='Search...'
 					/>
 				</div>
 			</div>
+			</div>
+			<hr className='mt-0'/>
+			<div
+			className='mt-0 m-0 container-fluid table-responsive'
+			style={{ overflowX: 'scroll' }}
+		>
 
 			<div className='d-flex justify-content-between align-items-center'>
 				<h2 className='fw-bold'>Merchant List</h2>
 				<i
-					className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-5'
+					className='bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4'
 					style={{
 						color: 'rgb(101, 213, 26)',
 					}}
+					onClick={() => setMerchantID(null)}
 					data-bs-toggle='modal'
 					data-bs-target={`#createMerchantModal`}
 				></i>
@@ -117,15 +126,15 @@ const MerchantList = () => {
 
 			{merchants && merchants.length !== 0 ? (
 				<>
-					<table className='table text-center'>
+					<table className='table text-center align-middle'>
 						<thead>
 							<tr>
 								<th className='fw-normal'>No</th>
 								<th className='fw-normal'>ID</th>
 								<th className='fw-normal'>Name</th>
-								<th className='fw-normal'>PIC Name</th>
-								<th className='fw-normal'>PIC Number</th>
-								<th className='fw-normal'>PIC Email</th>
+								<th className='fw-normal' style={{minWidth:'100px'}}>PIC Name</th>
+								<th className='fw-normal' style={{minWidth:'100px'}}>PIC Number</th>
+								<th className='fw-normal' style={{minWidth:'100px'}}>PIC Email</th>
 								<th className='fw-normal'>Description</th>
 								<th className='fw-normal'>Status</th>
 								<th className='fw-normal'>Join Date</th>
@@ -144,6 +153,7 @@ const MerchantList = () => {
 											key={merchant.merchantID}
 											merchant={merchant}
 											idx={++idx}
+											setMerchantID={setMerchantID}
 										/>
 									);
 								})}
@@ -155,8 +165,16 @@ const MerchantList = () => {
 					<EmptyState />
 				</div>
 			)}
-			<CreateMerchantModal />
+			<CreateMerchantModal
+				setMerchantID={setMerchantID}
+				merchantID={merchantID}
+			/>
+			<DeleteMerchantModal
+				setMerchantID={setMerchantID}
+				merchantID={merchantID}
+			/>
 		</div>
+		</>
 	);
 };
 export default MerchantList;

@@ -12,13 +12,39 @@ const MerchantService = () => {
     }
 
     const saveMerchant = async (merchant) => {
-        const { data } = await axiosInstance.post('/api/merchants', merchant);
+        const formData = new FormData();
+        formData.append('merchantName', merchant.merchantName);
+        formData.append('merchantDescription', merchant.merchantDescription);
+        formData.append('picName', merchant.picName);
+        formData.append('picNumber', merchant.picNumber);
+        formData.append('picEmail', merchant.picEmail);
+        formData.append('image', merchant.image);
+        formData.append('logoImage', merchant.logoImage);
+        formData.append('joinDate', merchant.joinDate);
+        formData.append('notes', merchant.notes);
+        const { data } = await axiosInstance.post('/api/merchants', formData);
         return data;
     }
 
     
     const updateMerchant = async (merchant) => {
-        const { data } = await axiosInstance.put('/api/merchants', merchant);
+        console.log(merchant.logoImage);
+        const formData = new FormData();
+        formData.append('merchantID', merchant.merchantID);
+        formData.append('merchantName', merchant.merchantName);
+        formData.append('merchantDescription', merchant.merchantDescription);
+        formData.append('picName', merchant.picName);
+        formData.append('picNumber', merchant.picNumber);
+        formData.append('picEmail', merchant.picEmail);
+        formData.append('image', merchant.image);
+        formData.append('logoImage', merchant.logoImage);
+        formData.append('notes', merchant.notes);
+        const { data } = await axiosInstance.put('/api/merchants', formData);
+        return data;
+    }
+
+    const deleteMerchant = async (id) => {
+        const { data } = await axiosInstance.delete(`/api/merchants/${id}`);
         return data;
     }
 
@@ -28,6 +54,7 @@ const MerchantService = () => {
         fetchMerchants,
         saveMerchant,
         updateMerchant,
+        deleteMerchant,
     }
 }
 
