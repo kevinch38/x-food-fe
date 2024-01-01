@@ -1,9 +1,15 @@
 import axiosInstance from '../api/axiosInstance';
 
 const MerchantBranchService = () => {
-	const fetchMerchantBranchById = async (id, name) => {
+	// const fetchMerchantBranchById = async (id, name) => {
+	// 	const { data } = await axiosInstance.get(`/api/merchants/branches`, {
+	// 		params: { merchantID: id, branchName: name },
+	// 	});
+	// 	return data;
+	// };
+	const fetchMerchantBranchById = async (queryParams) => {
 		const { data } = await axiosInstance.get(`/api/merchants/branches`, {
-			params: { merchantID: id, branchName: name },
+			params: queryParams,
 		});
 		return data;
 	};
