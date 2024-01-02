@@ -5,6 +5,7 @@ import AuthenticatedLayout from "../layout/AuthenticatedLayout";
 import Promotion from "../pages/Promotion";
 import Merchant from "../pages/Merchant";
 import History from "../pages/History";
+import AdminMonitoring from "../pages/AdminMonitoring";
 
 const setupRouter = () =>
   createBrowserRouter([
@@ -32,6 +33,10 @@ const setupRouter = () =>
             {
               path: "histories",
               element: <History />,
+            },
+            {
+              path: "admin-monitoring",
+              element: <AdminMonitoring />,
             },
             
           ],

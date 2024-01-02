@@ -51,6 +51,17 @@ function Sidebar() {
                 <span>History</span>
               </li>
             </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `text-decoration-none text-black p-3 ${isActive ? "fw-bold" : ""}`
+              }
+              to={"/backoffice/admin-monitoring"}
+            >
+              <li className="cursor-pointer">
+                <i className="bi bi-tag me-3"></i>
+                <span>Admin Monitoring</span>
+              </li>
+            </NavLink>
             <hr />
           </ul>
         </nav>
