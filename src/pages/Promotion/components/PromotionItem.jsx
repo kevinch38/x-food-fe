@@ -14,7 +14,7 @@ function PromotionItem({ promotion, idx }) {
 		promotionName,
 		quantity,
 		expiredDate,
-		promotionStatusID,
+		status,
 		createdAt,
 		updatedAt,
 	} = promotion;
@@ -26,7 +26,7 @@ function PromotionItem({ promotion, idx }) {
 			<td>{merchantID}</td>
 			<td>{promotionName}</td>
 			<td>{promotionValue}</td>
-			<td>{promotionStatusID}</td>
+			<td>{status}</td>
 			<td>{cost}</td>
 			<td>{quantity}</td>
 			<td>{createdAt}</td>

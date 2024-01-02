@@ -14,7 +14,7 @@ const PromotionList = () => {
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 1);
+  const currentSize = parseInt(searchParam.get("size") || 9);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
@@ -95,7 +95,7 @@ const PromotionList = () => {
       )}
 
       <div className="d-flex justify-content-between align-items-center">
-        <h2 className="fw-bold">Promotion List</h2>
+        <h2>Promotion List</h2>
       </div>
       <table className="table">
         <thead>

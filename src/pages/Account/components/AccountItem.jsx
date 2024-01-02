@@ -28,8 +28,8 @@ function AccountItem({ account, idx }) {
       <td>{phoneNumber}</td>
       <td>{accountEmail}</td>
       <td>{dateOfBirth}</td>
-      <td>{createdAt}</td>
-      <td>{updatedAt}</td>
+      <td>{new Date(createdAt).toLocaleDateString()}</td>
+      <td>{new Date(updatedAt).toLocaleDateString()}</td>
     </tr>
   );
 }

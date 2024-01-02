@@ -10,16 +10,16 @@ import DeleteMerchantModal from './DeleteMerchantModal';
 import { useDebounce } from '@uidotdev/usehooks';
 
 const MerchantList = () => {
-	const [searchParam, setSearchParam] = useSearchParams();
-	const dispatch = useDispatch();
-	const { merchants } = useSelector((state) => state.merchant);
-	const { merchantService } = useContext(ServiceContext);
+  const [searchParam, setSearchParam] = useSearchParams();
+  const dispatch = useDispatch();
+  const { merchants } = useSelector((state) => state.merchant);
+  const { merchantService } = useContext(ServiceContext);
 
-	const [paging, setPaging] = useState({});
-	const [merchantID, setMerchantID] = useState();
+  const [paging, setPaging] = useState({});
+  const [merchantID, setMerchantID] = useState();
 
-	let currentPage = parseInt(searchParam.get('page') || 1);
-	let currentSize = parseInt(searchParam.get('size') || 10);
+  let currentPage = parseInt(searchParam.get("page") || 1);
+  let currentSize = parseInt(searchParam.get("size") || 10);
 
 	const [searchState, setSearchState] = useState(
 		searchParam.get('search') || ''
@@ -62,16 +62,16 @@ const MerchantList = () => {
 		setSearchParam(searchParam);
 	};
 
-	const onPrevious = () => {
-		if (currentPage === 1) return;
-		searchParam.set('page', currentPage - 1);
-		setSearchParam(searchParam);
-	};
+  const onPrevious = () => {
+    if (currentPage === 1) return;
+    searchParam.set("page", currentPage - 1);
+    setSearchParam(searchParam);
+  };
 
-	// useEffect(() => {
-	// 	currentPage = parseInt(searchParam.get('page') || 1);
-	// 	currentSize = parseInt(searchParam.get('size') || 10);
-	// }, [paging]);
+  // useEffect(() => {
+  // 	currentPage = parseInt(searchParam.get('page') || 1);
+  // 	currentSize = parseInt(searchParam.get('size') || 10);
+  // }, [paging]);
 
 	useEffect(() => {
 		const onGetMerchants = () => {

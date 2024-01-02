@@ -2,9 +2,10 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Account from "../pages/Account";
 import AuthenticatedLayout from "../layout/AuthenticatedLayout";
-import AccountList from "../pages/Account/components/AccountList";
 import Promotion from "../pages/Promotion";
 import Merchant from "../pages/Merchant";
+import History from "../pages/History";
+import AdminMonitoring from "../pages/AdminMonitoring";
 
 const setupRouter = () =>
   createBrowserRouter([
@@ -18,18 +19,26 @@ const setupRouter = () =>
           element: <AuthenticatedLayout />,
           children: [
             {
-              path: "account",
+              index: true,
               element: <Account />,
-              children: [{ index: true, element: <AccountList /> }],
             },
             {
-              path: "promotion",
+              path: "promotions",
               element: <Promotion />,
             },
             {
-              path: "merchant",
+              path: "merchants",
               element: <Merchant />,
             },
+            {
+              path: "histories",
+              element: <History />,
+            },
+            {
+              path: "admin-monitoring",
+              element: <AdminMonitoring />,
+            },
+            
           ],
         },
       ],
