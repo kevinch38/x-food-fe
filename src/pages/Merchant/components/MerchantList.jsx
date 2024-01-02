@@ -303,7 +303,7 @@ const MerchantList = () => {
 								<h6 className='text-center'>Month/Day/Year</h6>
 
 								<label
-									htmlFor='startCreatedAt'
+									htmlFor='endCreatedAt'
 									className='ms-3'
 								>
 									End Date
