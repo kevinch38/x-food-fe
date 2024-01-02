@@ -236,7 +236,6 @@ export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 										borderCollapse: 'separate',
 									}}
 								>
-									<tbody>
 									<tr>
 										<td>
 											<input
@@ -396,7 +395,6 @@ export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 											</button>
 										</td>
 									</tr>
-									</tbody>
 								</table>
 							</form>
 						</div>

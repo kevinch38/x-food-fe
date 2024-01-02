@@ -9,7 +9,7 @@ import Merchant from "../pages/Merchant";
 const setupRouter = () =>
   createBrowserRouter([
     {
-      path: '/',
+      path: "/",
       element: <App />,
       errorElement: <>Error...</>,
       children: [

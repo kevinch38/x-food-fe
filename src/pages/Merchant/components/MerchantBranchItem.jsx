@@ -45,30 +45,36 @@ function MerchantBranchItem({
 			<td>{joinDate}</td>
 			<td>{createdAt}</td>
 			<td>
-				<div className='p-2 row'>
-					<div className='p-2 d-flex justify-content-between w-100'>
-						<div className='btn-group justify-content-between'>
-							<i
-								className='bi bi-pencil-fill h3 cursor-pointer m-2'
-								style={{
-									color: 'rgb(255, 210, 48)',
-								}}
-								onClick={() => {setMerchantBranchID(branchID)}}
-								data-bs-toggle='modal'
-								data-bs-target={`#createMerchantBranchModal${merchantID}`}
-							></i>
-							<i
-								className='bi bi-trash-fill h3 cursor-pointer m-2'
-								style={{
-									color: 'rgb(255, 0, 0)',
-								}}
-								onClick={() => {setMerchantBranchID(branchID)}}
-								data-bs-toggle='modal'
-								data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
-							></i>
+				{status == 'ACTIVE' && (
+					<div className='p-2 row'>
+						<div className='p-2 d-flex justify-content-between w-100'>
+							<div className='btn-group justify-content-between'>
+								<i
+									className='bi bi-pencil-fill h3 cursor-pointer m-2'
+									style={{
+										color: 'rgb(255, 210, 48)',
+									}}
+									onClick={() => {
+										setMerchantBranchID(branchID);
+									}}
+									data-bs-toggle='modal'
+									data-bs-target={`#createMerchantBranchModal${merchantID}`}
+								></i>
+								<i
+									className='bi bi-trash-fill h3 cursor-pointer m-2'
+									style={{
+										color: 'rgb(255, 0, 0)',
+									}}
+									onClick={() => {
+										setMerchantBranchID(branchID);
+									}}
+									data-bs-toggle='modal'
+									data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
+								></i>
+							</div>
 						</div>
 					</div>
-				</div>
+				)}
 			</td>
 		</tr>
 	);

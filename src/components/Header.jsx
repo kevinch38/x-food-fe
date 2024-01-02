@@ -19,7 +19,7 @@ function Header() {
 					></span>
 				</div>
 			</div>
-			<hr />
+			<hr className='mb-0' />
 		</>
 	);
 }

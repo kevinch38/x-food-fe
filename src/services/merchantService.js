@@ -23,7 +23,6 @@ const MerchantService = () => {
         formData.append('joinDate', merchant.joinDate);
         formData.append('notes', merchant.notes);
         const { data } = await axiosInstance.post('/api/merchants', formData);
-        console.log(data.data);
         return data;
     }
 
