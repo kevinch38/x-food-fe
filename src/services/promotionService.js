@@ -7,6 +7,7 @@ const PromotionService = () => {
   };
 
   const fetchPromotions = async () => {
+    console.log("============================");
     const { data } = await axiosInstance.get(`/api/promotions`);
     return data;
   };
