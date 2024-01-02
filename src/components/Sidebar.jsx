@@ -5,79 +5,72 @@ import Promotion from "../pages/Promotion";
 function Sidebar() {
   return (
     <div className="row">
-      <div className="col-md-2">
-        <div
-          className={"p-4 bg-secondary border"}
-          style={{ minHeight: "100vh" }}
-        >
-          <nav>
-            <ul className="d-flex flex-column gap-3 nav-list list-unstyled">
-              <NavLink
-                className={({ isActive }) =>
-                  `text-decoration-none text-primary-text ${
-                    isActive ? "fw-bold" : ""
-                  }`
-                }
-                to={"/backoffice"}
-                end
-              >
-                <li className="cursor-pointer">
-                  <i className="bi bi-grid-1x2 me-3"></i>
-                  <span>Account</span>
-                </li>
-              </NavLink>
-              <NavLink
-                className={({ isActive }) =>
-                  `text-decoration-none text-primary-text ${
-                    isActive ? "fw-bold" : ""
-                  }`
-                }
-                to={"/backoffice/merchants?page=1&size=10"}
-              >
-                <li className="cursor-pointer">
-                  <i className="bi bi-list-ul me-3"></i>
-                  <span>Merchant</span>
-                </li>
-              </NavLink>
-              <NavLink
-                className={({ isActive }) =>
-                  `text-decoration-none text-primary-text ${
-                    isActive ? "fw-bold" : ""
-                  }`
-                }
-                to={"/backoffice/promotions"}
-              >
-                <li className="cursor-pointer">
-                  <i className="bi bi-box-seam me-3"></i>
-                  <span>Promotion</span>
-                </li>
-              </NavLink>
-              <NavLink
-                className={({ isActive }) =>
-                  `text-decoration-none text-primary-text ${
-                    isActive ? "fw-bold" : ""
-                  }`
-                }
-                to={"/backoffice/history"}
-              >
-                <li className="cursor-pointer">
-                  <i className="bi bi-tag me-3"></i>
-                  <span>History</span>
-                </li>
-              </NavLink>
-              <hr />
-              <div className="text-secondary-emphasis">
-                <span className="p-2">Terms & Privacy</span>
-                <span>Help</span>
-              </div>
-            </ul>
-          </nav>
-        </div>
-      </div>
-      <div className="col-md-10">
-        <div className="row">
-          <div className="col-md-12">
-            <Promotion/>
+      <div className="d-flex flex-column border" style={{ width: "250px", minHeight: "100%" }}>
+        <nav>
+          <ul className="d-flex flex-column nav-list gap-2 list-unstyled" style={{ marginBottom: "0" }}>
+            <NavLink
+              className={({ isActive }) =>
+                `text-decoration-none text-black p-3 mt-3 ${isActive ? "fw-bold" : ""}`
+              }
+              to={"/backoffice"}
+              end
+            >
+              <li className="cursor-pointer">
+                <i className="bi bi-grid-1x2 me-3"></i>
+                <span>Account</span>
+              </li>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `text-decoration-none text-black p-3 ${isActive ? "fw-bold" : ""}`
+              }
+              to={"/backoffice/merchants"}
+            >
+              <li className="cursor-pointer">
+                <i className="bi bi-list-ul me-3"></i>
+                <span>Merchant</span>
+              </li>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `text-decoration-none text-black p-3 ${isActive ? "fw-bold" : ""}`
+              }
+              to={"/backoffice/promotions"}
+            >
+              <li className="cursor-pointer">
+                <i className="bi bi-box-seam me-3"></i>
+                <span>Promotion</span>
+              </li>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `text-decoration-none text-black p-3 ${isActive ? "fw-bold" : ""}`
+              }
+              to={"/backoffice/histories"}
+            >
+              <li className="cursor-pointer">
+                <i className="bi bi-tag me-3"></i>
+                <span>History</span>
+              </li>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `text-decoration-none text-black p-3 ${isActive ? "fw-bold" : ""}`
+              }
+              to={"/backoffice/admin-monitoring"}
+            >
+              <li className="cursor-pointer">
+                <i className="bi bi-tag me-3"></i>
+                <span>Admin Monitoring</span>
+              </li>
+            </NavLink>
+            <hr />
+          </ul>
+        </nav>
+        <div className="mt-auto w-100">
+          <div className="d-flex p-4 text-secondary-emphasis">
+            <div className="flex-grow-1">Terms & Privacy</div>
+            <div className="flex-grow-1">Help</div>
           </div>
         </div>
       </div>

@@ -13,7 +13,6 @@ const accountSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(accountAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                console.log(payload)
                 state.accounts = payload.data;
             }
         });

@@ -29,7 +29,7 @@ export default function DeleteMerchantBranchModal({
 				merchantBranchs.filter(
 					(merchantBranch) => merchantBranch.branchID !== id
 				);
-				await onGetMerchantBranchs(merchantID);
+				await onGetMerchantBranchs(merchantID,'Branch Data Successfully Deleted');
 			})
 		);
 	};
