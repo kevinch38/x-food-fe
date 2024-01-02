@@ -16,7 +16,7 @@ const App = () => {
 			{success && (
 				<SuccessMessageBox key={successKey} message={success} />
 			)}
-			<Header />
+			{/* <Header /> */}
 			<Outlet />
 		</>
 	);
