@@ -48,7 +48,12 @@ const AccountList = () => {
       searchParam.set("page", 1);
       setSearchParam(searchParam);
     }
-  }, [currentPage, paging.totalPages, searchParam, setSearchParam]);
+  });
+
+  // useEffect(() => {
+  //   console.log("currentPage:", currentPage);
+  //   console.log("paging.totalPages:", paging.totalPages);
+  // }, [currentPage, paging.totalPages]);
 
   return (
     <div className="m-4">

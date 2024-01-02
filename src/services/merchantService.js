@@ -7,7 +7,6 @@ const MerchantService = () => {
     }
 
     const fetchMerchants = async (queryParams) => {
-        console.log(queryParams);
         const { data } = await axiosInstance.get(`/api/merchants`, { params: queryParams });
         return data;
     }
@@ -29,7 +28,6 @@ const MerchantService = () => {
 
     
     const updateMerchant = async (merchant) => {
-        console.log(merchant.logoImage);
         const formData = new FormData();
         formData.append('merchantID', merchant.merchantID);
         formData.append('merchantName', merchant.merchantName);

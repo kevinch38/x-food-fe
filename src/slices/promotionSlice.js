@@ -13,7 +13,6 @@ const promotionSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(promotionAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                console.log(payload)
                 state.promotions = payload.data;
             }
         });
