@@ -7,6 +7,7 @@ const MerchantService = () => {
     }
 
     const fetchMerchants = async (queryParams) => {
+        console.log(queryParams);
         const { data } = await axiosInstance.get(`/api/merchants`, { params: queryParams });
         return data;
     }
