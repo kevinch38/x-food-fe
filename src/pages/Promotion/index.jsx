@@ -1,9 +1,7 @@
-import ceklis from '../../assets/images/ceklis.svg'
+import PromotionList from "./components/PromotionList";
 
-export default function Promotion() {
-    return (
-        <div>
-            <img src={ceklis}/>
-        </div>
-    )
-}
+const Promotion = () => {
+  return <PromotionList />;
+};
+
+export default Promotion;

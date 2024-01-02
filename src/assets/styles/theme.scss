@@ -1,46 +1,61 @@
-$primary: #ff8e3c;
-$secondary: #fffffe;
-$background: #eff0f3;
-$primary-text: #0d0d0d;
-$danger: #d9534f;
-$font-logo: 'Rancho', cursive;
-$font-primary: 'Montserrat', sans-serif;
+// $primary: #ff8e3c;
+// $secondary: #fffffe;
+// $background: #eff0f3;
+// $primary-text: #0d0d0d;
+// $danger: #d9534f;
+// $font-logo: 'Rancho', cursive;
+// $font-primary: 'Montserrat', sans-serif;
 
-$theme-colors: (
-    primary: $primary,
-    secondary: $secondary,
-    primary-text: $primary-text,
-    background: $background,
-    danger: $danger
-);
+// $theme-colors: (
+//     primary: $primary,
+//     secondary: $secondary,
+//     primary-text: $primary-text,
+//     background: $background,
+//     danger: $danger
+// );
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Rancho&display=swap');
 
+// * {
+//     padding: 0;
+//     margin: 0;
+//     font-size: 12px;
+// }
+
+// body {
+//     color: $primary-text;
+//     font-family: $font-primary;
+//     background-color: $background;
+//     color: $primary-text;
+// }
+
+// .cursor-pointer {
+//     cursor: pointer;
+// }
+
+// .font-logo {
+//     font-family: $font-logo;
+// }
+
+// .font-primary {
+//     font-family: $font-primary;
+// }
+
+// .cursor-pointer {
+//     cursor: pointer;
+// }
+
+// .text-normal {
+//     font-size: 14px;
+// }
+
 * {
     padding: 0;
     margin: 0;
-}
-
-body {
-    color: $primary-text;
-    font-family: $font-primary;
-    background-color: $background;
-    color: $primary-text;
-}
-
-.font-logo {
-    font-family: $font-logo;
-}
-
-.font-primary {
-    font-family: $font-primary;
+    font-size: 12px;
 }
 
 .cursor-pointer {
     cursor: pointer;
-}
-
-.text-normal {
-    font-size: 14px;
 }
