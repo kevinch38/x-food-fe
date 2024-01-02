@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import Merchant from "../pages/Merchant";
+import Promotion from "../pages/Promotion";
 
 function Sidebar() {
   return (

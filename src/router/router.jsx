@@ -1,5 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
+import { createBrowserRouter } from 'react-router-dom';
+import App from '../App';
 import Account from "../pages/Account";
 import AuthenticatedLayout from "../layout/AuthenticatedLayout";
 import Promotion from "../pages/Promotion";

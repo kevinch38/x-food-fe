@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import RequestHelper from '../services/RequestHelper';
 
 export const promotionAction = createAsyncThunk('promotion/addpromotion', RequestHelper);
-export const selectpromotionAction = createAsyncThunk('promotion/selectpromotion', RequestHelper);
+export const selectPromotionAction = createAsyncThunk('promotion/selectpromotion', RequestHelper);
 
 const promotionSlice = createSlice({
     name: 'promotion',
     initialState: {
         promotions: [],
-        selectedpromotion: null,
+        selectedPromotion: null,
     },
     extraReducers: (builder) => {
         builder.addCase(promotionAction.fulfilled, (state, { payload }) => {
@@ -16,9 +16,9 @@ const promotionSlice = createSlice({
                 state.promotions = payload.data;
             }
         });
-        builder.addCase(selectpromotionAction.fulfilled, (state, { payload }) => {
+        builder.addCase(selectPromotionAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                state.selectedpromotion = payload;
+                state.selectedPromotion = payload;
             }
         });
 
