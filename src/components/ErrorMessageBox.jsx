@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-export default function ErrorMessageBox({ message }) {
+export default function ErrorMessageBox({ message, clear }) {
 	const [showAlert, setShowAlert] = useState(!!message);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setShowAlert(false);
+      clear()
 		}, 3000);
 
 		return () => clearTimeout(timer);
@@ -53,6 +54,7 @@ export default function ErrorMessageBox({ message }) {
 								className='btn-close'
 								data-bs-dismiss='alert'
 								aria-label='Close'
+                onClick={()=>clear()}
 							></button>
 						</li>
 					</ul>
@@ -65,4 +67,5 @@ export default function ErrorMessageBox({ message }) {
 
 ErrorMessageBox.propTypes = {
 	message: PropTypes.any,
+	clear: PropTypes.func,
 };

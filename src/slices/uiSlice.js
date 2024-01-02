@@ -18,11 +18,11 @@ const uiSlice = createSlice({
 			state.successKey += 1;
 			// const ignoreList = ['successfully get all merchants','successfully get all merchant branch','successfully delete merchant'];
 			// if (!ignoreList.includes(payload.message)) {
-				if (payload && payload.data && payload.messageBox) {
-					state.success = payload.messageBox;
-				} else if (typeof payload === 'string') {
-					state.success = payload;
-				}
+			if (payload && payload.data && payload.messageBox) {
+				state.success = payload.messageBox;
+			} else if (typeof payload === 'string') {
+				state.success = payload;
+			}
 			// }
 		},
 		error: (state, { payload }) => {
@@ -43,9 +43,13 @@ const uiSlice = createSlice({
 		finish: (state) => {
 			(state.isLoading = false), (state.error = null);
 		},
+		clear: (state) => {
+			state.error = null;
+			state.success = null;
+		},
 	},
 });
 
-export const { loading, success, error, finish } = uiSlice.actions;
+export const { loading, success, error, finish, clear } = uiSlice.actions;
 
 export default uiSlice;

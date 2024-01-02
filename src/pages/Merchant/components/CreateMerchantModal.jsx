@@ -335,7 +335,8 @@ export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 										</td>
 									</tr>
 									<tr>
-										<td className='w-100 d-flex justify-content-between'>
+										<td className='w-50'>
+											<div className='d-flex justify-content-between'>
 											<label
 												htmlFor='logoImage'
 												className='h-auto ps-0'
@@ -356,6 +357,7 @@ export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 												onChange={handleChangeFile}
 												onBlur={handleBlur}
 											/>
+											</div>
 										</td>
 									</tr>
 									<tr>
