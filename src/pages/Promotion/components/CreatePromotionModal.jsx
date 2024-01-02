@@ -66,7 +66,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
               ...data,
             });
             const a = [...promotions, result.data];
-            return { data: a };
+            return { data: a , messageBox: ""};
           })
         );
         setPromotionID(null);
@@ -80,7 +80,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
             ...values,
           });
           const a = [...promotions, result.data];
-          return { data: a };
+          return { data: a, messageBox: ""};
         })
       );
       setPromotionID(null);
