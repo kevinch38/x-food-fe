@@ -6,7 +6,7 @@ const asyncActionMiddleware = ({ dispatch }) => (next) => (action) => {
         dispatch(loading());
     }
     if (action.type.endsWith('/fulfilled')) {
-        dispatch(success());
+        dispatch(success(payload));
     }
     if (action.type.endsWith('/rejected')) {
         dispatch(error(payload));

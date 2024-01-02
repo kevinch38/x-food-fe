@@ -18,14 +18,13 @@ export default function DeleteMerchantModal({ merchantID }) {
 	const onDeleteMerchant = (id) => {
 		dispatch(
 			merchantAction(async () => {
-				const result = await merchantService.deleteMerchant(id);
-				console.log(result);
+				await merchantService.deleteMerchant(id);
 
 				// const a = [...merchants];
 				const a = merchants.filter(
 					(merchant) => merchant.merchantID !== merchantID
 				);
-				return { data: a };
+				return { messageBox : 'Merchant Data Successfully Deleted',data: a };
 			})
 		);
 	};

@@ -48,7 +48,7 @@ export default function CreateMerchantBranchModal({
 			merchantID: merchantID,
 			branchName: '',
 			branchWorkingHoursID: '1',
-			cityID: '8a74ff868c9253e0018c92540ca4000f',
+			cityID: '8a8ae47a8cae650a018cae6535c00010',
 			picName: '',
 			picNumber: '',
 			picEmail: '',
@@ -88,7 +88,7 @@ export default function CreateMerchantBranchModal({
 							...data,
 							joinDate: joinDate,
 						});
-						await onGetMerchantBranchs(merchantID);
+						await onGetMerchantBranchs(merchantID,'Branch Data Successfully Inserted');
 					})
 				);
 				setMerchantBranchID(null);
@@ -102,7 +102,7 @@ export default function CreateMerchantBranchModal({
 					await merchantBranchService.updateMerchantBranch({
 						...values,
 					});
-					await onGetMerchantBranchs(merchantID);
+					await onGetMerchantBranchs(merchantID,'Branch Data Successfully Updated');
 				})
 			);
 			setMerchantBranchID(null);
@@ -139,7 +139,6 @@ export default function CreateMerchantBranchModal({
 						picNumber,
 						picEmail,
 					} = result.payload.data;
-					console.log(result.payload.data);
 					setValues({
 						branchID: branchID,
 						branchName: branchName,
@@ -160,7 +159,7 @@ export default function CreateMerchantBranchModal({
 				merchantID: merchantID,
 				branchName: '',
 				branchWorkingHoursID: '1',
-				cityID: '8a74ff868c9253e0018c92540ca4000f',
+				cityID: '8a8ae47a8cae650a018cae6535c00010',
 				picName: '',
 				picNumber: '',
 				picEmail: '',
@@ -178,7 +177,6 @@ export default function CreateMerchantBranchModal({
 	const handleChangeFile = (e) => {
 		setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
 	};
-	// console.log();
 	return (
 		<div
 			className='modal fade'

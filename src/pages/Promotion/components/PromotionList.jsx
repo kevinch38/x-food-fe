@@ -17,8 +17,8 @@ const PromotionList = () => {
   const [promotionID, setPromotionID] = useState();
   
 
-  let currentPage = parseInt(searchParam.get("page") || 1);
-  let currentSize = parseInt(searchParam.get("size") || 10);
+  const currentPage = parseInt(searchParam.get("page") || 1);
+  const currentSize = parseInt(searchParam.get("size") || 9);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
