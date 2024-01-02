@@ -13,7 +13,7 @@ const AccountList = () => {
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 1);
+  const currentSize = parseInt(searchParam.get("size") || 9);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
@@ -48,12 +48,7 @@ const AccountList = () => {
       searchParam.set("page", 1);
       setSearchParam(searchParam);
     }
-  });
-
-  useEffect(() => {
-    console.log("currentPage:", currentPage);
-    console.log("paging.totalPages:", paging.totalPages);
-  }, [currentPage, paging.totalPages]);
+  }, [currentPage, paging.totalPages, searchParam, setSearchParam]);
 
   return (
     <div className="m-4">
@@ -104,16 +99,16 @@ const AccountList = () => {
       <table className="table">
         <thead>
           <tr>
-             <th className="fw-normal">No</th>
-             <th className="fw-normal">ID</th>
-             <th className="fw-normal">NIK</th>
-             <th className="fw-normal">First Name</th>
-             <th className="fw-normal">Last Name</th>
-             <th className="fw-normal">Phone Number</th>
-             <th className="fw-normal">Email</th>
-             <th className="fw-normal">Birth of Date</th>
-             <th className="fw-normal">Created Date</th>
-             <th className="fw-normal">Updated Date</th>
+            <th className="fw-normal">No</th>
+            <th className="fw-normal">ID</th>
+            <th className="fw-normal">NIK</th>
+            <th className="fw-normal">First Name</th>
+            <th className="fw-normal">Last Name</th>
+            <th className="fw-normal">Phone Number</th>
+            <th className="fw-normal">Email</th>
+            <th className="fw-normal">Birth of Date</th>
+            <th className="fw-normal">Created Date</th>
+            <th className="fw-normal">Updated Date</th>
           </tr>
         </thead>
         <tbody className="table-group-divider">
