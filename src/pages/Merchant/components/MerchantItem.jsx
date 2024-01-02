@@ -37,7 +37,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 	const { merchantBranchs } = useSelector((state) => state.merchantBranch);
 	const { merchantBranchService } = useContext(ServiceContext);
 	const dispatch = useDispatch();
-	const onGetMerchantBranchs = (id) => {
+	const onGetMerchantBranchs = (id, messageBox) => {
 		dispatch(
 			merchantBranchAction(async () => {
 				const result =
@@ -46,7 +46,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 						branchName: debounceSearch,
 						...debounceSearch2,
 					});
-				return result;
+				return { messageBox, ...result };
 			})
 		);
 	};
@@ -66,7 +66,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 	const [searchState, setSearchState] = useState(
 		searchParam.get('searchBranch') || ''
 	);
-	const debounceSearch = useDebounce(searchState, 300);
+	const debounceSearch = useDebounce(searchState, 1000);
 
 	const [searchParam2, setSearchParam2] = useSearchParams();
 	const [searchState2, setSearchState2] = useState({
@@ -98,7 +98,6 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 	useEffect(() => {
 		onGetMerchantBranchs(merchantID);
 	}, [debounceSearch.toString(), debounceSearch2]);
-	// console.log(debounceSearch.toString());
 
 	const clear = () => {
 		searchParam2.delete('status');
@@ -114,7 +113,6 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 		});
 	};
 
-	console.log(debounceSearch2);
 	return (
 		<>
 			<tr key={merchantID}>
@@ -165,7 +163,8 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 					<div className='p-2'>
 						<div className='d-flex flex-column align-items-center justify-content-center pt-2'>
 							<i
-								className='bi bi-list-ul h3 cursor-pointer'
+								className='bi bi-info-circle-fill h3 cursor-pointer'
+								style={{ color: 'rgb(128, 128, 128)' }}
 								onClick={() => onGetMerchantBranchs(merchantID)}
 								data-bs-toggle='modal'
 								data-bs-target={`#exampleModal${idx}`}
@@ -266,7 +265,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 								</tr>
 								<tr>
 									<td>Branch(es)</td>
-									<td rowSpan={4} className='align-top'>
+									<td rowSpan={8} className='align-top'>
 										{merchantBranchs &&
 										merchantBranchs.length !== 0 ? (
 											<div
@@ -396,31 +395,38 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 												className='dropdown-menu'
 												aria-labelledby='dropdownMenuButton'
 											>
-												<button
-													className='dropdown-item'
-													href='#'
-													onClick={() =>
-														handleChange2(
-															'ACTIVE',
-															'status'
-														)
-													}
-												>
-													Active
-												</button>
-												<div className='dropdown-divider'></div>
-												<button
-													className='dropdown-item'
-													href='#'
-													onClick={() =>
-														handleChange2(
-															'INACTIVE',
-															'status'
-														)
-													}
-												>
-													Inactive
-												</button>
+												{[
+													'ACTIVE',
+													'INACTIVE',
+													'WAITING_FOR_DELETION_APPROVAL',
+													'WAITING_FOR_CREATION_APPROVAL',
+													'WAITING_FOR_UPDATE_APPROVAL',
+												].map((status) => {
+													return (
+														<>
+															<button
+																className='dropdown-item'
+																href='#'
+																onClick={() =>
+																	handleChange2(
+																		status,
+																		'status'
+																	)
+																}
+															>
+																<span className='text-capitalize'>
+																	{status
+																		.toLowerCase()
+																		.replace(
+																			/_/g,
+																			' '
+																		)}
+																</span>
+															</button>
+															<div className='dropdown-divider'></div>
+														</>
+													);
+												})}
 											</div>
 										</div>
 									</td>
@@ -450,7 +456,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 													'Jakarta Timur',
 													'Jakarta Seletan',
 													'Jakarta Barat',
-												].map((city, idx) => {
+												].map((city) => {
 													return (
 														<>
 															<button
@@ -475,7 +481,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 								</tr>
 								<tr>
 									<td>
-										<div className='dropdown show ms-2 me-4 w-auto mt-3'>
+										<div className='dropdown '>
 											<a
 												className='btn btn-light dropdown-toggle'
 												href='#'

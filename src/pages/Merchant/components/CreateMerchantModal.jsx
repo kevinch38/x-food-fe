@@ -86,7 +86,7 @@ export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 							joinDate: joinDate,
 						});
 						const a = [...merchants, result.data];
-						return { data: a };
+						return { messageBox : 'Merchant Data Successfully Inserted',data: a };
 					})
 				);
 				setMerchantID(null)
@@ -100,7 +100,7 @@ export default function CreateMerchantModal({ setMerchantID,merchantID }) {
 						...values,
 					});
 					const a = [...merchants, result.data];
-					return { data: a };
+					return { messageBox : 'Merchant Data Successfully Updated',data: a };
 				})
 			);
 			setMerchantID(null)

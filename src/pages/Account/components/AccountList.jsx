@@ -50,10 +50,10 @@ const AccountList = () => {
     }
   });
 
-  useEffect(() => {
-    console.log("currentPage:", currentPage);
-    console.log("paging.totalPages:", paging.totalPages);
-  }, [currentPage, paging.totalPages]);
+  // useEffect(() => {
+  //   console.log("currentPage:", currentPage);
+  //   console.log("paging.totalPages:", paging.totalPages);
+  // }, [currentPage, paging.totalPages]);
 
   return (
     <div className="m-4">

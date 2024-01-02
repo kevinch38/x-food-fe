@@ -24,7 +24,7 @@ const MerchantList = () => {
 	const [searchState, setSearchState] = useState(
 		searchParam.get('search') || ''
 	);
-	const debounceSearch = useDebounce(searchState, 300);
+	const debounceSearch = useDebounce(searchState, 1000);
 
 	const [searchParam2, setSearchParam2] = useSearchParams();
 	const [searchState2, setSearchState2] = useState({
@@ -203,7 +203,36 @@ const MerchantList = () => {
 								className='dropdown-menu'
 								aria-labelledby='dropdownMenuButton'
 							>
-								<button
+								{[
+									'ACTIVE',
+									'INACTIVE',
+									'WAITING_FOR_DELETION_APPROVAL',
+									'WAITING_FOR_CREATION_APPROVAL',
+									'WAITING_FOR_UPDATE_APPROVAL',
+								].map((merchantStatus) => {
+									return (
+										<>
+											<button
+												className='dropdown-item'
+												href='#'
+												onClick={() =>
+													handleChange2(
+														merchantStatus,
+														'merchantStatus'
+													)
+												}
+											>
+												<span className='text-capitalize'>
+													{merchantStatus
+														.toLowerCase()
+														.replace(/_/g, ' ')}
+												</span>
+											</button>
+											<div className='dropdown-divider'></div>
+										</>
+									);
+								})}
+								{/* <button
 									className='dropdown-item'
 									href='#'
 									onClick={() =>
@@ -227,7 +256,7 @@ const MerchantList = () => {
 									}
 								>
 									Inactive
-								</button>
+								</button> */}
 							</div>
 						</div>
 					</div>
