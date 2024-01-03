@@ -2,13 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { useContext } from "react";
+import { format } from "date-fns";
 import {
   promotionAction,
   selectPromotionAction,
 } from "../../../slices/promotionSlice";
+import { merchantAction } from "../../../slices/merchantSlice";
 import { useEffect } from "react";
 import validationSchema from "./validationSchema";
 import { useFormik } from "formik";
+import { useState } from "react";
 
 CreatePromotionModal.propTypes = {
   promotionID: PropTypes.any,
@@ -17,12 +20,11 @@ CreatePromotionModal.propTypes = {
 
 export default function CreatePromotionModal({ setPromotionID, promotionID }) {
   const dispatch = useDispatch();
-  const { promotionService } = useContext(ServiceContext);
+  const { promotionService, merchantService } = useContext(ServiceContext);
   const { promotions } = useSelector((state) => state.promotion);
 
   const {
     values: {
-      merchantID,
       promotionName,
       promotionDescription,
       maxRedeem,
@@ -43,7 +45,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
   } = useFormik({
     initialValues: {
       promotionID: null,
-      merchantID: "",
+      merchantName: "",
       promotionName: "",
       promotionDescription: "",
       maxRedeem: "",
@@ -66,7 +68,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
               ...data,
             });
             const a = [...promotions, result.data];
-            return { data: a , messageBox: ""};
+            return { data: a };
           })
         );
         setPromotionID(null);
@@ -80,7 +82,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
             ...values,
           });
           const a = [...promotions, result.data];
-          return { data: a, messageBox: ""};
+          return { data: a, messageBox: "" };
         })
       );
       setPromotionID(null);
@@ -89,6 +91,11 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
     },
     validationSchema: validationSchema(),
   });
+
+  const formatExpiredDate = (inputDate) => {
+    const inputDateTime = new Date(inputDate);
+    return format(inputDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+  };
 
   useEffect(() => {
     if (promotionID) {
@@ -113,14 +120,16 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
           } = result.payload.data;
           setValues({
             promotionID: promotionID,
-            merchantID: merchantID,
+            merchantName:
+              promotions.find((p) => p.merchantID === merchantID)
+                ?.merchantName || "",
             promotionName: promotionName,
             promotionDescription: promotionDescription,
             maxRedeem: maxRedeem,
             promotionValue: promotionValue,
             cost: cost,
             quantity: quantity,
-            expiredDate: expiredDate,
+            expiredDate: formatExpiredDate(expiredDate),
           });
         }
       };
@@ -128,7 +137,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
     } else {
       setValues({
         promotionID: null,
-        merchantID: "",
+        merchantName: "",
         promotionName: "",
         promotionDescription: "",
         maxRedeem: "",
@@ -138,7 +147,25 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
         expiredDate: "",
       });
     }
-  }, [dispatch, setValues, promotionID, promotionService]);
+  }, [dispatch, setValues, promotionID, promotionService, promotions]);
+
+  const [promotionOptions, setPromotionOptions] = useState([]);
+
+  useEffect(() => {
+    const onGetMerchants = async () => {
+      const result = await dispatch(
+        merchantAction(async () => {
+          const response = await merchantService.fetchMerchants({
+            paging: true,
+          });
+          return response.data;
+        })
+      );
+      setPromotionOptions(result.payload);
+    };
+
+    onGetMerchants();
+  }, [dispatch, merchantService]);
 
   return (
     <div
@@ -216,20 +243,35 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                   <tbody>
                     <tr>
                       <td>
-                        <input
+                        <select
+                          name="merchantName"
+                          id="merchantName"
                           onChange={handleChange}
                           onBlur={handleBlur}
-                          value={merchantID}
-                          id="merchantID"
                           className={`form-control  ${
-                            touched.merchantID &&
-                            errors.merchantID &&
-                            "is-invalid"
+                            touched.promotionValue &&
+                            errors.promotionValue &&
+                            "is-invalid p-2 w-100 border-1 border-dark-subtle rounded"
                           }`}
-                          type="text"
-                          placeholder="Promo ID (Generated): | Merchant ID: "
-                          name="merchantID"
-                        />
+                        >
+                          <option
+                            value=""
+                            selected
+                            disabled
+                            className="color-dark-subtle"
+                          >
+                            Promo ID (Generated): | Merchant Name:
+                          </option>
+
+                          {promotionOptions.map((promotionOption, index) => (
+                              <option
+                                key={index}
+                                value={promotionOption.merchantID}
+                              >
+                                {promotionOption.merchantName}
+                              </option>
+                          ))}
+                        </select>
                       </td>
                       <td>
                         <input
@@ -340,7 +382,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                             errors.expiredDate &&
                             "is-invalid"
                           }`}
-                          type="text"
+                          type="datetime-local"
                           placeholder="Expired Date"
                           name="expiredDate"
                         />

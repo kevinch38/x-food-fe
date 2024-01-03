@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-export default function SuccessMessageBox({ message }) {
+export default function SuccessMessageBox({ message, clear }) {
 	const [showAlert, setShowAlert] = useState(!!message);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setShowAlert(false);
+      clear()
 		}, 3000);
 
 		return () => clearTimeout(timer);
-	}, []);
+	}, [clear]);
 
 	return (
 		showAlert && (
@@ -35,6 +36,7 @@ export default function SuccessMessageBox({ message }) {
 								className='btn-close'
 								data-bs-dismiss='alert'
 								aria-label='Close'
+                onClick={()=>clear()}
 							></button>
 						</li>
 					</ul>
@@ -46,4 +48,5 @@ export default function SuccessMessageBox({ message }) {
 
 SuccessMessageBox.propTypes = {
 	message: PropTypes.any,
+	clear: PropTypes.func,
 };
