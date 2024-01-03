@@ -1,8 +1,8 @@
 function Header() {
 	return (
 		<>
-			<div className='container-fluid w-100'>
-				<div className='d-flex w-100 justify-content-between mt-3'>
+			<div className='container-fluid' >
+				<div className='d-flex justify-content-between mt-3 m-2'>
 				<span
 						id='boot-icon'
 						className='bi bi-person-circle h1 mb-0'
@@ -18,8 +18,8 @@ function Header() {
 						}}
 					></span>
 				</div>
-			</div>
 			<hr />
+			</div>
 		</>
 	);
 }
