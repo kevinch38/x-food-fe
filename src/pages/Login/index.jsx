@@ -47,15 +47,36 @@ function Login() {
 		validationSchema: schema,
 	});
 
-	// useEffect(() => {
-	//   const onGetAdminInfo = async () => {
-	//     const result = await authService.getUserInfo();
-	//     if (result.statusCode === 200) {
-	//       navigate('/backoffice');
-	//     }
-	//   };
-	//   onGetAdminInfo();
-	// }, [authService, navigate]);
+	useEffect(() => {
+		const onGetUserInfo = async () => {
+			try {
+				dispatch(
+					authAction(async () => {
+						try {
+							const token =
+								await authService.getTokenFromStorage();
+							const check = await authService.verifyToken({
+								token,
+							});
+							if (!check) {
+								navigate('/login');
+							} else {
+								navigate('/backoffice');
+							}
+							return check;
+						} catch (error) {
+							console.log(error);
+							navigate('/login');
+						}
+					})
+				);
+			} catch (error) {
+				console.log(error);
+				navigate('/login');
+			}
+		};
+		onGetUserInfo();
+	}, [authService, dispatch, navigate]);
 
 	return (
 		<div>
