@@ -28,7 +28,6 @@ const HistoryList = () => {
           });
   
           setPaging(result.paging);
-          console.log(result)
           return result;
         })
       );

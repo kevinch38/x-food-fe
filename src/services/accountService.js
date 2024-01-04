@@ -7,7 +7,6 @@ const AccountService = () => {
     }
 
     const fetchAccounts = async (queryParams) => {
-        console.log(queryParams);
         const { data } = await axiosInstance.get(`/api/users`, { params: queryParams });
         return data;
     }

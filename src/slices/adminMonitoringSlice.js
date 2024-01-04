@@ -13,7 +13,6 @@ const adminMonitoringSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(adminMonitoringAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                console.log(payload)
                 state.adminMonitorings = payload.data;
             }
         });

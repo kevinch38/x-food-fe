@@ -99,7 +99,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 
 	useEffect(() => {
 		onGetMerchantBranchs(merchantID);
-	}, [debounceSearch2, merchantID, onGetMerchantBranchs]);
+	}, [debounceSearch.toString(), debounceSearch2]);
 
 	const clear = () => {
 		searchParam2.delete('status');
