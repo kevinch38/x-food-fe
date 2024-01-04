@@ -37,7 +37,6 @@ const PromotionList = () => {
       dispatch(
         promotionAction(async () => {
           const result = await promotionService.fetchPromotions({
-            paging: true,
             page: currentPage,
             size: currentSize,
           });

@@ -23,7 +23,6 @@ function AuthenticatedLayout() {
               const check = await authService.verifyToken({
                 token,
               });
-              console.log(check);
               if (!check.data) {
                 authService.removeTokenFromStorage();
                 navigate("/login");

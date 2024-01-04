@@ -78,7 +78,6 @@ const MerchantList = () => {
 			dispatch(
 				merchantAction(async () => {
 					const result = await merchantService.fetchMerchants({
-						paging: true,
 						page: currentPage,
 						size: currentSize,
 						merchantName: debounceSearch,
@@ -128,8 +127,6 @@ const MerchantList = () => {
 		}
 	}, [currentPage, paging.totalPages, searchParam, setSearchParam]);
 
-	// console.log(searchParam.toString());
-	// console.log(searchState2);
 	return (
 		<>
 			<div className='mt-0 container-fluid mb-0'>

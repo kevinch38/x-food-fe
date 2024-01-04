@@ -22,7 +22,6 @@ const HistoryList = () => {
       dispatch(
         historyAction(async () => {
           const result = await historyService.fetchHistories({
-            paging: true,
             page: currentPage,
             size: currentSize,
           });
