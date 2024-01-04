@@ -18,7 +18,7 @@ function Header() {
 						}}
 					></span>
 				</div>
-			<hr />
+			<hr className="m-0"/>
 			</div>
 		</>
 	);
