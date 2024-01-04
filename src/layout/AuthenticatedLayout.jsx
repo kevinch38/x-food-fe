@@ -23,18 +23,20 @@ function AuthenticatedLayout() {
               const check = await authService.verifyToken({
                 token,
               });
-              if (!check) {
+              console.log(check);
+              if (!check.data) {
+                authService.removeTokenFromStorage();
                 navigate("/login");
               }
               return check;
             } catch (error) {
-              console.log(error);
+              authService.removeTokenFromStorage();
               navigate("/login");
             }
           })
         );
       } catch (error) {
-        console.log(error);
+        authService.removeTokenFromStorage();
         navigate("/login");
       }
     };
@@ -43,9 +45,9 @@ function AuthenticatedLayout() {
   return (
     <>
       <Header />
-      <div className="d-flex" style={{ minHeight: "100vh" }}>
+      <div className="d-flex" style={{ minHeight: "93vh" }}>
         <Sidebar />
-        <div className="flex-grow-1" style={{ minHeight: "92%" }}>
+        <div className="flex-grow-1" style={{ minHeight: "100%" }}>
           <Outlet />
         </div>
       </div>

@@ -19,7 +19,7 @@ function AccountItem({ account, idx }) {
   } = account;
 
   return (
-    <tr>
+    <tr style={{ height: '50px' }} className="align-middle">
       <td>{idx}</td>
       <td>{accountID}</td>
       <td>{ktpID}</td>

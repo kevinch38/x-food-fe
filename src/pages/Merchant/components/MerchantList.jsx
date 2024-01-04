@@ -52,7 +52,7 @@ const MerchantList = () => {
 			);
 		};
 		onGetMerchants();
-	}, [currentPage, currentSize, dispatch, merchantService, merchants.length]);
+	}, [currentPage, currentSize, debounceSearch, debounceSearch2, dispatch, merchantService]);
 
 	useEffect(() => {
 		if (currentPage < 1 || currentPage > paging.totalPages) {
@@ -63,20 +63,72 @@ const MerchantList = () => {
 
 	return (
 		<>
-		<div
-			className='mt-0 m-4 container-fluid mb-0'
-		>
-			<div className='d-flex w-100 mt-0 mb-0'>
-				<nav aria-label='page navigation example'>
-					<ul className='pagination d-flex align-items-center mt-3'>
-						<li key={currentPage} className='page-item'>
+			<div className='mt-0 container-fluid mb-0'>
+				<div className='d-flex w-100 mt-0 mb-0'>
+					<nav aria-label='page navigation example'>
+						<ul className='pagination d-flex align-items-center mt-3'>
+							<li key={currentPage} className='page-item'>
+								<div
+									className={`text-black h5 ${
+										paging.totalPages ? `me-2` : ` me-3`
+									}`}
+									to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
+								>
+									{currentPage}/{paging.totalPages}
+								</div>
+							</li>
+							<li
+								className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle ${
+									currentPage == 1 && 'disabled'
+								}`}
+								onClick={() => {
+									onPrevious(currentPage);
+								}}
+							/>
+
+							<li
+								className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle ${
+									currentPage >= paging.totalPages &&
+									'disabled'
+								}`}
+								onClick={() => {
+									onNext(currentPage);
+								}}
+							/>
+						</ul>
+					</nav>
+					<div className='container mt-1 mb-0'>
+						<input
+							onChange={handleChange}
+							className='form-control h-75 mb-0'
+							type='text'
+							name='search'
+							id='search'
+							value={searchState}
+							placeholder='Search By Merchant Name'
+						/>
+					</div>
+					<div className='ms-2 w-auto mt-3'>
+						<div className='dropdown'>
+							<button
+								className='btn btn-light dropdown-toggle'
+								type='button'
+								id='dropdownMenuButton'
+								data-bs-toggle='dropdown'
+								aria-haspopup='true'
+								aria-expanded='false'
+								style={{ width: 'auto' }}
+								onClick={() => clear()}
+							>
+								Filter By Status
+							</button>
 							<div
 								className={`text-black h5 ${paging.totalPages ? `me-2` : ` me-3`}`}
 								to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
 							>
 								{currentPage}/{paging.totalPages}
 							</div>
-						</li>
+						</div>
 						<li
 							className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle ${
 								currentPage == 1 && 'disabled'
@@ -94,8 +146,8 @@ const MerchantList = () => {
 								onNext(currentPage);
 							}}
 						/>
-					</ul>
-				</nav>
+					</div>
+				</div>
 				<div className='container mt-1 mb-0 p-0'>
 					<input
 						className='form-control h-75 mb-0'
@@ -103,7 +155,6 @@ const MerchantList = () => {
 						placeholder='Search...'
 					/>
 				</div>
-			</div>
 			</div>
 			<hr className='mt-0'/>
 			<div

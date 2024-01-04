@@ -217,7 +217,7 @@ const PromotionList = () => {
         style={{ overflowX: "scroll" }}
       >
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fw-bold">Promotion List</h2>
+          <h2>Promotion List</h2>
           <i
             className="bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4"
             style={{

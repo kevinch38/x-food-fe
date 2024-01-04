@@ -24,7 +24,7 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
   return (
     <>
       <tr key={promotionID}>
-        <td className="p-4">{idx}</td>
+        <td>{idx}</td>
         <td>{promotionID}</td>
         <td>{merchantName}</td>
         <td>{promotionName}</td>
