@@ -15,10 +15,22 @@ const PromotionList = () => {
   const { promotionService } = useContext(ServiceContext);
   const [paging, setPaging] = useState({});
   const [promotionID, setPromotionID] = useState();
-  
 
   const currentPage = parseInt(searchParam.get("page") || 1);
   const currentSize = parseInt(searchParam.get("size") || 9);
+  const [searchState, setSearchState] = useState(
+    searchParam.get("search") || ""
+  );
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setSearchState(value);
+
+    if (value.trim() === "") {
+      searchParam.delete("search");
+      setSearchParam(searchParam);
+    }
+  };
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
@@ -91,66 +103,113 @@ const PromotionList = () => {
               />
             </ul>
           </nav>
-          <div className='container mt-1 mb-0'>
-						<input
-							onChange={console.log("search....")}
-							className='form-control h-75 mb-0'
-							type='text'
-							name='search'
-							id='search'
-							// value={"searchState"}
-							placeholder='Search By Merchant Name'
-						/>
-					</div>
-          <div className='ms-2 w-auto mt-2'>
-						<div className='dropdown'>
-							<button
-								className='btn btn-light btn-lg dropdown-toggle'
-								type='button'
-								id='dropdownMenuButton'
-								data-bs-toggle='dropdown'
-								aria-haspopup='true'
-								aria-expanded='false'
-								style={{ width: 'auto' }}
-								onClick={"() => clear()"}
-							>
-								Filter By
-							</button>
-							<div
-								className='dropdown-menu'
-								aria-labelledby='dropdownMenuButton'
-							>
-								{[
-									'Status',
-									'Created At',
-									'Updated At',
-									'Expired Date'
-								].map((merchantStatus) => {
-									return (
-										<>
-											<button
-												className='dropdown-item'
-												href='#'
-												// onClick={() =>
-												// 	handleChange2(
-												// 		merchantStatus,
-												// 		'merchantStatus'
-												// 	)
-												// }
-											>
-												<span className='text-capitalize'>
-													{merchantStatus
-														.toLowerCase()
-														.replace(/_/g, ' ')}
-												</span>
-											</button>
-											<div className='dropdown-divider'></div>
-										</>
-									);
-								})}
-							</div>
-						</div>
-					</div>
+          <div className="container">
+            <input
+              onChange={handleChange}
+              className="form-control h-75 mb-0"
+              type="text"
+              name="search"
+              id="search"
+              value={searchState}
+              placeholder="Search By Merchant Name"
+            />
+          </div>
+
+          
+
+
+
+
+
+
+
+
+
+          {/* <div className="ms-2 w-auto mt-2">
+            <div className="dropdown">
+              <button
+                className="btn btn-light btn-lg dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style={{ width: "auto" }}
+                onClick={"() => clear()"}
+              >
+                Filter By
+              </button>
+              <div
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+              >
+                {["Status", "Created At", "Updated At", "Expired Date"].map(
+                  (merchantStatus) => {
+                    return (
+                      <div
+                        className="btn-group dropstart mx-1"
+                        key={merchantStatus}
+                      >
+                        <button
+                          className="text-capitalize btn btn-light dropdown-toggle"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          {merchantStatus}
+                        </button>
+                        <div className="dropdown-menu">
+                          {merchantStatus === "Status" && (
+                            <>
+                              <a className="dropdown-item" type="button">
+                                Active
+                              </a>
+                              <a className="dropdown-item" type="button">
+                                Inactive
+                              </a>
+                              <div className="dropdown-divider" />
+                              <a className="dropdown-item" type="button">
+                                Waiting for Creating Approval
+                              </a>
+                              <a className="dropdown-item" type="button">
+                                Waiting for Updating Approval
+                              </a>
+                              <a className="dropdown-item" type="button">
+                                Waiting for Deleting Approval
+                              </a>
+                            </>
+                          )}
+                          {[
+                            "Created At",
+                            "Updated At",
+                            "Expired Date",
+                          ].includes(merchantStatus) && (
+                            <>
+                              <input
+                                type="date"
+                                className="dropdown-item form-control"
+                                placeholder="Start Date"
+                              />
+                              {(merchantStatus === "Created At" ||
+                                merchantStatus === "Updated At") && (
+                                <input
+                                  type="date"
+                                  className="dropdown-item form-control"
+                                  placeholder="End Date"
+                                />
+                              )}
+                            </>
+                          )}
+                        </div>
+                        
+                      </div>
+                    );
+                  }
+                )}
+              </div>
+            </div>
+          </div> */}
         </div>
       </div>
       <div
@@ -180,7 +239,7 @@ const PromotionList = () => {
                   <th className="fw-normal">Merchant Name</th>
                   <th className="fw-normal">Name</th>
                   <th className="fw-normal">Description</th>
-                  <th className="fw-normal" >Value</th>
+                  <th className="fw-normal">Value</th>
                   <th className="fw-normal">Status</th>
                   <th className="fw-normal">Cost</th>
                   <th className="fw-normal">Quantity</th>

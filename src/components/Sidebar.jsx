@@ -1,11 +1,9 @@
 import { NavLink } from "react-router-dom";
-import Merchant from "../pages/Merchant";
-import Promotion from "../pages/Promotion";
 
 function Sidebar() {
   return (
     <div className="row">
-      <div className="d-flex flex-column border" style={{ width: "250px", minHeight: "100%" }}>
+      <div className="d-flex flex-column border" style={{ width: "250px", maxHeight: "92%" }}>
         <nav>
           <ul className="d-flex flex-column nav-list gap-2 list-unstyled" style={{ marginBottom: "0" }}>
             <NavLink
