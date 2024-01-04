@@ -43,9 +43,9 @@ function AuthenticatedLayout() {
   return (
     <>
       <Header />
-      <div className="d-flex" style={{ minHeight: "100vh" }}>
+      <div className="d-flex" style={{ minHeight: "93vh" }}>
         <Sidebar />
-        <div className="flex-grow-1" style={{ minHeight: "92%" }}>
+        <div className="flex-grow-1" style={{ minHeight: "100%" }}>
           <Outlet />
         </div>
       </div>
