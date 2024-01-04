@@ -90,15 +90,7 @@ const MerchantList = () => {
 			);
 		};
 		onGetMerchants();
-	}, [
-		currentPage,
-		currentSize,
-		debounceSearch,
-		debounceSearch2,
-		dispatch,
-		merchantService,
-		merchants.length,
-	]);
+	}, [currentPage, currentSize, debounceSearch, debounceSearch2, dispatch, merchantService]);
 
 	useEffect(() => {
 		searchParam.set('search', debounceSearch);

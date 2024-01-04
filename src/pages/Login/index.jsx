@@ -58,20 +58,21 @@ function Login() {
 							const check = await authService.verifyToken({
 								token,
 							});
-							if (!check) {
+							if (!check.data) {
+								authService.removeTokenFromStorage();
 								navigate('/login');
 							} else {
 								navigate('/backoffice');
 							}
 							return check;
 						} catch (error) {
-							console.log(error);
+							authService.removeTokenFromStorage();
 							navigate('/login');
 						}
 					})
 				);
 			} catch (error) {
-				console.log(error);
+                authService.removeTokenFromStorage();
 				navigate('/login');
 			}
 		};

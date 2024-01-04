@@ -15,6 +15,10 @@ const AuthService = () => {
     const getTokenFromStorage = () => {
         return sessionStorage.getItem(TOKEN_KEY);
     }
+
+    const removeTokenFromStorage = () => {
+        sessionStorage.removeItem(TOKEN_KEY);
+    }
     
     const verifyToken = async (token) => {
         const { data } = await axiosInstance.post('/api/auth/admins/verify', token);
@@ -25,6 +29,7 @@ const AuthService = () => {
         login,
         logout,
         getTokenFromStorage,
+        removeTokenFromStorage,
         verifyToken,
     }
 }
