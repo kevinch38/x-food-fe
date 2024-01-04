@@ -1,3 +1,4 @@
+import AuthService from "./AuthService";
 import AccountService from "./accountService";
 import AdminMonitoringService from "./adminMonitoringService";
 import HistoryService from "./historyService";
@@ -13,6 +14,7 @@ const ServiceFactory = () => {
     merchantBranchService: MerchantBranchService(),
     historyService: HistoryService(),
     adminMonitoringService: AdminMonitoringService(),
+    authService:AuthService(),
   };
 };
 

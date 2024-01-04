@@ -91,13 +91,66 @@ const PromotionList = () => {
               />
             </ul>
           </nav>
-          <div className="container mt-1 mb-0">
-            <input
-              className="form-control h-75 "
-              type="text"
-              placeholder="Search..."
-            />
-          </div>
+          <div className='container mt-1 mb-0'>
+						<input
+							onChange={console.log("search....")}
+							className='form-control h-75 mb-0'
+							type='text'
+							name='search'
+							id='search'
+							// value={"searchState"}
+							placeholder='Search By Merchant Name'
+						/>
+					</div>
+          <div className='ms-2 w-auto mt-2'>
+						<div className='dropdown'>
+							<button
+								className='btn btn-light btn-lg dropdown-toggle'
+								type='button'
+								id='dropdownMenuButton'
+								data-bs-toggle='dropdown'
+								aria-haspopup='true'
+								aria-expanded='false'
+								style={{ width: 'auto' }}
+								onClick={"() => clear()"}
+							>
+								Filter By
+							</button>
+							<div
+								className='dropdown-menu'
+								aria-labelledby='dropdownMenuButton'
+							>
+								{[
+									'Status',
+									'Created At',
+									'Updated At',
+									'Expired Date'
+								].map((merchantStatus) => {
+									return (
+										<>
+											<button
+												className='dropdown-item'
+												href='#'
+												// onClick={() =>
+												// 	handleChange2(
+												// 		merchantStatus,
+												// 		'merchantStatus'
+												// 	)
+												// }
+											>
+												<span className='text-capitalize'>
+													{merchantStatus
+														.toLowerCase()
+														.replace(/_/g, ' ')}
+												</span>
+											</button>
+											<div className='dropdown-divider'></div>
+										</>
+									);
+								})}
+							</div>
+						</div>
+					</div>
         </div>
       </div>
       <div

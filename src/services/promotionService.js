@@ -33,7 +33,7 @@ const PromotionService = () => {
   const updatePromotion = async (promotion) => {
     const request = {
       promotionID: promotion.promotionID,
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
@@ -43,8 +43,8 @@ const PromotionService = () => {
       expiredDate: promotion.expiredDate,
       notes: "notes",
     };
+    console.log(request);
     const { data } = await axiosInstance.put("/api/promotions", request);
-    console.log(data);
     return data;
   };
 
