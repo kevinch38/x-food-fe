@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from 'prop-types';
 import MerchantBranchItem from './MerchantBranchItem';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +17,7 @@ MerchantItem.propTypes = {
 	merchant: PropTypes.any,
 	setMerchantID: PropTypes.func,
 	idx: PropTypes.number,
+	onGetMerchantBranchs: PropTypes.any
 };
 
 function MerchantItem({ merchant, idx, setMerchantID }) {
@@ -97,7 +99,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 
 	useEffect(() => {
 		onGetMerchantBranchs(merchantID);
-	}, [debounceSearch.toString(), debounceSearch2]);
+	}, [debounceSearch2, merchantID, onGetMerchantBranchs]);
 
 	const clear = () => {
 		searchParam2.delete('status');

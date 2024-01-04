@@ -1,13 +1,9 @@
 import PropTypes from "prop-types";
-// import { useDispatch } from "react-redux";
-// import { useContext } from "react";
-// import { ServiceContext } from "../../../context/ServiceContext";
-// import { promotionAction } from "../../../slices/promotionSlice";
 
 PromotionItem.propTypes = {
   promotion: PropTypes.any,
   idx: PropTypes.number,
-  setPromotionID: PropTypes.func
+  setPromotionID: PropTypes.func,
 };
 
 function PromotionItem({ promotion, idx, setPromotionID }) {
@@ -24,17 +20,6 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
     createdAt,
     updatedAt,
   } = promotion;
-
-  // const { promotionService } = useContext(ServiceContext);
-  // const dispatch = useDispatch();
-  // const onGetPromotion = (id) => {
-  //   dispatch(
-  //     promotionAction(async () => {
-  //       const result = await promotionService.fetchPromotionById(id);
-  //       return result;
-  //     })
-  //   );
-  // };
 
   return (
     <>
@@ -83,18 +68,6 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
             </div>
           )}
         </td>
-        {/* <td className='ms-5'>
-					<div className='p-2'>
-						<div className='d-flex flex-column align-items-center justify-content-center pt-2'>
-							<i
-								className='bi bi-list-ul h3 cursor-pointer'
-								onClick={() => console.log("object")}
-								data-bs-toggle='modal'
-								data-bs-target={`#exampleModal${idx}`}
-							></i>
-						</div>
-					</div>
-				</td> */}
       </tr>
     </>
   );
