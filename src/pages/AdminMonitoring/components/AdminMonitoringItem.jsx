@@ -19,7 +19,7 @@ function AdminMonitoringItem({ adminMonitoring, idx }) {
   } = adminMonitoring;
 
   return (
-    <tr>
+    <tr style={{ height: '50px' }} className="align-middle">
       <td>{idx}</td>
       <td>{adminMonitoringID}</td>
       <td>{activity}</td>
@@ -29,7 +29,7 @@ function AdminMonitoringItem({ adminMonitoring, idx }) {
       <td>{adminID}</td>
       <td>{adminEmail}</td>
       <td>{new Date(activityTime).toLocaleDateString()}</td>
-      <td className=" ms-5">
+      <td>
         <div className="p-2">
           <AdminMonitoringModal
             idx={idx}

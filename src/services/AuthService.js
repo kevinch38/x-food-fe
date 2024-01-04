@@ -9,7 +9,7 @@ const AuthService = () => {
     }
 
     const logout = () => {
-        sessionStorage.removeItem('token');
+        sessionStorage.clear();
     }
 
     const getTokenFromStorage = () => {
