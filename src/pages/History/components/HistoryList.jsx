@@ -15,7 +15,7 @@ const HistoryList = () => {
   const [paging, setPaging] = useState({});
 
   let currentPage = parseInt(searchParam.get("page") || 1);
-  let currentSize = parseInt(searchParam.get("size") || 9);
+  let currentSize = parseInt(searchParam.get("size") || 8);
 
   useEffect(() => {
     const onGetHistories = () => {
