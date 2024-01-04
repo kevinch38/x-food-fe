@@ -7,14 +7,13 @@ const PromotionService = () => {
   };
 
   const fetchPromotions = async () => {
-    console.log("============================");
     const { data } = await axiosInstance.get(`/api/promotions`);
     return data;
   };
 
   const savePromotion = async (promotion) => {
     const request = {
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,

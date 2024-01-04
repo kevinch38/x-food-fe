@@ -11,7 +11,7 @@ export default function SuccessMessageBox({ message, clear }) {
 		}, 3000);
 
 		return () => clearTimeout(timer);
-	}, []);
+	}, [clear]);
 
 	return (
 		showAlert && (
