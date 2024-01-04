@@ -6,6 +6,7 @@ import Promotion from "../pages/Promotion";
 import Merchant from "../pages/Merchant";
 import History from "../pages/History";
 import AdminMonitoring from "../pages/AdminMonitoring";
+import Login from '../pages/Login';
 
 const setupRouter = () =>
   createBrowserRouter([
@@ -14,6 +15,10 @@ const setupRouter = () =>
       element: <App />,
       errorElement: <>Error...</>,
       children: [
+        {
+          path: 'login',
+          element: <Login />,
+        },
         {
           path: "backoffice",
           element: <AuthenticatedLayout />,
