@@ -22,7 +22,7 @@ function HistoryItem({ history, idx }) {
 
   return (
     <>
-      <tr key={historyID}>
+      <tr key={historyID} className="align-middle">
         <td>{idx}</td>
         <td>{historyID}</td>
         <td>{accountID}</td>
@@ -31,7 +31,7 @@ function HistoryItem({ history, idx }) {
         <td>{debit.toString().toUpperCase()}</td>
         <td>{credit.toString().toUpperCase()}</td>
         <td>{updatedAt}</td>
-        <td className=" ms-5">
+        <td>
           <div className="p-2">
             <HistoryModal
               idx={idx}

@@ -9,11 +9,15 @@ const AuthService = () => {
     }
 
     const logout = () => {
-        sessionStorage.removeItem('token');
+        sessionStorage.clear();
     }
 
     const getTokenFromStorage = () => {
         return sessionStorage.getItem(TOKEN_KEY);
+    }
+
+    const removeTokenFromStorage = () => {
+        sessionStorage.removeItem(TOKEN_KEY);
     }
     
     const verifyToken = async (token) => {
@@ -25,6 +29,7 @@ const AuthService = () => {
         login,
         logout,
         getTokenFromStorage,
+        removeTokenFromStorage,
         verifyToken,
     }
 }

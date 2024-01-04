@@ -90,15 +90,7 @@ const MerchantList = () => {
 			);
 		};
 		onGetMerchants();
-	}, [
-		currentPage,
-		currentSize,
-		debounceSearch,
-		debounceSearch2,
-		dispatch,
-		merchantService,
-		merchants.length,
-	]);
+	}, [currentPage, currentSize, debounceSearch, debounceSearch2, dispatch, merchantService]);
 
 	useEffect(() => {
 		searchParam.set('search', debounceSearch);
@@ -140,7 +132,7 @@ const MerchantList = () => {
 	// console.log(searchState2);
 	return (
 		<>
-			<div className='mt-0 m-4 container-fluid mb-0'>
+			<div className='mt-0 container-fluid mb-0'>
 				<div className='d-flex w-100 mt-0 mb-0'>
 					<nav aria-label='page navigation example'>
 						<ul className='pagination d-flex align-items-center mt-3'>

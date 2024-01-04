@@ -157,6 +157,10 @@ body {
 	align-items: center;
 }
 
+.custom-border {
+  border-top: none !important;
+}
+
 @keyframes rotate {
 	0% {
 		transform: translate(-50%, -50%) rotateZ(0deg);
