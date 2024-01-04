@@ -130,6 +130,7 @@ const MerchantList = () => {
 
 	// console.log(searchParam.toString());
 	// console.log(searchState2);
+	
 	return (
 		<>
 			<div className='mt-0 container-fluid mb-0'>
