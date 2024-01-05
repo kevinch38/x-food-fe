@@ -19,6 +19,12 @@ const MerchantBranchService = () => {
 		);
 		return data;
 	};
+	const fetchCities = async () => {
+		const { data } = await axiosInstance.get(
+			`/api/cities`
+		);
+		return data;
+	};
 
 	const saveMerchantBranch = async (merchantBranch) => {
 		const formData = new FormData();
@@ -78,6 +84,7 @@ const MerchantBranchService = () => {
 		saveMerchantBranch,
 		updateMerchantBranch,
 		deleteMerchantBranch,
+		fetchCities,
 	};
 };
 
