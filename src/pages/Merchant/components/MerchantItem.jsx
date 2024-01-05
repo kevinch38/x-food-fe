@@ -126,7 +126,12 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
       <td>{merchantDescription}</td>
       <td
         style={{
-          color: `${status == "ACTIVE" ? "green" : "red"}`,
+          color:
+            status === "ACTIVE"
+              ? "green"
+              : status === "INACTIVE"
+              ? "red"
+              : "none",
         }}
       >
         {status}
