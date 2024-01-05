@@ -15,7 +15,7 @@ const AccountList = () => {
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 9);
+  const currentSize = parseInt(searchParam.get("size") || 10);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
@@ -111,39 +111,40 @@ const AccountList = () => {
       endUpdatedAt: searchParam2.get("endUpdatedAt") || null,
     });
   };
-  // useEffect(() => {
-  //   console.log("currentPage:", currentPage);
-  //   console.log("paging.totalPages:", paging.totalPages);
-  // }, [currentPage, paging.totalPages]);
 
   return (
     <div className="m-4">
       <div className="d-flex">
         <nav aria-label="page navigation example">
-          <ul className="pagination">
+          <ul className="pagination d-flex align-items-center mt-3">
             <li key={currentPage} className="page-item">
               <div
-                className={`page-link text-black`}
-                to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
+                className={`text-black h5 ${
+                  paging.totalPages ? "me-2" : "me-3"
+                }`}
               >
                 {currentPage}/{paging.totalPages}
               </div>
             </li>
             <li
-              className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
-                currentPage == 1 && "disabled"
+              className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle-fill active-button ${
+                currentPage === 1 && "disabled-button"
               }`}
               onClick={() => {
-                onPrevious(currentPage);
+                if (currentPage !== 1) {
+                  onPrevious(currentPage);
+                }
               }}
             />
 
-            <li
-              className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
-                currentPage >= paging.totalPages && "disabled"
+            <i
+              className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle-fill active-button ${
+                currentPage >= paging.totalPages && "disabled-button"
               }`}
               onClick={() => {
-                onNext(currentPage);
+                if (currentPage < paging.totalPages) {
+                  onNext(currentPage);
+                }
               }}
             />
           </ul>
@@ -159,100 +160,115 @@ const AccountList = () => {
             placeholder="Search By Phone Number"
           />
         </div>
-        <div className="dropdown show ms-2 w-auto">
-          <a
-            className="btn btn-light dropdown-toggle"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            onClick={() => clear()}
-          >
-            Filter By Created Date
-          </a>
 
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <form action="">
-              <label htmlFor="startCreatedAt" className="ms-3">
-                Start Date
-              </label>
-              <center>
-                <input
-                  className="form-control"
-                  style={{ width: "90%" }}
-                  type="datetime-local"
-                  name="startCreatedAt"
-                  id="startCreatedAt"
-                  onChange={(e) => handleChange2(e.target.value, e.target.name)}
-                />
-              </center>
-              <h6 className="text-center">Month/Day/Year</h6>
+        <div className="ms-2 w-auto mt-3">
+          {" "}
+          <div className="dropdown show ms-2 w-auto">
+            <a
+              className="btn btn-light dropdown-toggle"
+              href="#"
+              role="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              onClick={() => clear()}
+            >
+              Filter By Created Date
+            </a>
 
-              <label htmlFor="startCreatedAt" className="ms-3">
-                End Date
-              </label>
-              <center>
-                <input
-                  className="form-control"
-                  style={{ width: "90%" }}
-                  type="datetime-local"
-                  name="endCreatedAt"
-                  id="endCreatedAt"
-                  onChange={(e) => handleChange2(e.target.value, e.target.name)}
-                />
-              </center>
-              <h6 className="text-center">Month/Day/Year</h6>
-            </form>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <form action="">
+                <label htmlFor="startCreatedAt" className="ms-3">
+                  Start Date
+                </label>
+                <center>
+                  <input
+                    className="form-control"
+                    style={{ width: "90%" }}
+                    type="datetime-local"
+                    name="startCreatedAt"
+                    id="startCreatedAt"
+                    onChange={(e) =>
+                      handleChange2(e.target.value, e.target.name)
+                    }
+                  />
+                </center>
+                <h6 className="text-center">Month/Day/Year</h6>
+
+                <label htmlFor="startCreatedAt" className="ms-3">
+                  End Date
+                </label>
+                <center>
+                  <input
+                    className="form-control"
+                    style={{ width: "90%" }}
+                    type="datetime-local"
+                    name="endCreatedAt"
+                    id="endCreatedAt"
+                    onChange={(e) =>
+                      handleChange2(e.target.value, e.target.name)
+                    }
+                  />
+                </center>
+                <h6 className="text-center">Month/Day/Year</h6>
+              </form>
+            </div>
           </div>
         </div>
-        <div className="dropdown show ms-2 w-auto">
-          <a
-            className="btn btn-light dropdown-toggle"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            onClick={() => clear()}
-          >
-            Filter By Updated Date
-          </a>
 
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <form action="">
-              <label htmlFor="startUpdatedAt" className="ms-3">
-                Start Date
-              </label>
-              <center>
-                <input
-                  className="form-control"
-                  style={{ width: "90%" }}
-                  type="datetime-local"
-                  name="startUpdatedAt"
-                  id="startUpdatedAt"
-                  onChange={(e) => handleChange2(e.target.value, e.target.name)}
-                />
-              </center>
-              <h6 className="text-center">Month/Day/Year</h6>
+        <div className="ms-2 w-auto mt-3">
+          <div className="dropdown show ms-2 w-auto">
+            <a
+              className="btn btn-light dropdown-toggle"
+              href="#"
+              role="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              onClick={() => clear()}
+            >
+              Filter By Updated Date
+            </a>
 
-              <label htmlFor="endUpdatedAt" className="ms-3">
-                End Date
-              </label>
-              <center>
-                <input
-                  className="form-control"
-                  style={{ width: "90%" }}
-                  type="datetime-local"
-                  name="endUpdatedAt"
-                  id="endUpdatedAt"
-                  onChange={(e) => handleChange2(e.target.value, e.target.name)}
-                />
-              </center>
-              <h6 className="text-center">Month/Day/Year</h6>
-            </form>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <form action="">
+                <label htmlFor="startUpdatedAt" className="ms-3">
+                  Start Date
+                </label>
+                <center>
+                  <input
+                    className="form-control"
+                    style={{ width: "90%" }}
+                    type="datetime-local"
+                    name="startUpdatedAt"
+                    id="startUpdatedAt"
+                    onChange={(e) =>
+                      handleChange2(e.target.value, e.target.name)
+                    }
+                  />
+                </center>
+                <h6 className="text-center">Month/Day/Year</h6>
+
+                <label htmlFor="endUpdatedAt" className="ms-3">
+                  End Date
+                </label>
+                <center>
+                  <input
+                    className="form-control"
+                    style={{ width: "90%" }}
+                    type="datetime-local"
+                    name="endUpdatedAt"
+                    id="endUpdatedAt"
+                    onChange={(e) =>
+                      handleChange2(e.target.value, e.target.name)
+                    }
+                  />
+                </center>
+                <h6 className="text-center">Month/Day/Year</h6>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -287,19 +303,11 @@ const AccountList = () => {
               );
             })
           ) : (
-<<<<<<<<< Temporary merge branch 1
-            <td colSpan={10}>
-              <div className="w-100">
-                <EmptyState />
-              </div>
-            </td>
-=========
             <tr>
               <td colSpan={10}>
                 <EmptyState />
               </td>
             </tr>
->>>>>>>>> Temporary merge branch 2
           )}
         </tbody>
       </table>

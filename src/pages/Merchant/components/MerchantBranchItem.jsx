@@ -49,7 +49,7 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
       <td>{joinDate}</td>
       <td>{createdAt}</td>
       <td>
-        {status == "ACTIVE" && (
+        {status == "INACTIVE" ? '' :  (
           <div className="p-2 row">
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
