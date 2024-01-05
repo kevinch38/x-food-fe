@@ -140,7 +140,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
       <td>
-        {status == "ACTIVE" && (
+        {status == "INACTIVE" ? '' :  (
           <div className="p-2 d-flex justify-content-between w-100">
             <div className="btn-group justify-content-between">
               <i

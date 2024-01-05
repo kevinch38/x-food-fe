@@ -5,17 +5,64 @@ import HistoryItem from "./HistoryItem";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { historyAction } from "../../../slices/historySlice";
 import EmptyState from "../../../components/EmptyState";
+import { useDebounce } from "@uidotdev/usehooks";
+import React from "react";
 
 const HistoryList = () => {
-  const [searchParam, setSearchParam] = useSearchParams();
   const dispatch = useDispatch();
   const { histories } = useSelector((state) => state.history);
   const { historyService } = useContext(ServiceContext);
 
   const [paging, setPaging] = useState({});
 
+  const [searchParam, setSearchParam] = useSearchParams();
+  const [searchState, setSearchState] = useState(
+    searchParam.get("search") || ""
+  );
+
+  const [searchParamFilter, setSearchParamFilter] = useSearchParams();
+  const [searchStateFilter, setSearchStateFilter] = useState({
+    startTransactionDate: searchParamFilter.get("startTransactionDate") || null,
+    endTransactionDate: searchParamFilter.get("endTransactionDate") || null,
+    transactionType: searchParamFilter.get("transactionType") || null,
+  });
+
+  const debounceSearch = useDebounce(searchState, 1000);
+  const debounceSearchFilter = useDebounce(searchStateFilter, 300);
+
   let currentPage = parseInt(searchParam.get("page") || 1);
   let currentSize = parseInt(searchParam.get("size") || 8);
+
+  const clear = () => {
+    searchParamFilter.delete("startTransactionDate");
+    searchParamFilter.delete("endTransactionDate");
+    searchParamFilter.delete("transactionType");
+    setSearchParamFilter(searchParamFilter);
+    setSearchStateFilter({
+      startTransactionDate:
+        searchParamFilter.get("startTransactionDate") || null,
+      endTransactionDate: searchParamFilter.get("endTransactionDate") || null,
+      transactionType: searchParamFilter.get("transactionType") || null,
+    });
+  };
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setSearchState(value);
+
+    if (value.trim() === "") {
+      searchParam.delete("search");
+      setSearchParam(searchParam);
+    }
+  };
+
+  const handleChangeFilter = (value, field) => {
+    setSearchStateFilter({ ...searchStateFilter, [field]: value });
+
+    if (value.trim() === "") {
+      clear();
+    }
+  };
 
   useEffect(() => {
     const onGetHistories = () => {
@@ -24,24 +71,40 @@ const HistoryList = () => {
           const result = await historyService.fetchHistories({
             page: currentPage,
             size: currentSize,
+            accountID: debounceSearch,
+            ...debounceSearchFilter,
           });
-  
+
           setPaging(result.paging);
           return result;
         })
       );
     };
-  
+
     onGetHistories();
-  }, [currentPage, currentSize, dispatch, historyService, searchParam, setSearchParam]);
-  
+  }, [
+    currentPage,
+    currentSize,
+    dispatch,
+    historyService,
+    searchParam,
+    setSearchParam,
+    debounceSearch,
+    debounceSearchFilter,
+  ]);
+
   useEffect(() => {
     if (currentPage < 1 || currentPage > paging.totalPages) {
       searchParam.set("page", 1);
       setSearchParam(searchParam);
     }
   }, [currentPage, paging.totalPages, searchParam, setSearchParam]);
-  
+
+  useEffect(() => {
+    searchParam.set("search", debounceSearch);
+    setSearchParam(searchParam);
+  }, [debounceSearch, searchParam, setSearchParam]);
+
   const onNext = () => {
     if (currentPage < paging.totalPages) {
       const nextPage = currentPage + 1;
@@ -63,32 +126,144 @@ const HistoryList = () => {
       {histories && histories.length !== 0 && (
         <div className="d-flex">
           <nav aria-label="page navigation example">
-            <ul className="pagination">
-              <li className="page-item">
-                <div className="page-link text-black">
+            <ul className="pagination d-flex align-items-center mt-3">
+              <li key={currentPage} className="page-item">
+                <div
+                  className={`text-black h5 ${
+                    paging.totalPages ? "me-2" : "me-3"
+                  }`}
+                >
                   {currentPage}/{paging.totalPages}
                 </div>
               </li>
               <li
-                className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
-                  currentPage === 1 && "disabled"
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle-fill active-button ${
+                  currentPage === 1 && "disabled-button"
                 }`}
-                onClick={onPrevious}
-              ></li>
-              <li
-                className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
-                  currentPage >= paging.totalPages && "disabled"
+                onClick={() => {
+                  if (currentPage !== 1) {
+                    onPrevious(currentPage);
+                  }
+                }}
+              />
+
+              <i
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle-fill active-button ${
+                  currentPage >= paging.totalPages && "disabled-button"
                 }`}
-                onClick={onNext}
-              ></li>
+                onClick={() => {
+                  if (currentPage < paging.totalPages) {
+                    onNext(currentPage);
+                  }
+                }}
+              />
             </ul>
           </nav>
           <div className="container">
             <input
-              className="form-control h-75"
+              onChange={handleChange}
+              className="form-control h-75 mb-0"
               type="text"
-              placeholder="Search..."
+              name="search"
+              id="search"
+              value={searchState}
+              placeholder="Search By Account ID"
             />
+          </div>
+          <div className="ms-2 w-auto mt-3">
+            {" "}
+            <div className="dropdown show ms-2 w-auto">
+              <a
+                className="btn btn-light dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                onClick={() => clear()}
+              >
+                Filter By Transaction Date
+              </a>
+
+              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <form action="">
+                  <label htmlFor="startTransactionDate" className="ms-3">
+                    Start Date
+                  </label>
+                  <center>
+                    <input
+                      className="form-control"
+                      style={{ width: "90%" }}
+                      type="datetime-local"
+                      name="startTransactionDate"
+                      id="startTransactionDate"
+                      onChange={(e) =>
+                        handleChangeFilter(e.target.value, e.target.name)
+                      }
+                    />
+                  </center>
+                  <h6 className="text-center">Month/Day/Year</h6>
+
+                  <label htmlFor="endTransactionDate" className="ms-3">
+                    End Date
+                  </label>
+                  <center>
+                    <input
+                      className="form-control"
+                      style={{ width: "90%" }}
+                      type="datetime-local"
+                      name="endTransactionDate"
+                      id="endTransactionDate"
+                      onChange={(e) =>
+                        handleChangeFilter(e.target.value, e.target.name)
+                      }
+                    />
+                  </center>
+                  <h6 className="text-center">Month/Day/Year</h6>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div className="ms-2 w-auto mt-3">
+            <div className="dropdown">
+              <button
+                className="btn btn-light dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style={{ width: "auto" }}
+                onClick={() => clear()}
+              >
+                Filter By Status
+              </button>
+              <div
+                className="dropdown-menu"
+                aria-labelledby="dropdownMenuButton"
+              >
+                {["TOP_UP", "PAYMENT", "ORDER"].map((transactionType, idx) => {
+                  return (
+                    <React.Fragment key={idx}>
+                      <button
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() =>
+                          handleChangeFilter(transactionType, "transactionType")
+                        }
+                      >
+                        <span className="text-capitalize">
+                          {transactionType.toLowerCase().replace(/_/g, " ")}
+                        </span>
+                      </button>
+                      <div className="dropdown-divider"></div>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -18,10 +18,8 @@ export default function DeletePromotionModal({ promotionID }) {
 	const onDeletePromotion = (id) => {
 		dispatch(
 			promotionAction(async () => {
-				const result = await promotionService.deletePromotion(id);
-				console.log(result);
+				await promotionService.deletePromotion(id);
 
-				// const a = [...promotions];
 				const a = promotions.filter(
 					(promotion) => promotion.promotionID !== promotionID
 				);

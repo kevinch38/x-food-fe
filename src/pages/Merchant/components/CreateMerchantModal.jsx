@@ -157,7 +157,7 @@ export default function CreateMerchantModal({ setMerchantID, merchantID }) {
       aria-hidden="true"
       style={{
         borderRadius: "50px",
-        marginTop: "5%",
+        marginTop: "50px",
       }}
     >
       <div

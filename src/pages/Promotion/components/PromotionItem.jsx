@@ -23,7 +23,7 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
 
   return (
     <>
-      <tr key={idx} style={{ height: "50px" }}>
+      <tr key={idx} style={{ height: "60px" }}>
         <td>{idx}</td>
         <td>{promotionID}</td>
         <td>{merchantName}</td>
@@ -45,7 +45,7 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
         <td className="ms-5">
           {status === "ACTIVE" && (
             <div className="d-flex justify-content-between w-100">
-              <div className="btn-group d-flex align-items-center justify-content-between">
+              <div className="p-2 btn-group d-flex align-items-center justify-content-between">
                 <i
                   className="bi bi-pencil-fill h3 cursor-pointer m-2"
                   style={{

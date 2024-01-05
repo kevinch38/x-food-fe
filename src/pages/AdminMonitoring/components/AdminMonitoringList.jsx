@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AdminMonitoringItem from "./AdminMonitoringItem";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { adminMonitoringAction } from "../../../slices/adminMonitoringSlice";
-import EmptyState from "../../../components/EmptyState";  
+import EmptyState from "../../../components/EmptyState";
 
 const AdminMonitoringList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -56,30 +56,35 @@ const AdminMonitoringList = () => {
       {adminMonitorings && adminMonitorings.length !== 0 && (
         <div className="d-flex">
           <nav aria-label="page navigation example">
-            <ul className="pagination">
+            <ul className="pagination d-flex align-items-center mt-3">
               <li key={currentPage} className="page-item">
                 <div
-                  className={`page-link text-black`}
-                  to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
+                  className={`text-black h5 ${
+                    paging.totalPages ? "me-2" : "me-3"
+                  }`}
                 >
                   {currentPage}/{paging.totalPages}
                 </div>
               </li>
               <li
-                className={`page-link text-black cursor-pointer bi bi-arrow-left-circle ${
-                  currentPage == 1 && "disabled"
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle-fill active-button ${
+                  currentPage === 1 && "disabled-button"
                 }`}
                 onClick={() => {
-                  onPrevious(currentPage);
+                  if (currentPage !== 1) {
+                    onPrevious(currentPage);
+                  }
                 }}
               />
 
-              <li
-                className={`page-link text-black cursor-pointer bi bi-arrow-right-circle ${
-                  currentPage >= paging.totalPages && "disabled"
+              <i
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle-fill active-button ${
+                  currentPage >= paging.totalPages && "disabled-button"
                 }`}
                 onClick={() => {
-                  onNext(currentPage);
+                  if (currentPage < paging.totalPages) {
+                    onNext(currentPage);
+                  }
                 }}
               />
             </ul>

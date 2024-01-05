@@ -20,7 +20,7 @@ const MerchantList = () => {
   const [merchantID, setMerchantID] = useState();
 
   let currentPage = parseInt(searchParam.get("page") || 1);
-  let currentSize = parseInt(searchParam.get("size") || 10);
+  let currentSize = parseInt(searchParam.get("size") || 8);
 
   const [searchState, setSearchState] = useState(
     searchParam.get("search") || ""
@@ -165,28 +165,31 @@ const MerchantList = () => {
               <li key={currentPage} className="page-item">
                 <div
                   className={`text-black h5 ${
-                    paging.totalPages ? `me-2` : ` me-3`
+                    paging.totalPages ? "me-2" : "me-3"
                   }`}
-                  to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
                 >
                   {currentPage}/{paging.totalPages}
                 </div>
               </li>
               <li
-                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle ${
-                  currentPage == 1 && "disabled"
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle-fill active-button ${
+                  currentPage === 1&& "disabled-button"
                 }`}
                 onClick={() => {
-                  onPrevious(currentPage);
+                  if (currentPage !== 1) {
+                    onPrevious(currentPage);
+                  }
                 }}
               />
 
-              <li
-                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle ${
-                  currentPage >= paging.totalPages && "disabled"
+              <i
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle-fill active-button ${
+                  currentPage >= paging.totalPages && "disabled-button"
                 }`}
                 onClick={() => {
-                  onNext(currentPage);
+                  if (currentPage < paging.totalPages) {
+                    onNext(currentPage);
+                  }
                 }}
               />
             </ul>
@@ -435,7 +438,7 @@ const MerchantList = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h2>Merchant List</h2>
           <i
-            className="bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4"
+            className="bi bi-plus-circle-fill h2 cursor-pointer"
             style={{
               color: "rgb(101, 213, 26)",
             }}
