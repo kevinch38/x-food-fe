@@ -18,7 +18,7 @@ const PromotionList = () => {
   const [promotionID, setPromotionID] = useState();
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 9);
+  const currentSize = parseInt(searchParam.get("size") || 10);
   const [searchState, setSearchState] = useState(
     searchParam.get("search") || ""
   );
@@ -31,6 +31,7 @@ const PromotionList = () => {
     endCreatedAt: searchParam2.get("endCreatedAt") || null,
     startUpdatedAt: searchParam2.get("startUpdatedAt") || null,
     endUpdatedAt: searchParam2.get("endUpdatedAt") || null,
+    startExpiredDate: searchParam2.get("startExpiredDate") || null,
     endExpiredDate: searchParam2.get("endExpiredDate") || null,
   });
   const debounceSearch2 = useDebounce(searchState2, 300);
@@ -102,6 +103,7 @@ const PromotionList = () => {
     searchParam2.delete("endCreatedAt");
     searchParam2.delete("startUpdatedAt");
     searchParam2.delete("endUpdatedAt");
+    searchParam2.delete("startExpiredDate");
     searchParam2.delete("endExpiredDate");
     setSearchParam2(searchParam2);
     setSearchState2({
@@ -111,6 +113,7 @@ const PromotionList = () => {
       startUpdatedAt: searchParam2.get("startUpdatedAt") || null,
       endUpdatedAt: searchParam2.get("endUpdatedAt") || null,
       endExpiredDate: searchParam2.get("endExpiredDate") || null,
+      startExpiredDate: searchParam2.get("startExpiredDate") || null,
     });
   };
 
@@ -316,8 +319,22 @@ const PromotionList = () => {
 
           <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <form action="">
+            <label htmlFor="startExpiredDate" className="ms-3">
+                Start Date
+              </label>
+              <center>
+                <input
+                  className="form-control"
+                  style={{ width: "90%" }}
+                  type="datetime-local"
+                  name="startExpiredDate"
+                  id="startExpiredDate"
+                  onChange={(e) => handleChange2(e.target.value, e.target.name)}
+                />
+              </center>
+              <h6 className="text-center">Month/Day/Year</h6>
               <label htmlFor="endExpiredDate" className="ms-3">
-                Expired Date
+                End Date
               </label>
               <center>
                 <input
