@@ -25,6 +25,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
 
   const {
     values: {
+      merchantName,
       promotionName,
       promotionDescription,
       maxRedeem,
@@ -68,7 +69,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
               ...data,
             });
             const a = [...promotions, result.data];
-            return { data: a };
+            return { data: a, messageBox : 'Promotion Data Successfully Inserted' };
           })
         );
         setPromotionID(null);
@@ -82,7 +83,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
             ...values,
           });
           const a = [...promotions, result.data];
-          return { data: a, messageBox: "" };
+          return { data: a, messageBox : 'Promotion Data Successfully Updated', };
         })
       );
       setPromotionID(null);

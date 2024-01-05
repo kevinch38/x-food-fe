@@ -69,10 +69,31 @@ const MerchantList = () => {
     setSearchParam(searchParam);
   };
 
-  // useEffect(() => {
-  // 	currentPage = parseInt(searchParam.get('page') || 1);
-  // 	currentSize = parseInt(searchParam.get('size') || 10);
-  // }, [paging]);
+  useEffect(() => {
+    const onGetMerchants = () => {
+      dispatch(
+        merchantAction(async () => {
+          const result = await merchantService.fetchMerchants({
+            paging: true,
+            page: currentPage,
+            size: currentSize,
+            merchantName: debounceSearch,
+            ...debounceSearch2,
+          });
+          setPaging(result.paging);
+          return result;
+        })
+      );
+    };
+    onGetMerchants();
+  }, [
+    currentPage,
+    currentSize,
+    debounceSearch,
+    debounceSearch2,
+    dispatch,
+    merchantService,
+  ]);
 
   useEffect(() => {
     const onGetMerchants = () => {
