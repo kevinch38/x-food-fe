@@ -56,7 +56,7 @@ const PromotionList = () => {
 
   return (
     <>
-      <div className="mx-4 mt-3">
+      <div className="mx-4 mt-4">
         <div className="d-flex w-100 mt-0 mb-0">
           <nav aria-label="page navigation example">
             <ul className="pagination d-flex align-items-center mt-3">
@@ -216,7 +216,7 @@ const PromotionList = () => {
           <>
             <table className="table text-center align-middle">
               <thead>
-                <tr style={{ height: '50px' }} className="align-middle">
+                <tr className="align-middle">
                   <th className="fw-normal">No</th>
                   <th className="fw-normal">ID</th>
                   <th className="fw-normal">Merchant Name</th>

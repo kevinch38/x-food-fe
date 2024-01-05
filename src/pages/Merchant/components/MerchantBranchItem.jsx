@@ -21,7 +21,12 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
   } = merchantBranches;
 
   return (
-    <tr key={idx}>
+    <tr
+      key={idx}
+      style={{
+        height: "50px",
+      }}
+    >
       <td>{idx}</td>
       <td>{branchID}</td>
       <td>{branchName}</td>
@@ -31,7 +36,12 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
       <td>{picEmail}</td>
       <td
         style={{
-          color: `${status == "ACTIVE" ? "green" : "red"}`,
+          color:
+            status === "ACTIVE"
+              ? "green"
+              : status === "INACTIVE"
+              ? "red"
+              : "none",
         }}
       >
         {status}
