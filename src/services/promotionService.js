@@ -6,8 +6,8 @@ const PromotionService = () => {
     return data;
   };
 
-  const fetchPromotions = async () => {
-    const { data } = await axiosInstance.get(`/api/promotions`);
+  const fetchPromotions = async (queryParams) => {
+    const { data } = await axiosInstance.get(`/api/promotions`, {params:queryParams});
     return data;
   };
 

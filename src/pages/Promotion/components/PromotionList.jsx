@@ -17,20 +17,7 @@ const PromotionList = () => {
   const [promotionID, setPromotionID] = useState();
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 9);
-  const [searchState, setSearchState] = useState(
-    searchParam.get("search") || ""
-  );
-
-  const handleChange = (e) => {
-    const { value } = e.target;
-    setSearchState(value);
-
-    if (value.trim() === "") {
-      searchParam.delete("search");
-      setSearchParam(searchParam);
-    }
-  };
+  const currentSize = parseInt(searchParam.get("size") || 8);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
@@ -49,7 +36,6 @@ const PromotionList = () => {
       dispatch(
         promotionAction(async () => {
           const result = await promotionService.fetchPromotions({
-            paging: true,
             page: currentPage,
             size: currentSize,
           });
@@ -70,7 +56,7 @@ const PromotionList = () => {
 
   return (
     <>
-      <div className="mt-0 m-4 container-fluid mb-0">
+      <div className="mx-4 mt-3">
         <div className="d-flex w-100 mt-0 mb-0">
           <nav aria-label="page navigation example">
             <ul className="pagination d-flex align-items-center mt-3">
@@ -212,10 +198,7 @@ const PromotionList = () => {
           </div> */}
         </div>
       </div>
-      <div
-        className="mt-0 m-2 container-fluid table-responsive"
-        style={{ overflowX: "scroll" }}
-      >
+      <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Promotion List</h2>
           <i
@@ -233,7 +216,7 @@ const PromotionList = () => {
           <>
             <table className="table text-center align-middle">
               <thead>
-                <tr>
+                <tr style={{ height: '50px' }} className="align-middle">
                   <th className="fw-normal">No</th>
                   <th className="fw-normal">ID</th>
                   <th className="fw-normal">Merchant Name</th>

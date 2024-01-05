@@ -65,7 +65,6 @@ const AccountList = () => {
     const onGetAccounts = () => {
       dispatch(
         accountAction(async () => {
-          console.log(debounceSearch2);
           const result = await accountService.fetchAccounts({
             page: currentPage,
             size: currentSize,
@@ -288,11 +287,11 @@ const AccountList = () => {
               );
             })
           ) : (
-            <td colSpan={10}>
-              <div className="w-100">
+            <tr>
+              <td colSpan={10}>
                 <EmptyState />
-              </div>
-            </td>
+              </td>
+            </tr>
           )}
         </tbody>
       </table>

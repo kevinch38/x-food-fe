@@ -13,7 +13,7 @@ const AdminMonitoringList = () => {
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 9);
+  const currentSize = parseInt(searchParam.get("size") || 8);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;

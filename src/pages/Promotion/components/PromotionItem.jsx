@@ -23,7 +23,7 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
 
   return (
     <>
-      <tr key={promotionID}>
+      <tr key={idx}>
         <td>{idx}</td>
         <td>{promotionID}</td>
         <td>{merchantName}</td>
