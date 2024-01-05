@@ -60,7 +60,6 @@ const AccountList = () => {
       clear();
     }
   };
-  console.log(debounceSearch2)
 
   useEffect(() => {
     const onGetAccounts = () => {
