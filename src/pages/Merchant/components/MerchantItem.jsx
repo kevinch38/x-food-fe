@@ -139,6 +139,11 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     });
   };
 
+	useEffect(() => {
+		onGetMerchantBranches(merchantID);
+	}, [debounceSearch,debounceSearch2]);
+
+
 	return (
 		<tr key={idx}>
 			<td>{idx}</td>
