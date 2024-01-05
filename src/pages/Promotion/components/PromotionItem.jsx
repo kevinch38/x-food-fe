@@ -24,7 +24,7 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
   return (
     <>
       <tr key={promotionID}>
-        <td>{idx}</td>
+        <td className="p-4">{idx}</td>
         <td>{promotionID}</td>
         <td>{merchantName}</td>
         <td>{promotionName}</td>
@@ -44,7 +44,7 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
         <td>{expiredDate}</td>
         <td className="ms-5">
           {status === "ACTIVE" && (
-            <div className="p-2 d-flex justify-content-between w-100">
+            <div className="d-flex justify-content-between w-100">
               <div className="btn-group d-flex align-items-center justify-content-between">
                 <i
                   className="bi bi-pencil-fill h3 cursor-pointer m-2"
