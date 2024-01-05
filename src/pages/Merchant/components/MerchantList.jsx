@@ -118,6 +118,7 @@ const MerchantList = () => {
     debounceSearch2,
     dispatch,
     merchantService,
+    merchants.length
   ]);
 
   useEffect(() => {
