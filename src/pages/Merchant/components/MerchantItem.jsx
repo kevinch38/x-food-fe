@@ -125,23 +125,19 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
 		}
 	};
 
-	useEffect(() => {
-		onGetMerchantBranches(merchantID);
-	}, [debounceSearch, debounceSearch2]);
-
-	const clear = () => {
-		searchParam2.delete('status');
-		searchParam2.delete('city');
-		searchParam2.delete('startJoinDate');
-		searchParam2.delete('endJoinDate');
-		setSearchParam2(searchParam2);
-		setSearchState2({
-			status: searchParam2.get('status') || null,
-			city: searchParam2.get('city') || null,
-			startJoinDate: searchParam2.get('startJoinDate') || null,
-			endJoinDate: searchParam2.get('endJoinDate') || null,
-		});
-	};
+  const clear = () => {
+    searchParam2.delete("status");
+    searchParam2.delete("city");
+    searchParam2.delete("startJoinDate");
+    searchParam2.delete("endJoinDate");
+    setSearchParam2(searchParam2);
+    setSearchState2({
+      merchantStatus: searchParam2.get("status") || null,
+      startCreatedAt: searchParam2.get("city") || null,
+      startJoinDate: searchParam2.get("startJoinDate") || null,
+      endJoinDate: searchParam2.get("endJoinDate") || null,
+    });
+  };
 
 	return (
 		<tr key={idx}>

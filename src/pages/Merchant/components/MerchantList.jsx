@@ -69,10 +69,31 @@ const MerchantList = () => {
     setSearchParam(searchParam);
   };
 
-  // useEffect(() => {
-  // 	currentPage = parseInt(searchParam.get('page') || 1);
-  // 	currentSize = parseInt(searchParam.get('size') || 10);
-  // }, [paging]);
+  useEffect(() => {
+    const onGetMerchants = () => {
+      dispatch(
+        merchantAction(async () => {
+          const result = await merchantService.fetchMerchants({
+            paging: true,
+            page: currentPage,
+            size: currentSize,
+            merchantName: debounceSearch,
+            ...debounceSearch2,
+          });
+          setPaging(result.paging);
+          return result;
+        })
+      );
+    };
+    onGetMerchants();
+  }, [
+    currentPage,
+    currentSize,
+    debounceSearch,
+    debounceSearch2,
+    dispatch,
+    merchantService,
+  ]);
 
   useEffect(() => {
     const onGetMerchants = () => {
@@ -138,7 +159,7 @@ const MerchantList = () => {
 
   return (
     <>
-      <div className="mt-0 container-fluid mb-0">
+      <div className="mx-4 mt-4">
         <div className="d-flex w-100 mt-0 mb-0">
           <nav aria-label="page navigation example">
             <ul className="pagination d-flex align-items-center mt-3">
@@ -410,11 +431,10 @@ const MerchantList = () => {
           </div>
         </div>
       </div>
-      <div
-        className="mt-0 m-2 container-fluid table-responsive"
-      >
+
+      <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fw-bold">Merchant List</h2>
+          <h2>Merchant List</h2>
           <i
             className="bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4"
             style={{
