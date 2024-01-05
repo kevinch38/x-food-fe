@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AdminMonitoringItem from "./AdminMonitoringItem";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { adminMonitoringAction } from "../../../slices/adminMonitoringSlice";
+import EmptyState from "../../../components/EmptyState";  
 
 const AdminMonitoringList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -13,7 +14,7 @@ const AdminMonitoringList = () => {
   const [paging, setPaging] = useState({});
 
   const currentPage = parseInt(searchParam.get("page") || 1);
-  const currentSize = parseInt(searchParam.get("size") || 9);
+  const currentSize = parseInt(searchParam.get("size") || 8);
 
   const onNext = () => {
     if (currentPage === paging.totalPages) return;
@@ -99,22 +100,20 @@ const AdminMonitoringList = () => {
       <table className="table">
         <thead>
           <tr>
-             <th className="fw-normal">No</th>
-             <th className="fw-normal">ID</th>
-             <th className="fw-normal">Activity</th>
-             <th className="fw-normal">Activity ID</th>
-             <th className="fw-normal">Admin Name</th>
-             <th className="fw-normal">Admin Role</th>
-             <th className="fw-normal">Admin ID</th>
-             <th className="fw-normal">Admin Email</th>
-             <th className="fw-normal">Activity Time</th>
-             <th className="fw-normal">Action</th>
-             
+            <th className="fw-normal">No</th>
+            <th className="fw-normal">ID</th>
+            <th className="fw-normal">Activity</th>
+            <th className="fw-normal">Activity ID</th>
+            <th className="fw-normal">Admin Name</th>
+            <th className="fw-normal">Admin Role</th>
+            <th className="fw-normal">Admin ID</th>
+            <th className="fw-normal">Admin Email</th>
+            <th className="fw-normal">Activity Time</th>
+            <th className="fw-normal">Action</th>
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {adminMonitorings &&
-            adminMonitorings.length !== 0 &&
+          {adminMonitorings && adminMonitorings.length !== 0 ? (
             adminMonitorings.map((adminMonitoring, idx) => {
               return (
                 <AdminMonitoringItem
@@ -123,7 +122,14 @@ const AdminMonitoringList = () => {
                   idx={++idx}
                 />
               );
-            })}
+            })
+          ) : (
+            <tr>
+              <td colSpan={10}>
+                <EmptyState />
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

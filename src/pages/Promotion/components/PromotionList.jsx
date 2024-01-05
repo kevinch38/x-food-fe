@@ -71,7 +71,6 @@ const PromotionList = () => {
       dispatch(
         promotionAction(async () => {
           const result = await promotionService.fetchPromotions({
-            paging: true,
             page: currentPage,
             size: currentSize,
             promotionName: debounceSearch,
@@ -351,10 +350,7 @@ const PromotionList = () => {
           </div>
         </div>
       </div>
-      <div
-        className="mt-0 m-2 container-fluid table-responsive"
-        style={{ overflowX: "scroll" }}
-      >
+      <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Promotion List</h2>
           <i
@@ -375,7 +371,7 @@ const PromotionList = () => {
           <>
             <table className="table text-center align-middle">
               <thead>
-                <tr>
+                <tr className="align-middle">
                   <th className="fw-normal">No</th>
                   <th className="fw-normal">ID</th>
                   <th className="fw-normal">Merchant Name</th>

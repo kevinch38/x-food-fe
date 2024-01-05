@@ -19,7 +19,7 @@ function AccountItem({ account, idx }) {
   } = account;
 
   return (
-    <tr style={{ height: '50px' }} className="align-middle">
+    <tr key={idx} style={{ height: '50px' }} className="align-middle">
       <td>{idx}</td>
       <td>{accountID}</td>
       <td>{ktpID}</td>
@@ -28,8 +28,8 @@ function AccountItem({ account, idx }) {
       <td>{phoneNumber}</td>
       <td>{accountEmail}</td>
       <td>{dateOfBirth}</td>
-      <td>{new Date(createdAt).toLocaleDateString()}</td>
-      <td>{new Date(updatedAt).toLocaleDateString()}</td>
+      <td>{createdAt}</td>
+      <td>{updatedAt}</td>
     </tr>
   );
 }

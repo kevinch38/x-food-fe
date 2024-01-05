@@ -156,9 +156,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
     const onGetMerchants = async () => {
       const result = await dispatch(
         merchantAction(async () => {
-          const response = await merchantService.fetchMerchants({
-            paging: true,
-          });
+          const response = await merchantService.fetchMerchants();
           return response.data;
         })
       );
@@ -248,6 +246,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           name="merchantName"
                           id="merchantName"
                           onChange={handleChange}
+                          defaultValue=""
                           onBlur={handleBlur}
                           className={`form-control  ${
                             touched.promotionValue &&
@@ -257,7 +256,6 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                         >
                           <option
                             value=""
-                            selected
                             disabled
                             className="color-dark-subtle"
                           >

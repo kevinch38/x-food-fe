@@ -8,6 +8,7 @@ import CreateMerchantModal from "./CreateMerchantModal";
 import EmptyState from "../../../components/EmptyState";
 import DeleteMerchantModal from "./DeleteMerchantModal";
 import { useDebounce } from "@uidotdev/usehooks";
+import React from "react";
 
 const MerchantList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -95,9 +96,39 @@ const MerchantList = () => {
   ]);
 
   useEffect(() => {
+    const onGetMerchants = () => {
+      dispatch(
+        merchantAction(async () => {
+          const result = await merchantService.fetchMerchants({
+            page: currentPage,
+            size: currentSize,
+            merchantName: debounceSearch,
+            ...debounceSearch2,
+          });
+          setPaging(result.paging);
+          return result;
+        })
+      );
+    };
+    onGetMerchants();
+  }, [
+    currentPage,
+    currentSize,
+    debounceSearch,
+    debounceSearch2,
+    dispatch,
+    merchantService,
+  ]);
+
+  useEffect(() => {
     searchParam.set("search", debounceSearch);
     setSearchParam(searchParam);
   }, [debounceSearch, searchParam, setSearchParam]);
+
+  // useEffect(() => {
+  // 	searchParam2.set('search', debounceSearch2);
+  // 	setSearchParam2(searchParam2);
+  // }, [debounceSearch2, searchParam2, setSearchParam2]);
 
   const clear = () => {
     searchParam2.delete("merchantStatus");
@@ -127,7 +158,7 @@ const MerchantList = () => {
 
   return (
     <>
-      <div className="mt-0 container-fluid mb-0">
+      <div className="mx-4 mt-4">
         <div className="d-flex w-100 mt-0 mb-0">
           <nav aria-label="page navigation example">
             <ul className="pagination d-flex align-items-center mt-3">
@@ -195,9 +226,9 @@ const MerchantList = () => {
                   "WAITING_FOR_DELETION_APPROVAL",
                   "WAITING_FOR_CREATION_APPROVAL",
                   "WAITING_FOR_UPDATE_APPROVAL",
-                ].map((merchantStatus) => {
+                ].map((merchantStatus, idx) => {
                   return (
-                    <>
+                    <React.Fragment key={idx}>
                       <button
                         className="dropdown-item"
                         href="#"
@@ -210,7 +241,7 @@ const MerchantList = () => {
                         </span>
                       </button>
                       <div className="dropdown-divider"></div>
-                    </>
+                    </React.Fragment>
                   );
                 })}
                 {/* <button
@@ -399,12 +430,10 @@ const MerchantList = () => {
           </div>
         </div>
       </div>
-      <div
-        className="mt-0 m-2 container-fluid table-responsive"
-        style={{ overflowX: "scroll" }}
-      >
+
+      <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
-          <h2 className="fw-bold">Merchant List</h2>
+          <h2>Merchant List</h2>
           <i
             className="bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4"
             style={{
@@ -427,15 +456,9 @@ const MerchantList = () => {
                   <th className="fw-normal">No</th>
                   <th className="fw-normal">ID</th>
                   <th className="fw-normal">Name</th>
-                  <th className="fw-normal" style={{ minWidth: "100px" }}>
-                    PIC Name
-                  </th>
-                  <th className="fw-normal" style={{ minWidth: "100px" }}>
-                    PIC Number
-                  </th>
-                  <th className="fw-normal" style={{ minWidth: "100px" }}>
-                    PIC Email
-                  </th>
+                  <th className="fw-normal">PIC Name</th>
+                  <th className="fw-normal">PIC Number</th>
+                  <th className="fw-normal">PIC Email</th>
                   <th className="fw-normal">Description</th>
                   <th className="fw-normal">Status</th>
                   <th className="fw-normal">Join Date</th>

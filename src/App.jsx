@@ -15,12 +15,11 @@ const App = () => {
 	}
 	return (
 		<>
-			{isLoading && <Loading />}
+			{isLoading && <Loading/>}
 			{error && <ErrorMessageBox key={errorKey} message={error}  clear={onClear}/>}
 			{success && (
 				<SuccessMessageBox key={successKey} message={success} clear={onClear}/>
 			)}
-			{/* <Header /> */}
 			<Outlet />
 		</>
 	);

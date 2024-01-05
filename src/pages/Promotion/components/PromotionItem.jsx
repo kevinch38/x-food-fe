@@ -23,8 +23,8 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
 
   return (
     <>
-      <tr key={promotionID}>
-        <td className="p-4">{idx}</td>
+      <tr key={idx} style={{ height: "50px" }}>
+        <td>{idx}</td>
         <td>{promotionID}</td>
         <td>{merchantName}</td>
         <td>{promotionName}</td>

@@ -65,7 +65,6 @@ const AccountList = () => {
     const onGetAccounts = () => {
       dispatch(
         accountAction(async () => {
-          console.log(debounceSearch2);
           const result = await accountService.fetchAccounts({
             page: currentPage,
             size: currentSize,

@@ -8,28 +8,28 @@ DeleteMerchantBranchModal.propTypes = {
 	merchantID: PropTypes.any,
 	merchantBranchID: PropTypes.any,
 	idx: PropTypes.any,
-	onGetMerchantBranchs: PropTypes.func,
+	onGetMerchantBranches: PropTypes.func,
 };
 
 export default function DeleteMerchantBranchModal({
-	onGetMerchantBranchs,
+	onGetMerchantBranches,
 	merchantID,
 	merchantBranchID,
 	idx,
 }) {
 	const dispatch = useDispatch();
 	const { merchantBranchService } = useContext(ServiceContext);
-	const { merchantBranchs } = useSelector((state) => state.merchantBranch);
+	const { merchantBranches } = useSelector((state) => state.merchantBranch);
 
 	const onDeleteMerchantBranch = (id) => {
 		dispatch(
 			merchantAction(async () => {
 				await merchantBranchService.deleteMerchantBranch(id);
 
-				merchantBranchs.filter(
+				merchantBranches.filter(
 					(merchantBranch) => merchantBranch.branchID !== id
 				);
-				await onGetMerchantBranchs(merchantID,'Branch Data Successfully Deleted');
+				await onGetMerchantBranches(merchantID,'Branch Data Successfully Deleted');
 			})
 		);
 	};

@@ -7,13 +7,13 @@ export const selectMerchantBranchAction = createAsyncThunk('merchantBranch/selec
 const merchantBranchSlice = createSlice({
     name: 'merchantBranch',
     initialState: {
-        merchantBranchs: [],
+        merchantBranches: [],
         selectedMerchantBranch: null,
     },
     extraReducers: (builder) => {
         builder.addCase(merchantBranchAction.fulfilled, (state, { payload }) => {
             if (payload) {
-                state.merchantBranchs = payload.data;
+                state.merchantBranches = payload.data;
             }
         });
         builder.addCase(selectMerchantBranchAction.fulfilled, (state, { payload }) => {
