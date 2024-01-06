@@ -402,47 +402,45 @@ const PromotionList = () => {
           ></i>
         </div>
 
-        {promotions && promotions.length !== 0 ? (
-          <>
-            <table className="table text-center align-middle">
-              <thead>
-                <tr className="align-middle">
-                  <th className="fw-normal">No</th>
-                  <th className="fw-normal">ID</th>
-                  <th className="fw-normal">Merchant Name</th>
-                  <th className="fw-normal">Name</th>
-                  <th className="fw-normal">Description</th>
-                  <th className="fw-normal">Value</th>
-                  <th className="fw-normal">Status</th>
-                  <th className="fw-normal">Cost</th>
-                  <th className="fw-normal">Quantity</th>
-                  <th className="fw-normal">Created At</th>
-                  <th className="fw-normal">Updated At</th>
-                  <th className="fw-normal">Expired Date</th>
-                  <th className="fw-normal">Action</th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {promotions &&
-                  promotions.length !== 0 &&
-                  promotions.map((promotion, idx) => {
-                    return (
-                      <PromotionItem
-                        key={promotion.promotionID}
-                        promotion={promotion}
-                        idx={++idx}
-                        setPromotionID={setPromotionID}
-                      />
-                    );
-                  })}
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <div className="w-100">
-            <EmptyState />
-          </div>
-        )}
+        <table className="table text-center align-middle">
+          <thead>
+            <tr className="align-middle">
+              <th className="fw-normal">No</th>
+              <th className="fw-normal">ID</th>
+              <th className="fw-normal">Merchant Name</th>
+              <th className="fw-normal">Name</th>
+              <th className="fw-normal">Description</th>
+              <th className="fw-normal">Value</th>
+              <th className="fw-normal">Status</th>
+              <th className="fw-normal">Cost</th>
+              <th className="fw-normal">Quantity</th>
+              <th className="fw-normal">Created At</th>
+              <th className="fw-normal">Updated At</th>
+              <th className="fw-normal">Expired Date</th>
+              <th className="fw-normal">Action</th>
+            </tr>
+          </thead>
+          <tbody className="table-group-divider">
+            {promotions && promotions.length !== 0 ? (
+              promotions.map((promotion, idx) => {
+                return (
+                  <PromotionItem
+                    key={promotion.promotionID}
+                    promotion={promotion}
+                    idx={++idx}
+                    setPromotionID={setPromotionID}
+                  />
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={20}>
+                  <EmptyState />
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
         <CreatePromotionModal
           setPromotionID={setPromotionID}
           promotionID={promotionID}

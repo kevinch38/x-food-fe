@@ -173,7 +173,7 @@ const MerchantList = () => {
               </li>
               <li
                 className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle-fill active-button ${
-                  currentPage === 1&& "disabled-button"
+                  currentPage === 1 && "disabled-button"
                 }`}
                 onClick={() => {
                   if (currentPage !== 1) {
@@ -451,47 +451,46 @@ const MerchantList = () => {
           ></i>
         </div>
 
-        {merchants && merchants.length !== 0 ? (
-          <>
-            <table className="table text-center align-middle">
-              <thead>
-                <tr>
-                  <th className="fw-normal">No</th>
-                  <th className="fw-normal">ID</th>
-                  <th className="fw-normal">Name</th>
-                  <th className="fw-normal">PIC Name</th>
-                  <th className="fw-normal">PIC Number</th>
-                  <th className="fw-normal">PIC Email</th>
-                  <th className="fw-normal">Description</th>
-                  <th className="fw-normal">Status</th>
-                  <th className="fw-normal">Join Date</th>
-                  <th className="fw-normal">Created At</th>
-                  <th className="fw-normal">Updated At</th>
-                  <th className="fw-normal">Action</th>
-                  <th style={{ minWidth: "100px" }}></th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {merchants &&
-                  merchants.length !== 0 &&
-                  merchants.map((merchant, idx) => {
-                    return (
-                      <MerchantItem
-                        key={merchant.merchantID}
-                        merchant={merchant}
-                        idx={++idx}
-                        setMerchantID={setMerchantID}
-                      />
-                    );
-                  })}
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <div className="w-100">
-            <EmptyState />
-          </div>
-        )}
+        <table className="table text-center align-middle">
+          <thead>
+            <tr>
+              <th className="fw-normal">No</th>
+              <th className="fw-normal">ID</th>
+              <th className="fw-normal">Name</th>
+              <th className="fw-normal">PIC Name</th>
+              <th className="fw-normal">PIC Number</th>
+              <th className="fw-normal">PIC Email</th>
+              <th className="fw-normal">Description</th>
+              <th className="fw-normal">Status</th>
+              <th className="fw-normal">Join Date</th>
+              <th className="fw-normal">Created At</th>
+              <th className="fw-normal">Updated At</th>
+              <th className="fw-normal">Action</th>
+              <th style={{ minWidth: "100px" }}></th>
+            </tr>
+          </thead>
+          <tbody className="table-group-divider">
+            {merchants && merchants.length !== 0 ? (
+              merchants.map((merchant, idx) => {
+                return (
+                  <MerchantItem
+                    key={merchant.merchantID}
+                    merchant={merchant}
+                    idx={++idx}
+                    setMerchantID={setMerchantID}
+                  />
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={20}>
+                  <EmptyState />
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
         <CreateMerchantModal
           setMerchantID={setMerchantID}
           merchantID={merchantID}

@@ -9,15 +9,15 @@ const AuthService = () => {
     }
 
     const logout = () => {
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     const getTokenFromStorage = () => {
-        return sessionStorage.getItem(TOKEN_KEY);
+        return localStorage.getItem(TOKEN_KEY);
     }
 
     const removeTokenFromStorage = () => {
-        sessionStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(TOKEN_KEY);
     }
     
     const verifyToken = async (token) => {

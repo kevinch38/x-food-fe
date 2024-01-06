@@ -37,7 +37,7 @@ function Login() {
 				authAction(async () => {
 					const result = await authService.login(values);
 					if (result.statusCode === 200) {
-						sessionStorage.setItem('token', result.data.token);
+						localStorage.setItem('token', result.data.token);
 						navigate('/backoffice');
 					}
 					return result;
