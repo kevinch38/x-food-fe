@@ -9,17 +9,25 @@ import EmptyState from "../../../components/EmptyState";
 import CreatePromotionModal from "./CreatePromotionModal";
 import DeletePromotionModal from "./DeletePromotionModal";
 import React from "react";
+import { jwtDecode } from "jwt-decode";
 
 const PromotionList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
   const dispatch = useDispatch();
   const { promotions } = useSelector((state) => state.promotion);
-  const { promotionService } = useContext(ServiceContext);
+  const { promotionService, authService } = useContext(ServiceContext);
   const [paging, setPaging] = useState({});
   const [promotionID, setPromotionID] = useState();
 
   const currentPage = parseInt(searchParam.get("page") || 1);
   const currentSize = parseInt(searchParam.get("size") || 8);
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
+
   const [searchState, setSearchState] = useState(
     searchParam.get("search") || ""
   );
@@ -243,7 +251,7 @@ const PromotionList = () => {
                     <input
                       className="form-control"
                       style={{ width: "90%" }}
-                      type="datetime-local"
+                      type="date"
                       name="startCreatedAt"
                       id="startCreatedAt"
                       onChange={(e) =>
@@ -260,7 +268,7 @@ const PromotionList = () => {
                     <input
                       className="form-control"
                       style={{ width: "90%" }}
-                      type="datetime-local"
+                      type="date"
                       name="endCreatedAt"
                       id="endCreatedAt"
                       onChange={(e) =>
@@ -298,7 +306,7 @@ const PromotionList = () => {
                     <input
                       className="form-control"
                       style={{ width: "90%" }}
-                      type="datetime-local"
+                      type="date"
                       name="startUpdatedAt"
                       id="startUpdatedAt"
                       onChange={(e) =>
@@ -315,7 +323,7 @@ const PromotionList = () => {
                     <input
                       className="form-control"
                       style={{ width: "90%" }}
-                      type="datetime-local"
+                      type="date"
                       name="endUpdatedAt"
                       id="endUpdatedAt"
                       onChange={(e) =>
@@ -353,7 +361,7 @@ const PromotionList = () => {
                     <input
                       className="form-control"
                       style={{ width: "90%" }}
-                      type="datetime-local"
+                      type="date"
                       name="startExpiredDate"
                       id="startExpiredDate"
                       onChange={(e) =>
@@ -369,7 +377,7 @@ const PromotionList = () => {
                     <input
                       className="form-control"
                       style={{ width: "90%" }}
-                      type="datetime-local"
+                      type="date"
                       name="endExpiredDate"
                       id="endExpiredDate"
                       onChange={(e) =>
@@ -417,7 +425,11 @@ const PromotionList = () => {
               <th className="fw-normal">Created At</th>
               <th className="fw-normal">Updated At</th>
               <th className="fw-normal">Expired Date</th>
-              <th className="fw-normal">Action</th>
+              {(adminRole === "ROLE_SUPER_ADMIN" ||
+                adminRole === "ROLE_MARKETING_STAFF" ||
+                adminRole === "ROLE_MARKETING_HEAD") && (
+                <th className="fw-normal">Action</th>
+              )}
             </tr>
           </thead>
           <tbody className="table-group-divider">

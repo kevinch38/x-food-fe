@@ -12,7 +12,7 @@ function AuthenticatedLayout() {
   const { authService } = useContext(ServiceContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const onGetUserInfo = async () => {
       try {

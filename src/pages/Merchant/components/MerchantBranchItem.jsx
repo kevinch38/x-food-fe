@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import { jwtDecode } from "jwt-decode";
+import { useContext } from "react";
+import { ServiceContext } from "../../../context/ServiceContext";
 
 MerchantBranchItem.propTypes = {
   merchantBranches: PropTypes.any,
@@ -7,6 +10,14 @@ MerchantBranchItem.propTypes = {
 };
 
 function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
+  const { authService } = useContext(ServiceContext);
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
+
   const {
     merchantID,
     branchID,
@@ -49,32 +60,41 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
       <td>{joinDate}</td>
       <td>{createdAt}</td>
       <td>
-        {status == "INACTIVE" ? '' :  (
+        {status == "INACTIVE" ? (
+          ""
+        ) : (
           <div className="p-2 row">
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
-                <i
-                  className="bi bi-pencil-fill h3 cursor-pointer m-2"
-                  style={{
-                    color: "rgb(255, 210, 48)",
-                  }}
-                  onClick={() => {
-                    setMerchantBranchID(branchID);
-                  }}
-                  data-bs-toggle="modal"
-                  data-bs-target={`#createMerchantBranchModal${merchantID}`}
-                ></i>
-                <i
-                  className="bi bi-trash-fill h3 cursor-pointer m-2"
-                  style={{
-                    color: "rgb(255, 0, 0)",
-                  }}
-                  onClick={() => {
-                    setMerchantBranchID(branchID);
-                  }}
-                  data-bs-toggle="modal"
-                  data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
-                ></i>
+                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                  adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+                  adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                  <i
+                    className="bi bi-pencil-fill h3 cursor-pointer m-2"
+                    style={{
+                      color: "rgb(255, 210, 48)",
+                    }}
+                    onClick={() => {
+                      setMerchantBranchID(branchID);
+                    }}
+                    data-bs-toggle="modal"
+                    data-bs-target={`#createMerchantBranchModal${merchantID}`}
+                  ></i>
+                )}
+                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                  adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                  <i
+                    className="bi bi-trash-fill h3 cursor-pointer m-2"
+                    style={{
+                      color: "rgb(255, 0, 0)",
+                    }}
+                    onClick={() => {
+                      setMerchantBranchID(branchID);
+                    }}
+                    data-bs-toggle="modal"
+                    data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
+                  ></i>
+                )}
               </div>
             </div>
           </div>

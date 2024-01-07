@@ -194,7 +194,7 @@ const HistoryList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startTransactionDate"
                     id="startTransactionDate"
                     onChange={(e) =>
@@ -211,7 +211,7 @@ const HistoryList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endTransactionDate"
                     id="endTransactionDate"
                     onChange={(e) =>

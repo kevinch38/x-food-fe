@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import { jwtDecode } from "jwt-decode";
+import { useContext } from "react";
+import { ServiceContext } from "../../../context/ServiceContext";
 
 PromotionItem.propTypes = {
   promotion: PropTypes.any,
@@ -7,6 +10,14 @@ PromotionItem.propTypes = {
 };
 
 function PromotionItem({ promotion, idx, setPromotionID }) {
+  const { authService } = useContext(ServiceContext);
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
+
   const {
     promotionID,
     merchantName,
@@ -32,7 +43,12 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
         <td>{promotionValue}</td>
         <td
           style={{
-            color: `${status == "ACTIVE" ? "green" : "red"}`,
+            color:
+              status === "ACTIVE"
+                ? "green"
+                : status === "INACTIVE"
+                ? "red"
+                : "none",
           }}
         >
           {status}
@@ -46,24 +62,31 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
           {status === "ACTIVE" && (
             <div className="d-flex justify-content-between w-100">
               <div className="p-2 btn-group d-flex align-items-center justify-content-between">
-                <i
-                  className="bi bi-pencil-fill h3 cursor-pointer m-2"
-                  style={{
-                    color: "rgb(255, 210, 48)",
-                  }}
-                  onClick={() => setPromotionID(promotionID)}
-                  data-bs-toggle="modal"
-                  data-bs-target={`#createPromotionModal`}
-                ></i>
-                <i
-                  className="bi bi-trash-fill h3 cursor-pointer m-2"
-                  style={{
-                    color: "rgb(255, 0, 0)",
-                  }}
-                  onClick={() => setPromotionID(promotionID)}
-                  data-bs-toggle="modal"
-                  data-bs-target={`#deletePromotionModal`}
-                ></i>
+                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                  adminRole === "ROLE_MARKETING_STAFF" ||
+                  adminRole === "ROLE_MARKETING_HEAD") && (
+                  <i
+                    className="bi bi-pencil-fill h3 cursor-pointer m-2"
+                    style={{
+                      color: "rgb(255, 210, 48)",
+                    }}
+                    onClick={() => setPromotionID(promotionID)}
+                    data-bs-toggle="modal"
+                    data-bs-target={`#createPromotionModal`}
+                  ></i>
+                )}
+                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                  adminRole === "ROLE_MARKETING_STAFF") && (
+                  <i
+                    className="bi bi-trash-fill h3 cursor-pointer m-2"
+                    style={{
+                      color: "rgb(255, 0, 0)",
+                    }}
+                    onClick={() => setPromotionID(promotionID)}
+                    data-bs-toggle="modal"
+                    data-bs-target={`#deletePromotionModal`}
+                  ></i>
+                )}
               </div>
             </div>
           )}

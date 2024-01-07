@@ -186,7 +186,7 @@ const AccountList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startCreatedAt"
                     id="startCreatedAt"
                     onChange={(e) =>
@@ -203,7 +203,7 @@ const AccountList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endCreatedAt"
                     id="endCreatedAt"
                     onChange={(e) =>
@@ -241,7 +241,7 @@ const AccountList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startUpdatedAt"
                     id="startUpdatedAt"
                     onChange={(e) =>
@@ -258,7 +258,7 @@ const AccountList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endUpdatedAt"
                     id="endUpdatedAt"
                     onChange={(e) =>

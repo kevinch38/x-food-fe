@@ -24,7 +24,7 @@ const setupRouter = () =>
           element: <AuthenticatedLayout />,
           children: [
             {
-              index: true,
+              path: "accounts",
               element: <Account />,
             },
             {

@@ -9,6 +9,7 @@ import EmptyState from "../../../components/EmptyState";
 import DeleteMerchantModal from "./DeleteMerchantModal";
 import { useDebounce } from "@uidotdev/usehooks";
 import React from "react";
+import { jwtDecode } from "jwt-decode";
 
 const MerchantList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -18,6 +19,14 @@ const MerchantList = () => {
 
   const [paging, setPaging] = useState({});
   const [merchantID, setMerchantID] = useState();
+
+  const { authService } = useContext(ServiceContext);
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
 
   let currentPage = parseInt(searchParam.get("page") || 1);
   let currentSize = parseInt(searchParam.get("size") || 8);
@@ -298,7 +307,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startCreatedAt"
                     id="startCreatedAt"
                     onChange={(e) =>
@@ -315,7 +324,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endCreatedAt"
                     id="endCreatedAt"
                     onChange={(e) =>
@@ -350,7 +359,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startUpdatedAt"
                     id="startUpdatedAt"
                     onChange={(e) =>
@@ -367,7 +376,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endUpdatedAt"
                     id="endUpdatedAt"
                     onChange={(e) =>
@@ -402,7 +411,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startJoinDate"
                     id="startJoinDate"
                     onChange={(e) =>
@@ -419,7 +428,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endJoinDate"
                     id="endJoinDate"
                     onChange={(e) =>
@@ -437,18 +446,21 @@ const MerchantList = () => {
       <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Merchant List</h2>
-          <i
-            className="bi bi-plus-circle-fill h2 cursor-pointer"
-            style={{
-              color: "rgb(101, 213, 26)",
-            }}
-            onClick={() => {
-              setMerchantID(null);
-              setSearchState("");
-            }}
-            data-bs-toggle="modal"
-            data-bs-target={`#createMerchantModal`}
-          ></i>
+          {(adminRole === "ROLE_SUPER_ADMIN" ||
+            adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+            <i
+              className="bi bi-plus-circle-fill h2 cursor-pointer"
+              style={{
+                color: "rgb(101, 213, 26)",
+              }}
+              onClick={() => {
+                setMerchantID(null);
+                setSearchState("");
+              }}
+              data-bs-toggle="modal"
+              data-bs-target={`#createMerchantModal`}
+            ></i>
+          )}
         </div>
 
         <table className="table text-center align-middle">
@@ -465,7 +477,11 @@ const MerchantList = () => {
               <th className="fw-normal">Join Date</th>
               <th className="fw-normal">Created At</th>
               <th className="fw-normal">Updated At</th>
-              <th className="fw-normal">Action</th>
+              {(adminRole === "ROLE_SUPER_ADMIN" ||
+                adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+                adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                <th className="fw-normal">Action</th>
+              )}
               <th style={{ minWidth: "100px" }}></th>
             </tr>
           </thead>

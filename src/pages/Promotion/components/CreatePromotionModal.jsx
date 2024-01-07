@@ -25,7 +25,6 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
 
   const {
     values: {
-      merchantName,
       promotionName,
       promotionDescription,
       maxRedeem,
