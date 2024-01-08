@@ -344,22 +344,17 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                       <div
                         className="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
+                        style={{maxHeight:"200px",overflowY:'auto'}}
                       >
-                        {[
-                          "Jakarta Pusat",
-                          "Jakarta Utara",
-                          "Jakarta Timur",
-                          "Jakarta Seletan",
-                          "Jakarta Barat",
-                        ].map((city, idx) => {
+                        {filteredCities.map(({cityName, cityID}) => {
                           return (
-                            <React.Fragment key={idx}>
+                            <React.Fragment key={cityID}>
                               <button
                                 className="dropdown-item"
                                 href="#"
-                                onClick={() => handleChange2(city, "city")}
+                                onClick={() => handleChange2(cityName, "city")}
                               >
-                                {city}
+                                {cityName}
                               </button>
                               <div className="dropdown-divider"></div>
                             </React.Fragment>
