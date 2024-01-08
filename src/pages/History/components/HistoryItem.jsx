@@ -40,10 +40,11 @@ function HistoryItem({ history, idx }) {
           />
           <div className="d-flex flex-column align-items-center justify-content-center pt-2">
             <i
-              className="bi bi-list-ul h3 cursor-pointer"
+              className="bi bi-info-circle-fill h3 cursor-pointer"
+              style={{color:"rgb(128, 128, 128)"}}
               data-bs-toggle="modal"
               data-bs-target={`#historyModal${idx}`}
-            ></i>
+            />
           </div>
         </div>
       </td>

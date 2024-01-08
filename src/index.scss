@@ -25,6 +25,10 @@ body {
   color: #fff;
 }
 
+.visible {
+  overflow:visible !important;
+}
+
 .loader:before,
 .loader:after {
   content: "";
@@ -60,7 +64,7 @@ body {
 }
 
 .disabled-button {
-  color: #BDBDC6 !important; 
+  color: #bdbdc6 !important;
   cursor: default;
 }
 

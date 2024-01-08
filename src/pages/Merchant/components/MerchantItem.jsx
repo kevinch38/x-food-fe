@@ -23,9 +23,17 @@ MerchantItem.propTypes = {
   setMerchantID: PropTypes.func,
   idx: PropTypes.number,
   onGetMerchantBranches: PropTypes.any,
+  merchantAction: PropTypes.any,
+  merchantService: PropTypes.any,
 };
 
-function MerchantItem({ merchant, idx, setMerchantID }) {
+function MerchantItem({
+  merchant,
+  idx,
+  setMerchantID,
+  merchantAction,
+  merchantService,
+}) {
   const [merchantBranchID, setMerchantBranchID] = useState();
   const {
     merchantID,
@@ -41,7 +49,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     updatedAt,
   } = merchant;
   const { authService } = useContext(ServiceContext);
-
+  const { merchants } = useSelector((state) => state.merchant);
   const { merchantBranches } = useSelector((state) => state.merchantBranch);
   const { cities } = useSelector((state) => state.merchantBranch);
   const { merchantBranchService } = useContext(ServiceContext);
@@ -133,6 +141,30 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     }
   };
 
+  const handleApprove = (id) => {
+    dispatch(
+      merchantAction(async () => {
+        await merchantService.approveMerchants(id);
+        const data = merchants.filter(
+          (merchant) => merchant.merchantID !== merchantID
+        );
+        return { messageBox: "Successfully approved", data: data };
+      })
+    );
+  };
+
+  const handleReject = (id) => {
+    dispatch(
+      merchantAction(async () => {
+        await merchantService.rejectMerchants(id);
+        const data = merchants.filter(
+          (merchant) => merchant.merchantID !== merchantID
+        );
+        return { messageBox: "Successfully approved", data: data };
+      })
+    );
+  };
+
   const clear = () => {
     searchParam2.delete("status");
     searchParam2.delete("city");
@@ -178,12 +210,12 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
       {(adminRole === "ROLE_SUPER_ADMIN" ||
         adminRole === "ROLE_PARTNERSHIP_STAFF" ||
         adminRole === "ROLE_PARTNERSHIP_HEAD") && (
-        <td>
+        <td className="visible">
           {status == "INACTIVE" ? (
             ""
           ) : (
             <div className="p-2 d-flex justify-content-between w-100">
-              <div className="btn-group justify-content-between">
+              <div className="btn-group justify-content-between" >
                 {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF" ||
                   adminRole === "ROLE_PARTNERSHIP_HEAD") && (
@@ -209,6 +241,54 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     data-bs-target={`#deleteMerchantModal`}
                   ></i>
                 )}
+
+                <div className="dropdown">
+                  <button
+                    className="btn btn-light dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style={{ width: "auto" }}
+                  >
+                    <i
+                      className="bi bi-list-ul h3 cursor-pointer"
+                      style={{ color: "rgb(128, 128, 128)" }}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#historyModal${idx}`}
+                    />
+                  </button>
+
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {["Approve", "Reject"].map((action, idx, array) => {
+                      return (
+                        <React.Fragment key={idx}>
+                          <button
+                            className="dropdown-item"
+                            href="#"
+                            onClick={() => {
+                              if (action == "Approve")
+                                handleApprove(merchantID);
+                              else if (action == "Reject")
+                                handleReject(merchantID);
+                            }}
+                          >
+                            <span className="text-capitalize">
+                              {action.toLowerCase().replace(/_/g, " ")}
+                            </span>
+                          </button>
+                          {idx !== array.length - 1 && (
+                            <div className="dropdown-divider"></div>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -344,9 +424,9 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                       <div
                         className="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
-                        style={{maxHeight:"200px",overflowY:'auto'}}
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
                       >
-                        {filteredCities.map(({cityName, cityID}) => {
+                        {filteredCities.map(({ cityName, cityID }) => {
                           return (
                             <React.Fragment key={cityID}>
                               <button

@@ -441,6 +441,8 @@ const PromotionList = () => {
                     promotion={promotion}
                     idx={++idx}
                     setPromotionID={setPromotionID}
+                    promotionService={promotionService}
+                    promotionAction={promotionAction}
                   />
                 );
               })

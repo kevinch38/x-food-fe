@@ -2,21 +2,50 @@ import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 PromotionItem.propTypes = {
   promotion: PropTypes.any,
   idx: PropTypes.number,
   setPromotionID: PropTypes.func,
+  promotionService: PropTypes.func,
+  promotionAction: PropTypes.func,
 };
 
-function PromotionItem({ promotion, idx, setPromotionID }) {
+function PromotionItem({
+  promotion,
+  idx,
+  setPromotionID,
+  promotionService,
+  promotionAction,
+}) {
   const { authService } = useContext(ServiceContext);
+  const dispatch = useDispatch();
 
   const token = authService.getTokenFromStorage();
   if (token) {
     const decodedToken = jwtDecode(token);
     var adminRole = decodedToken.role;
   }
+
+  const handleApprove = (id) => {
+    dispatch(
+      promotionAction(async () => {
+        const result = await promotionService.approvePromotions(id);
+        return result;
+      })
+    );
+  };
+
+  const handleReject = (id) => {
+    dispatch(
+      promotionAction(async () => {
+        const result = await promotionService.rejectPromotions(id);
+        return result;
+      })
+    );
+  };
 
   const {
     promotionID,
@@ -87,6 +116,53 @@ function PromotionItem({ promotion, idx, setPromotionID }) {
                     data-bs-target={`#deletePromotionModal`}
                   ></i>
                 )}
+                <div className="dropdown">
+                  <button
+                    className="btn btn-light dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style={{ width: "auto" }}
+                  >
+                    <i
+                      className="bi bi-list-ul h3 cursor-pointer"
+                      style={{ color: "rgb(128, 128, 128)" }}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#historyModal${idx}`}
+                    />
+                  </button>
+
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    {["Approve", "Reject"].map((action, idx, array) => {
+                      return (
+                        <React.Fragment key={idx}>
+                          <button
+                            className="dropdown-item"
+                            href="#"
+                            onClick={() => {
+                              if (action == "approve")
+                                handleApprove(promotionID);
+                              else if (action == "reject")
+                                handleReject(promotionID);
+                            }}
+                          >
+                            <span className="text-capitalize">
+                              {action.toLowerCase().replace(/_/g, " ")}
+                            </span>
+                          </button>
+                          {idx !== array.length - 1 && (
+                            <div className="dropdown-divider"></div>
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           )}

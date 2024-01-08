@@ -470,6 +470,8 @@ const MerchantList = () => {
                     merchant={merchant}
                     idx={++idx}
                     setMerchantID={setMerchantID}
+                    merchantAction={merchantAction}
+                    merchantService={merchantService}
                   />
                 );
               })

@@ -26,6 +26,15 @@ const MerchantService = () => {
         return data;
     }
 
+    const approveMerchants = async (id) => {
+        const { data } = await axiosInstance.put(`/api/merchants/approve/active/${id}`);
+        return data;
+      };
+    
+      const rejectMerchants = async (id) => {
+        const { data } = await axiosInstance.put(`/api/merchants/approve/inactive/${id}`);
+        return data;
+      };
     
     const updateMerchant = async (merchant) => {
         const formData = new FormData();
@@ -54,6 +63,8 @@ const MerchantService = () => {
         saveMerchant,
         updateMerchant,
         deleteMerchant,
+        approveMerchants,
+        rejectMerchants,
     }
 }
 

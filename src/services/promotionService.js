@@ -13,6 +13,16 @@ const PromotionService = () => {
     return data;
   };
 
+  const approvePromotions = async (id) => {
+    const { data } = await axiosInstance.get(`/api/promotions/approve/active/${id}`);
+    return data;
+  };
+
+  const rejectPromotions = async (id) => {
+    const { data } = await axiosInstance.get(`/api/promotions/approve/inactive/${id}`);
+    return data;
+  };
+
   const savePromotion = async (promotion) => {
     const request = {
       merchantID: promotion.merchantID,
@@ -57,6 +67,8 @@ const PromotionService = () => {
     fetchPromotions,
     savePromotion,
     updatePromotion,
+    approvePromotions,
+    rejectPromotions,
     deletePromotion,
   };
 };
