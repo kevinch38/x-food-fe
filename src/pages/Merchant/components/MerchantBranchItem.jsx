@@ -137,11 +137,8 @@ function MerchantBranchItem({
                   status !== "ACTIVE" &&
                   (adminRole === "ROLE_SUPER_ADMIN" ||
                     adminRole === "ROLE_MARKETING_HEAD") && (
-                    <div
-                      className="dropdown"
-                     
-                    >
-                     <button
+                    <div className="dropdown">
+                      <button
                         className="btn btn-light dropdown-toggle"
                         type="button"
                         id="dropdownMenuButton"
@@ -177,6 +174,16 @@ function MerchantBranchItem({
                                     (status ===
                                       "WAITING_FOR_CREATION_APPROVAL" ||
                                       status === "WAITING_FOR_UPDATE_APPROVAL")
+                                  )
+                                    handleApprove(branchID);
+                                  else if (
+                                    action === "Reject" &&
+                                    status === "WAITING_FOR_CREATION_APPROVAL"
+                                  )
+                                    handleApproveDelete(branchID);
+                                  else if (
+                                    action === "Reject" &&
+                                    status === "WAITING_FOR_DELETION_APPROVAL"
                                   )
                                     handleApprove(branchID);
                                 }}

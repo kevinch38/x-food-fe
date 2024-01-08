@@ -165,6 +165,16 @@ function PromotionItem({
                                       status === "WAITING_FOR_UPDATE_APPROVAL")
                                   )
                                     handleApprove(promotionID);
+                                  else if (
+                                    action === "Reject" &&
+                                    status === "WAITING_FOR_CREATION_APPROVAL"
+                                  )
+                                    handleApproveDelete(promotionID);
+                                  else if (
+                                    action === "Reject" &&
+                                    status === "WAITING_FOR_DELETION_APPROVAL"
+                                  )
+                                    handleApprove(promotionID);
                                 }}
                               >
                                 <span className="text-capitalize">

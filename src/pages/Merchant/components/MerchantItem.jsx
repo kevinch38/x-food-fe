@@ -284,6 +284,16 @@ function MerchantItem({
                                       status === "WAITING_FOR_UPDATE_APPROVAL")
                                   )
                                     handleApprove(merchantID);
+                                  else if (
+                                    action === "Reject" &&
+                                    status === "WAITING_FOR_CREATION_APPROVAL"
+                                  )
+                                    handleApproveDelete(merchantID);
+                                  else if (
+                                    action === "Reject" &&
+                                    status === "WAITING_FOR_DELETION_APPROVAL"
+                                  )
+                                    handleApprove(merchantID);
                                 }}
                               >
                                 <span className="text-capitalize">
