@@ -23,7 +23,7 @@ export default function DeletePromotionModal({ promotionID }) {
 				const a = promotions.filter(
 					(promotion) => promotion.promotionID !== promotionID
 				);
-				return { data: a };
+				return { data: a, messageBox: "Promotion Data Successfully Deleted" };
 			})
 		);
 	};

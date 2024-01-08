@@ -98,6 +98,7 @@ const PromotionList = () => {
     debounceSearch2,
     dispatch,
     promotionService,
+    promotions?.length
   ]);
 
   useEffect(() => {

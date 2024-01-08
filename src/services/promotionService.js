@@ -6,15 +6,15 @@ const PromotionService = () => {
     return data;
   };
 
-  const fetchPromotions = async () => {
-    console.log("============================");
-    const { data } = await axiosInstance.get(`/api/promotions`);
+  const fetchPromotions = async (queryParams) => {
+    const { data } = await axiosInstance.get(`/api/promotions`, {params: queryParams});
     return data;
   };
 
   const savePromotion = async (promotion) => {
+    console.log(promotion)
     const request = {
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
@@ -34,7 +34,7 @@ const PromotionService = () => {
   const updatePromotion = async (promotion) => {
     const request = {
       promotionID: promotion.promotionID,
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
