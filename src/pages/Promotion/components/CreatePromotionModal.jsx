@@ -388,7 +388,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                             document.getElementById("expiredDate").type =
                               "date";
                           }}
-                          placeholder="Expired Date"
+                          placeholder="End Of Day"
                           name="expiredDate"
                         />
                       </td>
