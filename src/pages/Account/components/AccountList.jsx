@@ -287,19 +287,18 @@ const AccountList = () => {
               );
             })
           ) : (
-<<<<<<<<< Temporary merge branch 1
+            <>
             <td colSpan={10}>
               <div className="w-100">
                 <EmptyState />
               </div>
             </td>
-=========
             <tr>
               <td colSpan={10}>
                 <EmptyState />
               </td>
             </tr>
->>>>>>>>> Temporary merge branch 2
+            </>
           )}
         </tbody>
       </table>
