@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import { useState } from "react";
 
 CreateMerchantBranchModal.propTypes = {
+  cities: PropTypes.any,
   merchantID: PropTypes.any,
   merchantBranchID: PropTypes.any,
   idx: PropTypes.any,
@@ -25,6 +26,7 @@ export default function CreateMerchantBranchModal({
   idx,
   onGetMerchantBranches,
   setMerchantBranchID,
+  cities,
 }) {
   const dispatch = useDispatch();
   const { merchantBranchService } = useContext(ServiceContext);
@@ -48,7 +50,7 @@ export default function CreateMerchantBranchModal({
       merchantID: merchantID,
       branchName: "",
       branchWorkingHoursID: "1",
-      cityID: "8a8ae47a8cae650a018cae6535c00010",
+      cityID: "",
       picName: "",
       picNumber: "",
       picEmail: "",
@@ -154,7 +156,7 @@ export default function CreateMerchantBranchModal({
         merchantID: merchantID,
         branchName: "",
         branchWorkingHoursID: "1",
-        cityID: "8a8ae47a8cae650a018cae6535c00010",
+        cityID: "",
         picName: "",
         picNumber: "",
         picEmail: "",
@@ -312,7 +314,7 @@ export default function CreateMerchantBranchModal({
                     </tr>
                     <tr>
                       <td>
-                        <input
+                        {/* <input
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={cityID}
@@ -323,7 +325,30 @@ export default function CreateMerchantBranchModal({
                           type="text"
                           placeholder="City"
                           name="cityID"
-                        />
+                        /> */}
+                        <select
+                          name="cityID"
+                          id="cityID"
+                          onChange={handleChange}
+                          value={cityID ? cityID : `abcde`}
+                          // value={'8a8ae47e8cd256be018cd2570983011a'}
+                          onBlur={handleBlur}
+                          className={`form-control  ${
+                            touched.cityID &&
+                            errors.cityID &&
+                            "is-invalid p-2 w-100 border-1 border-dark-subtle rounded"
+                          }`}
+                        >
+                          <option hidden disabled value="abcde">
+                            City
+                          </option>
+
+                          {cities.map((city, index) => (
+                            <option key={index} value={city.cityID}>
+                              {city.cityName}
+                            </option>
+                          ))}
+                        </select>
                       </td>
                       <td>
                         <input

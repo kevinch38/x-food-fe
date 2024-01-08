@@ -4,7 +4,10 @@ import MerchantBranchItem from "./MerchantBranchItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
-import { merchantBranchAction } from "../../../slices/merchantBranchSlice";
+import {
+  citiesAction,
+  merchantBranchAction,
+} from "../../../slices/merchantBranchSlice";
 import EmptyState from "../../../components/EmptyState";
 import CreateMerchantBranchModal from "./CreateMerchantBranchModal";
 import { useState } from "react";
@@ -13,6 +16,7 @@ import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "@uidotdev/usehooks";
 import { useEffect } from "react";
 import React from "react";
+import { jwtDecode } from "jwt-decode";
 
 MerchantItem.propTypes = {
   merchant: PropTypes.any,
@@ -36,10 +40,42 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     createdAt,
     updatedAt,
   } = merchant;
+  const { authService } = useContext(ServiceContext);
 
   const { merchantBranches } = useSelector((state) => state.merchantBranch);
+  const { cities } = useSelector((state) => state.merchantBranch);
   const { merchantBranchService } = useContext(ServiceContext);
   const dispatch = useDispatch();
+
+  const getCities = () => {
+    dispatch(
+      citiesAction(async () => {
+        const result = await merchantBranchService.fetchCities();
+        return result;
+      })
+    );
+  };
+  useEffect(() => {
+    getCities();
+  }, []);
+  const jabodetabek = ["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi"];
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
+
+  let filteredCities = [];
+  jabodetabek.map((kota) => {
+    const temp = cities.filter((city) => city.cityName.includes(kota));
+    temp.map((a) => {
+      filteredCities.push(a);
+    });
+  });
+
+  filteredCities = filteredCities.sort();
+
   const onGetMerchantBranches = (id, messageBox) => {
     dispatch(
       merchantBranchAction(async () => {
@@ -97,10 +133,6 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     }
   };
 
-  useEffect(() => {
-    onGetMerchantBranches(merchantID);
-  }, [debounceSearch, debounceSearch2]);
-
   const clear = () => {
     searchParam2.delete("status");
     searchParam2.delete("city");
@@ -108,12 +140,16 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     searchParam2.delete("endJoinDate");
     setSearchParam2(searchParam2);
     setSearchState2({
-      status: searchParam2.get("status") || null,
-      city: searchParam2.get("city") || null,
+      merchantStatus: searchParam2.get("status") || null,
+      startCreatedAt: searchParam2.get("city") || null,
       startJoinDate: searchParam2.get("startJoinDate") || null,
       endJoinDate: searchParam2.get("endJoinDate") || null,
     });
   };
+
+  useEffect(() => {
+    onGetMerchantBranches(merchantID);
+  }, [debounceSearch, debounceSearch2]);
 
   return (
     <tr key={idx}>
@@ -139,32 +175,45 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
       <td>{joinDate}</td>
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
-      <td>
-        {status == "ACTIVE" && (
-          <div className="p-2 d-flex justify-content-between w-100">
-            <div className="btn-group justify-content-between">
-              <i
-                className="bi bi-pencil-fill h3 cursor-pointer m-2"
-                style={{
-                  color: "rgb(255, 210, 48)",
-                }}
-                onClick={() => setMerchantID(merchantID)}
-                data-bs-toggle="modal"
-                data-bs-target={`#createMerchantModal`}
-              ></i>
-              <i
-                className="bi bi-trash-fill h3 cursor-pointer m-2"
-                style={{
-                  color: "rgb(255, 0, 0)",
-                }}
-                onClick={() => setMerchantID(merchantID)}
-                data-bs-toggle="modal"
-                data-bs-target={`#deleteMerchantModal`}
-              ></i>
+      {(adminRole === "ROLE_SUPER_ADMIN" ||
+        adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+        adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+        <td>
+          {status == "INACTIVE" ? (
+            ""
+          ) : (
+            <div className="p-2 d-flex justify-content-between w-100">
+              <div className="btn-group justify-content-between">
+                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                  adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+                  adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                  <i
+                    className="bi bi-pencil-fill h3 cursor-pointer m-2"
+                    style={{
+                      color: "rgb(255, 210, 48)",
+                    }}
+                    onClick={() => setMerchantID(merchantID)}
+                    data-bs-toggle="modal"
+                    data-bs-target={`#createMerchantModal`}
+                  ></i>
+                )}
+                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                  adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                  <i
+                    className="bi bi-trash-fill h3 cursor-pointer m-2"
+                    style={{
+                      color: "rgb(255, 0, 0)",
+                    }}
+                    onClick={() => setMerchantID(merchantID)}
+                    data-bs-toggle="modal"
+                    data-bs-target={`#deleteMerchantModal`}
+                  ></i>
+                )}
+              </div>
             </div>
-          </div>
-        )}
-      </td>
+          )}
+        </td>
+      )}
       <td className=" ms-5">
         <div className="p-2">
           <div className="d-flex flex-column align-items-center justify-content-center pt-2">
@@ -185,6 +234,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
           idx={idx}
           merchantID={merchantID}
           merchantBranchID={merchantBranchID}
+          cities={filteredCities}
         />
         <DeleteMerchantBranchModal
           idx={idx}
@@ -345,7 +395,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                               style={{
                                 width: "90%",
                               }}
-                              type="datetime-local"
+                              type="date"
                               name="startJoinDate"
                               id="startJoinDate"
                               onChange={(e) =>
@@ -364,7 +414,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                               style={{
                                 width: "90%",
                               }}
-                              type="datetime-local"
+                              type="date"
                               name="endJoinDate"
                               id="endJoinDate"
                               onChange={(e) =>
@@ -398,22 +448,40 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     <p>| {status}</p>
                     <div className="d-flex justify-content-between">
                       <span>| {note}</span>
-                      <span className="text-end">
-                        {status == "ACTIVE" && (
-                          <i
-                            className="bi bi-plus-circle-fill h2 cursor-pointer"
-                            style={{
-                              color: "rgb(101, 213, 26)",
-                            }}
-                            onClick={() => {
-                              setMerchantBranchID(null);
-                              setSearchState("");
-                            }}
-                            data-bs-toggle="modal"
-                            data-bs-target={`#createMerchantBranchModal${merchantID}`}
-                          ></i>
-                        )}
-                      </span>
+                      {(adminRole === "ROLE_SUPER_ADMIN" ||
+                        adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                        <span className="text-end">
+                          {status == "ACTIVE" ? (
+                            <i
+                              className="bi bi-plus-circle-fill h2 cursor-pointer"
+                              style={{
+                                color: "rgb(101, 213, 26)",
+                              }}
+                              onClick={() => {
+                                setMerchantBranchID(null);
+                                setSearchState("");
+                              }}
+                              data-bs-toggle="modal"
+                              data-bs-target={`#createMerchantBranchModal${merchantID}`}
+                            ></i>
+                          ) : status == "INACTIVE" ? (
+                            ""
+                          ) : (
+                            <i
+                              className="bi bi-plus-circle-fill h2 cursor-pointer"
+                              style={{
+                                color: "rgb(101, 213, 26)",
+                              }}
+                              onClick={() => {
+                                setMerchantBranchID(null);
+                                setSearchState("");
+                              }}
+                              data-bs-toggle="modal"
+                              data-bs-target={`#createMerchantBranchModal${merchantID}`}
+                            ></i>
+                          )}
+                        </span>
+                      )}
                     </div>
 
                     {merchantBranches && merchantBranches.length !== 0 ? (

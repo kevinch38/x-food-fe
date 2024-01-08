@@ -10,12 +10,11 @@ function AdminMonitoringItem({ adminMonitoring, idx }) {
   const {
     adminMonitoringID,
     activity,
-    activityID,
     adminName,
     adminRole,
     adminID,
     adminEmail,
-    activityTime,
+    updatedAt,
   } = adminMonitoring;
 
   return (
@@ -23,12 +22,11 @@ function AdminMonitoringItem({ adminMonitoring, idx }) {
       <td>{idx}</td>
       <td>{adminMonitoringID}</td>
       <td>{activity}</td>
-      <td>{activityID}</td>
       <td>{adminName}</td>
       <td>{adminRole}</td>
       <td>{adminID}</td>
       <td>{adminEmail}</td>
-      <td>{new Date(activityTime).toLocaleDateString()}</td>
+      <td>{updatedAt}</td>
       <td>
         <div className="p-2">
           <AdminMonitoringModal

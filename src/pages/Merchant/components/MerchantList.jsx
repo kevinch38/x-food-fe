@@ -9,6 +9,7 @@ import EmptyState from "../../../components/EmptyState";
 import DeleteMerchantModal from "./DeleteMerchantModal";
 import { useDebounce } from "@uidotdev/usehooks";
 import React from "react";
+import { jwtDecode } from "jwt-decode";
 
 const MerchantList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -19,8 +20,16 @@ const MerchantList = () => {
   const [paging, setPaging] = useState({});
   const [merchantID, setMerchantID] = useState();
 
+  const { authService } = useContext(ServiceContext);
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
+
   let currentPage = parseInt(searchParam.get("page") || 1);
-  let currentSize = parseInt(searchParam.get("size") || 10);
+  let currentSize = parseInt(searchParam.get("size") || 8);
 
   const [searchState, setSearchState] = useState(
     searchParam.get("search") || ""
@@ -118,6 +127,7 @@ const MerchantList = () => {
     debounceSearch2,
     dispatch,
     merchantService,
+    merchants.length
   ]);
 
   useEffect(() => {
@@ -165,28 +175,31 @@ const MerchantList = () => {
               <li key={currentPage} className="page-item">
                 <div
                   className={`text-black h5 ${
-                    paging.totalPages ? `me-2` : ` me-3`
+                    paging.totalPages ? "me-2" : "me-3"
                   }`}
-                  to={`/backoffice/menus?page=${currentPage}&size=${currentSize}`}
                 >
                   {currentPage}/{paging.totalPages}
                 </div>
               </li>
               <li
-                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle ${
-                  currentPage == 1 && "disabled"
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-left-circle-fill active-button ${
+                  currentPage === 1 && "disabled-button"
                 }`}
                 onClick={() => {
-                  onPrevious(currentPage);
+                  if (currentPage !== 1) {
+                    onPrevious(currentPage);
+                  }
                 }}
               />
 
-              <li
-                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle ${
-                  currentPage >= paging.totalPages && "disabled"
+              <i
+                className={`h2 me-2 text-black cursor-pointer bi bi-arrow-right-circle-fill active-button ${
+                  currentPage >= paging.totalPages && "disabled-button"
                 }`}
                 onClick={() => {
-                  onNext(currentPage);
+                  if (currentPage < paging.totalPages) {
+                    onNext(currentPage);
+                  }
                 }}
               />
             </ul>
@@ -295,7 +308,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startCreatedAt"
                     id="startCreatedAt"
                     onChange={(e) =>
@@ -312,7 +325,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endCreatedAt"
                     id="endCreatedAt"
                     onChange={(e) =>
@@ -347,7 +360,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startUpdatedAt"
                     id="startUpdatedAt"
                     onChange={(e) =>
@@ -364,7 +377,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endUpdatedAt"
                     id="endUpdatedAt"
                     onChange={(e) =>
@@ -399,7 +412,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="startJoinDate"
                     id="startJoinDate"
                     onChange={(e) =>
@@ -416,7 +429,7 @@ const MerchantList = () => {
                   <input
                     className="form-control"
                     style={{ width: "90%" }}
-                    type="datetime-local"
+                    type="date"
                     name="endJoinDate"
                     id="endJoinDate"
                     onChange={(e) =>
@@ -434,61 +447,67 @@ const MerchantList = () => {
       <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Merchant List</h2>
-          <i
-            className="bi bi-plus-circle-fill h2 cursor-pointer m-2 mt-4"
-            style={{
-              color: "rgb(101, 213, 26)",
-            }}
-            onClick={() => {
-              setMerchantID(null);
-              setSearchState("");
-            }}
-            data-bs-toggle="modal"
-            data-bs-target={`#createMerchantModal`}
-          ></i>
+          {(adminRole === "ROLE_SUPER_ADMIN" ||
+            adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+            <i
+              className="bi bi-plus-circle-fill h2 cursor-pointer"
+              style={{
+                color: "rgb(101, 213, 26)",
+              }}
+              onClick={() => {
+                setMerchantID(null);
+                setSearchState("");
+              }}
+              data-bs-toggle="modal"
+              data-bs-target={`#createMerchantModal`}
+            ></i>
+          )}
         </div>
 
-        {merchants && merchants.length !== 0 ? (
-          <>
-            <table className="table text-center align-middle">
-              <thead>
-                <tr>
-                  <th className="fw-normal">No</th>
-                  <th className="fw-normal">ID</th>
-                  <th className="fw-normal">Name</th>
-                  <th className="fw-normal">PIC Name</th>
-                  <th className="fw-normal">PIC Number</th>
-                  <th className="fw-normal">PIC Email</th>
-                  <th className="fw-normal">Description</th>
-                  <th className="fw-normal">Status</th>
-                  <th className="fw-normal">Join Date</th>
-                  <th className="fw-normal">Created At</th>
-                  <th className="fw-normal">Updated At</th>
-                  <th className="fw-normal">Action</th>
-                  <th style={{ minWidth: "100px" }}></th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {merchants &&
-                  merchants.length !== 0 &&
-                  merchants.map((merchant, idx) => {
-                    return (
-                      <MerchantItem
-                        key={merchant.merchantID}
-                        merchant={merchant}
-                        idx={++idx}
-                        setMerchantID={setMerchantID}
-                      />
-                    );
-                  })}
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <div className="w-100">
-            <EmptyState />
-          </div>
-        )}
+        <table className="table text-center align-middle">
+          <thead>
+            <tr>
+              <th className="fw-normal">No</th>
+              <th className="fw-normal">ID</th>
+              <th className="fw-normal">Name</th>
+              <th className="fw-normal">PIC Name</th>
+              <th className="fw-normal">PIC Number</th>
+              <th className="fw-normal">PIC Email</th>
+              <th className="fw-normal">Description</th>
+              <th className="fw-normal">Status</th>
+              <th className="fw-normal">Join Date</th>
+              <th className="fw-normal">Created At</th>
+              <th className="fw-normal">Updated At</th>
+              {(adminRole === "ROLE_SUPER_ADMIN" ||
+                adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+                adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                <th className="fw-normal">Action</th>
+              )}
+              <th style={{ minWidth: "100px" }}></th>
+            </tr>
+          </thead>
+          <tbody className="table-group-divider">
+            {merchants && merchants.length !== 0 ? (
+              merchants.map((merchant, idx) => {
+                return (
+                  <MerchantItem
+                    key={merchant.merchantID}
+                    merchant={merchant}
+                    idx={++idx}
+                    setMerchantID={setMerchantID}
+                  />
+                );
+              })
+            ) : (
+              <tr>
+                <td colSpan={20}>
+                  <EmptyState />
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
         <CreateMerchantModal
           setMerchantID={setMerchantID}
           merchantID={merchantID}

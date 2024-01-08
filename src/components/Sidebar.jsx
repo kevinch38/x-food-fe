@@ -4,11 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../context/ServiceContext";
+import { jwtDecode } from "jwt-decode";
 
 function Sidebar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { authService } = useContext(ServiceContext);
+
+  const token = authService.getTokenFromStorage();
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    var adminRole = decodedToken.role;
+  }
 
   const onLogout = async () => {
     dispatch(
@@ -29,72 +36,97 @@ function Sidebar() {
             className="d-flex flex-column nav-list gap-2 list-unstyled"
             style={{ marginBottom: "0" }}
           >
-            <NavLink
-              className={({ isActive }) =>
-                `text-decoration-none text-black p-3 mt-3 ${
-                  isActive ? "fw-bold" : ""
-                }`
-              }
-              to={"/backoffice"}
-              end
-            >
-              <li className="cursor-pointer">
-                <i className="bi bi-grid-1x2 me-3"></i>
-                <span>Account</span>
-              </li>
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `text-decoration-none text-black p-3 ${
-                  isActive ? "fw-bold" : ""
-                }`
-              }
-              to={"/backoffice/merchants"}
-            >
-              <li className="cursor-pointer">
-                <i className="bi bi-list-ul me-3"></i>
-                <span>Merchant</span>
-              </li>
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `text-decoration-none text-black p-3 ${
-                  isActive ? "fw-bold" : ""
-                }`
-              }
-              to={"/backoffice/promotions"}
-            >
-              <li className="cursor-pointer">
-                <i className="bi bi-box-seam me-3"></i>
-                <span>Promotion</span>
-              </li>
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `text-decoration-none text-black p-3 ${
-                  isActive ? "fw-bold" : ""
-                }`
-              }
-              to={"/backoffice/histories"}
-            >
-              <li className="cursor-pointer">
-                <i className="bi bi-tag me-3"></i>
-                <span>History</span>
-              </li>
-            </NavLink>
-            <NavLink
-              className={({ isActive }) =>
-                `text-decoration-none text-black p-3 ${
-                  isActive ? "fw-bold" : ""
-                }`
-              }
-              to={"/backoffice/admin-monitoring"}
-            >
-              <li className="cursor-pointer">
-                <i className="bi bi-tag me-3"></i>
-                <span>Admin Monitoring</span>
-              </li>
-            </NavLink>
+            <div className="mt-3" />
+            {(adminRole === "ROLE_SUPER_ADMIN" ||
+              adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_MARKETING_STAFF") && (
+              <NavLink
+                className={({ isActive }) =>
+                  `text-decoration-none text-black p-3 ${
+                    isActive ? "fw-bold" : ""
+                  }`
+                }
+                to={"/backoffice/accounts"}
+                end
+              >
+                <li className="cursor-pointer">
+                  <i className="bi bi-grid-1x2 me-3"></i>
+                  <span>Account</span>
+                </li>
+              </NavLink>
+            )}
+
+            {(adminRole === "ROLE_SUPER_ADMIN" ||
+              adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_PARTNERSHIP_HEAD" ||
+              adminRole === "ROLE_MARKETING_STAFF") && (
+              <NavLink
+                className={({ isActive }) =>
+                  `text-decoration-none text-black p-3 ${
+                    isActive ? "fw-bold" : ""
+                  }`
+                }
+                to={"/backoffice/merchants"}
+              >
+                <li className="cursor-pointer">
+                  <i className="bi bi-list-ul me-3"></i>
+                  <span>Merchant</span>
+                </li>
+              </NavLink>
+            )}
+
+            {(adminRole === "ROLE_SUPER_ADMIN" ||
+              adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_MARKETING_HEAD" ||
+              adminRole === "ROLE_MARKETING_STAFF") && (
+              <NavLink
+                className={({ isActive }) =>
+                  `text-decoration-none text-black p-3 ${
+                    isActive ? "fw-bold" : ""
+                  }`
+                }
+                to={"/backoffice/promotions"}
+              >
+                <li className="cursor-pointer">
+                  <i className="bi bi-box-seam me-3"></i>
+                  <span>Promotion</span>
+                </li>
+              </NavLink>
+            )}
+
+            {(adminRole === "ROLE_SUPER_ADMIN" ||
+              adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_MARKETING_STAFF") && (
+              <NavLink
+                className={({ isActive }) =>
+                  `text-decoration-none text-black p-3 ${
+                    isActive ? "fw-bold" : ""
+                  }`
+                }
+                to={"/backoffice/histories"}
+              >
+                <li className="cursor-pointer">
+                  <i className="bi bi-tag me-3"></i>
+                  <span>History</span>
+                </li>
+              </NavLink>
+            )}
+
+            {adminRole === "ROLE_SUPER_ADMIN" && (
+              <NavLink
+                className={({ isActive }) =>
+                  `text-decoration-none text-black p-3 ${
+                    isActive ? "fw-bold" : ""
+                  }`
+                }
+                to={"/backoffice/admin-monitoring"}
+              >
+                <li className="cursor-pointer">
+                  <i className="bi bi-tag me-3"></i>
+                  <span>Admin Monitoring</span>
+                </li>
+              </NavLink>
+            )}
             <hr />
           </ul>
         </nav>
