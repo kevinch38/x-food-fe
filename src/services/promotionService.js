@@ -14,12 +14,12 @@ const PromotionService = () => {
   };
 
   const approvePromotions = async (id) => {
-    const { data } = await axiosInstance.get(`/api/promotions/approve/active/${id}`);
+    const { data } = await axiosInstance.put(`/api/promotions/approve/active/${id}`);
     return data;
   };
 
   const rejectPromotions = async (id) => {
-    const { data } = await axiosInstance.get(`/api/promotions/approve/inactive/${id}`);
+    const { data } = await axiosInstance.put(`/api/promotions/approve/inactive/${id}`);
     return data;
   };
 

@@ -16,6 +16,11 @@ body {
   white-space: nowrap;
 }
 
+.table-mb {
+  max-width: 150px !important;
+
+}
+
 .loader {
   transform: rotateZ(45deg);
   perspective: 1000px;

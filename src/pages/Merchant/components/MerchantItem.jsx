@@ -144,7 +144,7 @@ function MerchantItem({
   const handleApprove = (id) => {
     dispatch(
       merchantAction(async () => {
-        await merchantService.approveMerchants(id);
+        await merchantService.approveMerchant(id);
         const data = merchants.filter(
           (merchant) => merchant.merchantID !== merchantID
         );
@@ -153,10 +153,10 @@ function MerchantItem({
     );
   };
 
-  const handleReject = (id) => {
+  const handleApproveDelete = (id) => {
     dispatch(
       merchantAction(async () => {
-        await merchantService.rejectMerchants(id);
+        await merchantService.rejectMerchant(id);
         const data = merchants.filter(
           (merchant) => merchant.merchantID !== merchantID
         );
@@ -215,7 +215,7 @@ function MerchantItem({
             ""
           ) : (
             <div className="p-2 d-flex justify-content-between w-100">
-              <div className="btn-group justify-content-between" >
+              <div className="btn-group justify-content-between">
                 {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF" ||
                   adminRole === "ROLE_PARTNERSHIP_HEAD") && (
@@ -241,54 +241,64 @@ function MerchantItem({
                     data-bs-target={`#deleteMerchantModal`}
                   ></i>
                 )}
+                {status !== "INACTIVE" &&
+                  status !== "ACTIVE" &&
+                  (adminRole === "ROLE_SUPER_ADMIN" ||
+                    adminRole === "ROLE_MARKETING_HEAD") && (
+                    <div className="dropdown">
+                      <button
+                        className="btn btn-light dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        style={{ width: "auto" }}
+                      >
+                        <i
+                          className="bi bi-list-ul h3 cursor-pointer"
+                          style={{ color: "rgb(128, 128, 128)" }}
+                        />
+                      </button>
 
-                <div className="dropdown">
-                  <button
-                    className="btn btn-light dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    style={{ width: "auto" }}
-                  >
-                    <i
-                      className="bi bi-list-ul h3 cursor-pointer"
-                      style={{ color: "rgb(128, 128, 128)" }}
-                      data-bs-toggle="modal"
-                      data-bs-target={`#historyModal${idx}`}
-                    />
-                  </button>
-
-                  <div
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                  >
-                    {["Approve", "Reject"].map((action, idx, array) => {
-                      return (
-                        <React.Fragment key={idx}>
-                          <button
-                            className="dropdown-item"
-                            href="#"
-                            onClick={() => {
-                              if (action == "Approve")
-                                handleApprove(merchantID);
-                              else if (action == "Reject")
-                                handleReject(merchantID);
-                            }}
-                          >
-                            <span className="text-capitalize">
-                              {action.toLowerCase().replace(/_/g, " ")}
-                            </span>
-                          </button>
-                          {idx !== array.length - 1 && (
-                            <div className="dropdown-divider"></div>
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-                  </div>
-                </div>
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        {["Approve", "Reject"].map((action, idx, array) => {
+                          return (
+                            <React.Fragment key={idx}>
+                              <button
+                                className="dropdown-item"
+                                href="#"
+                                onClick={() => {
+                                  if (
+                                    action === "Approve" &&
+                                    status === "WAITING_FOR_DELETION_APPROVAL"
+                                  )
+                                    handleApproveDelete(merchantID);
+                                  else if (
+                                    action === "Approve" &&
+                                    (status ===
+                                      "WAITING_FOR_CREATION_APPROVAL" ||
+                                      status === "WAITING_FOR_UPDATE_APPROVAL")
+                                  )
+                                    handleApprove(merchantID);
+                                }}
+                              >
+                                <span className="text-capitalize">
+                                  {action.toLowerCase().replace(/_/g, " ")}
+                                </span>
+                              </button>
+                              {idx !== array.length - 1 && (
+                                <div className="dropdown-divider"></div>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
           )}
@@ -573,38 +583,10 @@ function MerchantItem({
                             <th scope="col">NO</th>
                             <th scope="col">ID</th>
                             <th scope="col">Branch</th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "200px",
-                              }}
-                            >
-                              City
-                            </th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "100px",
-                              }}
-                            >
-                              PIC Name
-                            </th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "100px",
-                              }}
-                            >
-                              PIC Number
-                            </th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "100px",
-                              }}
-                            >
-                              PIC Email
-                            </th>
+                            <th scope="col">City</th>
+                            <th scope="col">PIC Name</th>
+                            <th scope="col">PIC Number</th>
+                            <th scope="col">PIC Email</th>
                             <th scope="col">Status</th>
                             <th scope="col">Join Date</th>
                             <th scope="col">Created At</th>
@@ -612,14 +594,16 @@ function MerchantItem({
                           </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                          {merchantBranches.map((merchantBranches, idx) => {
+                          {merchantBranches.map((merchantBranch, idx) => {
                             return (
                               <React.Fragment key={idx}>
                                 <MerchantBranchItem
-                                  key={merchantBranches.merchantbranchID}
-                                  merchantBranches={merchantBranches}
+                                  key={merchantBranch.merchantbranchID}
+                                  merchantBranch={merchantBranch}
                                   idx={++idx}
                                   setMerchantBranchID={setMerchantBranchID}
+                                  merchantBranchAction={merchantBranchAction}
+                                  merchantBranchService={merchantBranchService}
                                 />
                               </React.Fragment>
                             );

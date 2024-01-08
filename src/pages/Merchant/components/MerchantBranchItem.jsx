@@ -1,16 +1,52 @@
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
+import React from "react";
 
 MerchantBranchItem.propTypes = {
-  merchantBranches: PropTypes.any,
+  merchantBranch: PropTypes.any,
   setMerchantBranchID: PropTypes.func,
   idx: PropTypes.number,
+  merchantBranchAction: PropTypes.any,
+  merchantBranchService: PropTypes.any,
 };
 
-function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
+function MerchantBranchItem({
+  merchantBranch,
+  idx,
+  setMerchantBranchID,
+  merchantBranchAction,
+  merchantBranchService,
+}) {
   const { authService } = useContext(ServiceContext);
+  const { merchantBranches } = useSelector((state) => state.merchantBranch);
+  const dispatch = useDispatch();
+
+  const handleApprove = (id) => {
+    dispatch(
+      merchantBranchAction(async () => {
+        await merchantBranchService.approveMerchantBranch(id);
+        const data = merchantBranches.filter(
+          (merchantBranch) => merchantBranch.branchID !== branchID
+        );
+        return { messageBox: "Successfully approved", data: data };
+      })
+    );
+  };
+
+  const handleApproveDelete = (id) => {
+    dispatch(
+      merchantBranchAction(async () => {
+        await merchantBranchService.rejectMerchantBranch(id);
+        const data = merchantBranches.filter(
+          (merchantBranch) => merchantBranch.branchID !== branchID
+        );
+        return { messageBox: "Successfully approved", data: data };
+      })
+    );
+  };
 
   const token = authService.getTokenFromStorage();
   if (token) {
@@ -29,7 +65,7 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
     status,
     joinDate,
     createdAt,
-  } = merchantBranches;
+  } = merchantBranch;
 
   return (
     <tr
@@ -41,11 +77,12 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
       <td>{idx}</td>
       <td>{branchID}</td>
       <td>{branchName}</td>
-      <td>{city.cityName}</td>
-      <td>{picName}</td>
-      <td>{picNumber}</td>
-      <td>{picEmail}</td>
+      <td className="table-mb">{city.cityName}</td>
+      <td className="table-mb">{picName}</td>
+      <td className="table-mb">{picNumber}</td>
+      <td className="table-mb">{picEmail}</td>
       <td
+        className="table-mb"
         style={{
           color:
             status === "ACTIVE"
@@ -59,7 +96,7 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
       </td>
       <td>{joinDate}</td>
       <td>{createdAt}</td>
-      <td>
+      <td className="table-mb visible">
         {status == "INACTIVE" ? (
           ""
         ) : (
@@ -95,6 +132,68 @@ function MerchantBranchItem({ merchantBranches, idx, setMerchantBranchID }) {
                     data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
                   ></i>
                 )}
+
+                {status !== "INACTIVE" &&
+                  status !== "ACTIVE" &&
+                  (adminRole === "ROLE_SUPER_ADMIN" ||
+                    adminRole === "ROLE_MARKETING_HEAD") && (
+                    <div
+                      className="dropdown"
+                     
+                    >
+                     <button
+                        className="btn btn-light dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        style={{ width: "auto" }}
+                      >
+                        <i
+                          className="bi bi-list-ul h3 cursor-pointer"
+                          style={{ color: "rgb(128, 128, 128)" }}
+                        />
+                      </button>
+
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        {["Approve", "Reject"].map((action, idx, array) => {
+                          return (
+                            <React.Fragment key={idx}>
+                              <button
+                                className="dropdown-item"
+                                href="#"
+                                onClick={() => {
+                                  if (
+                                    action === "Approve" &&
+                                    status === "WAITING_FOR_DELETION_APPROVAL"
+                                  )
+                                    handleApproveDelete(branchID);
+                                  else if (
+                                    action === "Approve" &&
+                                    (status ===
+                                      "WAITING_FOR_CREATION_APPROVAL" ||
+                                      status === "WAITING_FOR_UPDATE_APPROVAL")
+                                  )
+                                    handleApprove(branchID);
+                                }}
+                              >
+                                <span className="text-capitalize">
+                                  {action.toLowerCase().replace(/_/g, " ")}
+                                </span>
+                              </button>
+                              {idx !== array.length - 1 && (
+                                <div className="dropdown-divider"></div>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
           </div>
