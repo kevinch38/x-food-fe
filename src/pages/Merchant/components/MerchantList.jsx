@@ -214,9 +214,9 @@ const MerchantList = () => {
                   "WAITING_FOR_DELETION_APPROVAL",
                   "WAITING_FOR_CREATION_APPROVAL",
                   "WAITING_FOR_UPDATE_APPROVAL",
-                ].map((merchantStatus, idx) => {
+                ].map((merchantStatus, idx, array) => {
                   return (
-                    <React.Fragment key={idx}>
+                    <React.Fragment key={++idx}>
                       <button
                         className="dropdown-item"
                         href="#"
@@ -228,7 +228,7 @@ const MerchantList = () => {
                           {merchantStatus.toLowerCase().replace(/_/g, " ")}
                         </span>
                       </button>
-                      <div className="dropdown-divider"></div>
+                      {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
                     </React.Fragment>
                   );
                 })}

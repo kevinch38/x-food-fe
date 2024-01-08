@@ -205,7 +205,7 @@ const PromotionList = () => {
                   "WAITING_FOR_DELETION_APPROVAL",
                   "WAITING_FOR_CREATION_APPROVAL",
                   "WAITING_FOR_UPDATE_APPROVAL",
-                ].map((promotionStatus, idx) => {
+                ].map((promotionStatus, idx, array) => {
                   return (
                     <React.Fragment key={idx}>
                       <button
@@ -219,7 +219,7 @@ const PromotionList = () => {
                           {promotionStatus.toLowerCase().replace(/_/g, " ")}
                         </span>
                       </button>
-                      <div className="dropdown-divider"></div>
+                      {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
                     </React.Fragment>
                   );
                 })}

@@ -240,7 +240,7 @@ const HistoryList = () => {
               Filter By Transaction Type
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {["TOP_UP", "PAYMENT", "ORDER"].map((transactionType, idx) => {
+              {["TOP_UP", "PAYMENT", "ORDER"].map((transactionType, idx, array) => {
                 return (
                   <React.Fragment key={idx}>
                     <button
@@ -254,7 +254,7 @@ const HistoryList = () => {
                         {transactionType.toLowerCase().replace(/_/g, " ")}
                       </span>
                     </button>
-                    <div className="dropdown-divider"></div>
+                    {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
                   </React.Fragment>
                 );
               })}
