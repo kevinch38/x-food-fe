@@ -102,32 +102,7 @@ const MerchantList = () => {
     debounceSearch2,
     dispatch,
     merchantService,
-  ]);
-
-  useEffect(() => {
-    const onGetMerchants = () => {
-      dispatch(
-        merchantAction(async () => {
-          const result = await merchantService.fetchMerchants({
-            page: currentPage,
-            size: currentSize,
-            merchantName: debounceSearch,
-            ...debounceSearch2,
-          });
-          setPaging(result.paging);
-          return result;
-        })
-      );
-    };
-    onGetMerchants();
-  }, [
-    currentPage,
-    currentSize,
-    debounceSearch,
-    debounceSearch2,
-    dispatch,
-    merchantService,
-    merchants.length
+    merchants?.length
   ]);
 
   useEffect(() => {
