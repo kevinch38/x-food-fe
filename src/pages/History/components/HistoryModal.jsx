@@ -19,7 +19,7 @@ function HistoryModal({ idx, order, topUp, payment }) {
       orderStatus,
       branchID,
     } = order;
-    
+
     details = (
       <div className="d-flex mt-5">
         <div style={{ width: "150px" }}>
@@ -30,7 +30,7 @@ function HistoryModal({ idx, order, topUp, payment }) {
           <p>Table Number:</p>
           <p>Order Status:</p>
           <p>Branch ID:</p>
-          </div>
+        </div>
         <div>
           <p>| {orderID}</p>
           <p>| {accountID}</p>
@@ -117,49 +117,47 @@ function HistoryModal({ idx, order, topUp, payment }) {
   }
 
   return (
-    <>
+    <div
+      className="modal fade"
+      id={`historyModal${idx}`}
+      tabIndex="-1"
+      aria-labelledby={`historyModal${idx}`}
+      aria-hidden="true"
+      style={{
+        borderRadius: "50px",
+        marginTop: "5%",
+      }}
+    >
       <div
-        className="modal fade"
-        id={`historyModal${idx}`}
-        tabIndex="-1"
-        aria-labelledby={`historyModal${idx}`}
-        aria-hidden="true"
+        className="modal-dialog rounded-5"
         style={{
-          borderRadius: "50px",
-          marginTop: "5%",
+          maxWidth: "90vw",
         }}
       >
-        <div
-          className="modal-dialog rounded-5"
-          style={{
-            maxWidth: "90vw",
-          }}
-        >
-          <div className="modal-content border-0">
-            <h1 className="modal-title fw-bold text-center mt-5">
-              History Details
-            </h1>
-            <div
-              className="modal-body h-auto mt-5"
-              style={{
-                textAlign: "left",
-              }}
-            >
-              {details}
-            </div>
-            <button
-              type="button"
-              className="btn btn-lg align-self-center m-4 text-white rounded-5"
-              style={{ background: "#D9D9D9", width: "150px" }}
-              data-bs-dismiss="modal"
-              tabIndex="-1"
-            >
-              Back
-            </button>
+        <div className="modal-content border-0">
+          <h1 className="modal-title fw-bold text-center mt-5">
+            History Details
+          </h1>
+          <div
+            className="modal-body h-auto mt-5"
+            style={{
+              textAlign: "left",
+            }}
+          >
+            {details}
           </div>
+          <button
+            type="button"
+            className="btn btn-lg align-self-center m-4 text-white rounded-5"
+            style={{ background: "#D9D9D9", width: "150px" }}
+            data-bs-dismiss="modal"
+            tabIndex="-1"
+          >
+            Back
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -4,6 +4,9 @@ import MerchantBranchItem from "./MerchantBranchItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
+import ApproveRejectMerchantBranchModal from "./ApproveRejectMerchantBranchModal";
+import ApproveRejectMerchantModal from "./ApproveRejectMerchantModal";
+
 import {
   citiesAction,
   merchantBranchAction,
@@ -27,13 +30,7 @@ MerchantItem.propTypes = {
   merchantService: PropTypes.any,
 };
 
-function MerchantItem({
-  merchant,
-  idx,
-  setMerchantID,
-  merchantAction,
-  merchantService,
-}) {
+function MerchantItem({ merchant, idx, setMerchantID }) {
   const [merchantBranchID, setMerchantBranchID] = useState();
   const {
     merchantID,
@@ -48,8 +45,9 @@ function MerchantItem({
     createdAt,
     updatedAt,
   } = merchant;
+  const [actionBranch, setActionBranch] = useState("");
+  const [actionMerchant, setActionMerchant] = useState("");
   const { authService } = useContext(ServiceContext);
-  const { merchants } = useSelector((state) => state.merchant);
   const { merchantBranches } = useSelector((state) => state.merchantBranch);
   const { cities } = useSelector((state) => state.merchantBranch);
   const { merchantBranchService } = useContext(ServiceContext);
@@ -141,30 +139,6 @@ function MerchantItem({
     }
   };
 
-  const handleApprove = (id) => {
-    dispatch(
-      merchantAction(async () => {
-        await merchantService.approveMerchant(id);
-        const data = merchants.filter(
-          (merchant) => merchant.merchantID !== merchantID
-        );
-        return { messageBox: "Successfully approved", data: data };
-      })
-    );
-  };
-
-  const handleApproveDelete = (id) => {
-    dispatch(
-      merchantAction(async () => {
-        await merchantService.rejectMerchant(id);
-        const data = merchants.filter(
-          (merchant) => merchant.merchantID !== merchantID
-        );
-        return { messageBox: "Successfully approved", data: data };
-      })
-    );
-  };
-
   const clear = () => {
     searchParam2.delete("status");
     searchParam2.delete("city");
@@ -216,7 +190,7 @@ function MerchantItem({
           ) : (
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                {/* {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF" ||
                   adminRole === "ROLE_PARTNERSHIP_HEAD") && (
                   <i
@@ -228,7 +202,7 @@ function MerchantItem({
                     data-bs-toggle="modal"
                     data-bs-target={`#createMerchantModal`}
                   ></i>
-                )}
+                )} */}
                 {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF") && (
                   <i
@@ -271,29 +245,10 @@ function MerchantItem({
                               <button
                                 className="dropdown-item"
                                 href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#approveRejectMerchantModal${merchantID}`}
                                 onClick={() => {
-                                  if (
-                                    action === "Approve" &&
-                                    status === "WAITING_FOR_DELETION_APPROVAL"
-                                  )
-                                    handleApproveDelete(merchantID);
-                                  else if (
-                                    action === "Approve" &&
-                                    (status ===
-                                      "WAITING_FOR_CREATION_APPROVAL" ||
-                                      status === "WAITING_FOR_UPDATE_APPROVAL")
-                                  )
-                                    handleApprove(merchantID);
-                                  else if (
-                                    action === "Reject" &&
-                                    status === "WAITING_FOR_CREATION_APPROVAL"
-                                  )
-                                    handleApproveDelete(merchantID);
-                                  else if (
-                                    action === "Reject" &&
-                                    status === "WAITING_FOR_DELETION_APPROVAL"
-                                  )
-                                    handleApprove(merchantID);
+                                  setActionMerchant(action);
                                 }}
                               >
                                 <span className="text-capitalize">
@@ -328,6 +283,19 @@ function MerchantItem({
         </div>
       </td>
       <td>
+        <ApproveRejectMerchantBranchModal
+          idx={idx}
+          merchantID={merchantID}
+          merchantBranchID={merchantBranchID}
+          onGetMerchantBranches={onGetMerchantBranches}
+          action={actionBranch}
+        />
+        <ApproveRejectMerchantModal
+          idx={idx}
+          merchantID={merchantID}
+          onGetMerchantBranches={onGetMerchantBranches}
+          action={actionMerchant}
+        />
         <CreateMerchantBranchModal
           onGetMerchantBranches={onGetMerchantBranches}
           setMerchantBranchID={setMerchantBranchID}
@@ -614,6 +582,9 @@ function MerchantItem({
                                   setMerchantBranchID={setMerchantBranchID}
                                   merchantBranchAction={merchantBranchAction}
                                   merchantBranchService={merchantBranchService}
+                                  onGetMerchantBranches={onGetMerchantBranches}
+                                  setActionBranch={setActionBranch}
+                                  action={actionBranch}
                                 />
                               </React.Fragment>
                             );

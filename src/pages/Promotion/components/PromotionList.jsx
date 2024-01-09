@@ -10,6 +10,7 @@ import CreatePromotionModal from "./CreatePromotionModal";
 import DeletePromotionModal from "./DeletePromotionModal";
 import React from "react";
 import { jwtDecode } from "jwt-decode";
+import ApproveRejectPromotionModal from "./ApproveRejectPromotionModal";
 
 const PromotionList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -17,6 +18,7 @@ const PromotionList = () => {
   const { promotions } = useSelector((state) => state.promotion);
   const { promotionService, authService } = useContext(ServiceContext);
   const [paging, setPaging] = useState({});
+  const [action, setAction] = useState({});
   const [promotionID, setPromotionID] = useState();
 
   const currentPage = parseInt(searchParam.get("page") || 1);
@@ -98,6 +100,7 @@ const PromotionList = () => {
     debounceSearch2,
     dispatch,
     promotionService,
+    promotions?.length,
   ]);
 
   useEffect(() => {
@@ -219,7 +222,9 @@ const PromotionList = () => {
                           {promotionStatus.toLowerCase().replace(/_/g, " ")}
                         </span>
                       </button>
-                      {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
+                      {idx !== array.length - 1 && (
+                        <div className="dropdown-divider"></div>
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -436,14 +441,25 @@ const PromotionList = () => {
             {promotions && promotions.length !== 0 ? (
               promotions.map((promotion, idx) => {
                 return (
-                  <PromotionItem
-                    key={promotion.promotionID}
-                    promotion={promotion}
-                    idx={++idx}
-                    setPromotionID={setPromotionID}
-                    promotionService={promotionService}
-                    promotionAction={promotionAction}
-                  />
+                  <React.Fragment key={++idx}>
+                    <tr>
+                      <td>
+                        <ApproveRejectPromotionModal
+                          idx={idx}
+                          promotionID={promotion.promotionID}
+                          action={action}
+                        />
+                      </td>
+                    </tr>
+
+                    <PromotionItem
+                      key={promotion.promotionID}
+                      promotion={promotion}
+                      idx={++idx}
+                      setPromotionID={setPromotionID}
+                      setAction={setAction}
+                    />
+                  </React.Fragment>
                 );
               })
             ) : (

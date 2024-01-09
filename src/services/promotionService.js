@@ -7,25 +7,15 @@ const PromotionService = () => {
   };
 
   const fetchPromotions = async (queryParams) => {
-    const { data } = await axiosInstance.get(`/api/promotions`, {
+    const { data } = await axiosInstance.get("/api/promotions", {
       params: queryParams,
     });
     return data;
   };
 
-  const approvePromotions = async (id) => {
-    const { data } = await axiosInstance.put(`/api/promotions/approve/active/${id}`);
-    return data;
-  };
-
-  const rejectPromotions = async (id) => {
-    const { data } = await axiosInstance.put(`/api/promotions/approve/inactive/${id}`);
-    return data;
-  };
-
   const savePromotion = async (promotion) => {
     const request = {
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
@@ -40,10 +30,31 @@ const PromotionService = () => {
     return data;
   };
 
+  const approvePromotion = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/approve/active/${id}`
+    );
+    return data;
+  };
+
+  const approveInactivePromotion = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/approve/inactive/${id}`
+    );
+    return data;
+  };
+
+  const rejectUpdatePromotion = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/reject/update/${id}`
+    );
+    return data;
+  };
+
   const updatePromotion = async (promotion) => {
     const request = {
       promotionID: promotion.promotionID,
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
@@ -67,9 +78,10 @@ const PromotionService = () => {
     fetchPromotions,
     savePromotion,
     updatePromotion,
-    approvePromotions,
-    rejectPromotions,
     deletePromotion,
+    approveInactivePromotion,
+    approvePromotion,
+    rejectUpdatePromotion,
   };
 };
 

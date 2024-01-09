@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { jwtDecode } from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
 import React from "react";
@@ -11,42 +10,18 @@ MerchantBranchItem.propTypes = {
   idx: PropTypes.number,
   merchantBranchAction: PropTypes.any,
   merchantBranchService: PropTypes.any,
+  onGetMerchantBranches: PropTypes.func,
+  setAction: PropTypes.any,
+  action: PropTypes.any,
 };
 
 function MerchantBranchItem({
   merchantBranch,
   idx,
   setMerchantBranchID,
-  merchantBranchAction,
-  merchantBranchService,
+  setAction,
 }) {
   const { authService } = useContext(ServiceContext);
-  const { merchantBranches } = useSelector((state) => state.merchantBranch);
-  const dispatch = useDispatch();
-
-  const handleApprove = (id) => {
-    dispatch(
-      merchantBranchAction(async () => {
-        await merchantBranchService.approveMerchantBranch(id);
-        const data = merchantBranches.filter(
-          (merchantBranch) => merchantBranch.branchID !== branchID
-        );
-        return { messageBox: "Successfully approved", data: data };
-      })
-    );
-  };
-
-  const handleApproveDelete = (id) => {
-    dispatch(
-      merchantBranchAction(async () => {
-        await merchantBranchService.rejectMerchantBranch(id);
-        const data = merchantBranches.filter(
-          (merchantBranch) => merchantBranch.branchID !== branchID
-        );
-        return { messageBox: "Successfully approved", data: data };
-      })
-    );
-  };
 
   const token = authService.getTokenFromStorage();
   if (token) {
@@ -77,19 +52,14 @@ function MerchantBranchItem({
       <td>{idx}</td>
       <td>{branchID}</td>
       <td>{branchName}</td>
-      <td className="table-mb">{city.cityName}</td>
-      <td className="table-mb">{picName}</td>
-      <td className="table-mb">{picNumber}</td>
-      <td className="table-mb">{picEmail}</td>
+      <td>{city.cityName}</td>
+      <td>{picName}</td>
+      <td>{picNumber}</td>
+      <td>{picEmail}</td>
       <td
-        className="table-mb"
         style={{
           color:
-            status === "ACTIVE"
-              ? "green"
-              : status === "INACTIVE"
-              ? "red"
-              : "none",
+            status === "INACTIVE" ? "red" : status === "ACTIVE" ? "green" : "",
         }}
       >
         {status}
@@ -97,7 +67,7 @@ function MerchantBranchItem({
       <td>{joinDate}</td>
       <td>{createdAt}</td>
       <td className="table-mb visible">
-        {status == "INACTIVE" ? (
+        {status === "INACTIVE" ? (
           ""
         ) : (
           <div className="p-2 row">
@@ -136,8 +106,11 @@ function MerchantBranchItem({
                 {status !== "INACTIVE" &&
                   status !== "ACTIVE" &&
                   (adminRole === "ROLE_SUPER_ADMIN" ||
-                    adminRole === "ROLE_MARKETING_HEAD") && (
-                    <div className="dropdown">
+                    adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                    <div
+                      className="dropdown"
+                      onClick={setMerchantBranchID(branchID)}
+                    >
                       <button
                         className="btn btn-light dropdown-toggle"
                         type="button"
@@ -163,29 +136,10 @@ function MerchantBranchItem({
                               <button
                                 className="dropdown-item"
                                 href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#approveRejectMerchantBranchModal${merchantID}`}
                                 onClick={() => {
-                                  if (
-                                    action === "Approve" &&
-                                    status === "WAITING_FOR_DELETION_APPROVAL"
-                                  )
-                                    handleApproveDelete(branchID);
-                                  else if (
-                                    action === "Approve" &&
-                                    (status ===
-                                      "WAITING_FOR_CREATION_APPROVAL" ||
-                                      status === "WAITING_FOR_UPDATE_APPROVAL")
-                                  )
-                                    handleApprove(branchID);
-                                  else if (
-                                    action === "Reject" &&
-                                    status === "WAITING_FOR_CREATION_APPROVAL"
-                                  )
-                                    handleApproveDelete(branchID);
-                                  else if (
-                                    action === "Reject" &&
-                                    status === "WAITING_FOR_DELETION_APPROVAL"
-                                  )
-                                    handleApprove(branchID);
+                                  setAction(action);
                                 }}
                               >
                                 <span className="text-capitalize">
