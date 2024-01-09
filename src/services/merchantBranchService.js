@@ -29,9 +29,16 @@ const MerchantBranchService = () => {
     return data;
   };
 
-  const rejectMerchantBranch = async (id) => {
+  const approveInactiveMerchantBranch = async (id) => {
     const { data } = await axiosInstance.put(
       `/api/merchants/branches/approve/inactive/${id}`
+    );
+    return data;
+  };
+
+  const rejectUpdateMerchantBranch = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/merchants/branches/reject/update/${id}`
     );
     return data;
   };
@@ -96,7 +103,8 @@ const MerchantBranchService = () => {
     deleteMerchantBranch,
     fetchCities,
     approveMerchantBranch,
-    rejectMerchantBranch,
+    approveInactiveMerchantBranch,
+    rejectUpdateMerchantBranch,
   };
 };
 

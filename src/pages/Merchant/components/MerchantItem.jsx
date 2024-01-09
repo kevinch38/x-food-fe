@@ -4,6 +4,8 @@ import MerchantBranchItem from "./MerchantBranchItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
+import ApproveRejectMerchantBranchModal from "./ApproveRejectMerchantBranchModal";
+
 import {
   citiesAction,
   merchantBranchAction,
@@ -48,6 +50,7 @@ function MerchantItem({
     createdAt,
     updatedAt,
   } = merchant;
+  const [action, setAction] = useState("");
   const { authService } = useContext(ServiceContext);
   const { merchants } = useSelector((state) => state.merchant);
   const { merchantBranches } = useSelector((state) => state.merchantBranch);
@@ -216,7 +219,7 @@ function MerchantItem({
           ) : (
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                {/* {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF" ||
                   adminRole === "ROLE_PARTNERSHIP_HEAD") && (
                   <i
@@ -228,7 +231,7 @@ function MerchantItem({
                     data-bs-toggle="modal"
                     data-bs-target={`#createMerchantModal`}
                   ></i>
-                )}
+                )} */}
                 {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF") && (
                   <i
@@ -279,9 +282,7 @@ function MerchantItem({
                                     handleApproveDelete(merchantID);
                                   else if (
                                     action === "Approve" &&
-                                    (status ===
-                                      "WAITING_FOR_CREATION_APPROVAL" ||
-                                      status === "WAITING_FOR_UPDATE_APPROVAL")
+                                    status === "WAITING_FOR_CREATION_APPROVAL"
                                   )
                                     handleApprove(merchantID);
                                   else if (
@@ -328,6 +329,13 @@ function MerchantItem({
         </div>
       </td>
       <td>
+        <ApproveRejectMerchantBranchModal
+          idx={idx}
+          merchantID={merchantID}
+          merchantBranchID={merchantBranchID}
+          onGetMerchantBranches={onGetMerchantBranches}
+          action={action}
+        />
         <CreateMerchantBranchModal
           onGetMerchantBranches={onGetMerchantBranches}
           setMerchantBranchID={setMerchantBranchID}
@@ -614,6 +622,9 @@ function MerchantItem({
                                   setMerchantBranchID={setMerchantBranchID}
                                   merchantBranchAction={merchantBranchAction}
                                   merchantBranchService={merchantBranchService}
+                                  onGetMerchantBranches={onGetMerchantBranches}
+                                  setAction={setAction}
+                                  action={action}
                                 />
                               </React.Fragment>
                             );

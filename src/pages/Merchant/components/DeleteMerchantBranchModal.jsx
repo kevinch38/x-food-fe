@@ -20,7 +20,6 @@ export default function DeleteMerchantBranchModal({
   const dispatch = useDispatch();
   const { merchantBranchService } = useContext(ServiceContext);
   const { merchantBranches } = useSelector((state) => state.merchantBranch);
-
   const onDeleteMerchantBranch = (id) => {
     dispatch(
       merchantAction(async () => {
