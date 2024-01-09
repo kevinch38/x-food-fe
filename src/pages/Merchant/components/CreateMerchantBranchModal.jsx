@@ -33,7 +33,7 @@ export default function CreateMerchantBranchModal({
   const [key, setKey] = useState();
 
   const {
-    values: { branchName, cityID, picName, picNumber, picEmail },
+    values: { branchName, cityID, picName, picNumber, picEmail, address },
     errors,
     dirty,
     isValid,
@@ -54,6 +54,7 @@ export default function CreateMerchantBranchModal({
       picName: "",
       picNumber: "",
       picEmail: "",
+      address: "",
       image: null,
     },
     onSubmit: async (values) => {
@@ -160,6 +161,7 @@ export default function CreateMerchantBranchModal({
         picName: "",
         picNumber: "",
         picEmail: "",
+        address: "",
         image: null,
       });
     }
@@ -183,7 +185,7 @@ export default function CreateMerchantBranchModal({
       aria-hidden="true"
       style={{
         borderRadius: "50px",
-        marginTop: "5%",
+        marginTop: "1%",
       }}
     >
       <div
@@ -365,6 +367,24 @@ export default function CreateMerchantBranchModal({
                         />
                       </td>
                     </tr>
+                    <tr>
+                      <td>
+
+                          <input
+                            className={`form-control ${
+                              touched.address && errors.address && "is-invalid"
+                            }`}
+                            key={key}
+                            type="text"
+                            name="address"
+                            id="address"
+                            value={address}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="Address"
+                          />
+                      </td>
+                      </tr>
                     <tr>
                       <td className="w-50">
                         <div className="d-flex justify-content-between ps-0 pe-0">
