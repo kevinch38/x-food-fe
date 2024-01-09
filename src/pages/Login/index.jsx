@@ -47,7 +47,6 @@ function Login() {
             }
             if (adminRole === "ROLE_PARTNERSHIP_HEAD") {
               navigate("/backoffice/merchants");
-              console.log(adminRole);
             } else if (adminRole === "ROLE_MARKETING_HEAD")
               navigate("/backoffice/promotions");
             else navigate("/backoffice/accounts");

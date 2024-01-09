@@ -9,7 +9,7 @@ ApproveRejectMerchantBranchModal.propTypes = {
   merchantBranchID: PropTypes.any,
   idx: PropTypes.any,
   onGetMerchantBranches: PropTypes.func,
-  action: PropTypes.string,
+  action: PropTypes.any,
 };
 
 export default function ApproveRejectMerchantBranchModal({
@@ -41,7 +41,6 @@ export default function ApproveRejectMerchantBranchModal({
     }
   }, [merchantBranchID, merchantBranchService]);
 
-  console.log(merchantBranch);
   const handleApprove = (id) => {
     dispatch(
       merchantAction(async () => {
@@ -114,7 +113,7 @@ export default function ApproveRejectMerchantBranchModal({
             <div className="d-flex justify-content-center row">
               <span
                 id="boot-icon"
-                className="bi bi-info-circle text-center"
+                className="bi bi-exclamation-circle text-center"
                 style={{
                   fontSize: "4rem",
                 }}
@@ -151,8 +150,8 @@ export default function ApproveRejectMerchantBranchModal({
                   <p>| {merchantID}</p>
                   <p>| {merchantBranch?.branchName}</p>
                   <p>
-                    | `{merchantBranch?.picName} - {merchantBranch?.picNumber} (
-                    {merchantBranch?.picEmail})`
+                    | {merchantBranch?.picName} - {merchantBranch?.picNumber} (
+                    {merchantBranch?.picEmail})
                   </p>
                   <p>| {merchantBranch?.city.cityName}</p>
                   <p>| {merchantBranch?.address}</p>

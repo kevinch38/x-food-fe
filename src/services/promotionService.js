@@ -7,7 +7,6 @@ const PromotionService = () => {
   };
 
   const fetchPromotions = async (queryParams) => {
-    console.log("============================");
     const { data } = await axiosInstance.get("/api/promotions", {
       params: queryParams,
     });
@@ -26,10 +25,29 @@ const PromotionService = () => {
       expiredDate: promotion.expiredDate,
       notes: "notes",
     };
-    console.log(request);
 
     const { data } = await axiosInstance.post("/api/promotions", request);
-    console.log(data);
+    return data;
+  };
+
+  const approvePromotion = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/approve/active/${id}`
+    );
+    return data;
+  };
+
+  const approveInactivePromotion = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/approve/inactive/${id}`
+    );
+    return data;
+  };
+
+  const rejectUpdatePromotion = async (id) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/reject/update/${id}`
+    );
     return data;
   };
 
@@ -47,7 +65,6 @@ const PromotionService = () => {
       notes: "notes",
     };
     const { data } = await axiosInstance.put("/api/promotions", request);
-    console.log(data);
     return data;
   };
 
@@ -62,6 +79,9 @@ const PromotionService = () => {
     savePromotion,
     updatePromotion,
     deletePromotion,
+    approveInactivePromotion,
+    approvePromotion,
+    rejectUpdatePromotion,
   };
 };
 

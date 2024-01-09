@@ -33,7 +33,7 @@ const MerchantService = () => {
       return data;
     };
 
-    const rejectMerchant = async (id) => {
+    const approveInactiveMerchant = async (id) => {
       const { data } = await axiosInstance.put(
         `/api/merchants/approve/inactive/${id}`
       );
@@ -60,7 +60,6 @@ const MerchantService = () => {
         return data;
     }
 
-
     return {
         fetchMerchantById,
         fetchMerchants,
@@ -68,7 +67,7 @@ const MerchantService = () => {
         updateMerchant,
         deleteMerchant,
         approveMerchant,
-        rejectMerchant,
+        approveInactiveMerchant,
     }
 }
 
