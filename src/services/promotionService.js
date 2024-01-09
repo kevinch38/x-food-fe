@@ -8,7 +8,9 @@ const PromotionService = () => {
 
   const fetchPromotions = async (queryParams) => {
     console.log("============================");
-    const { data } = await axiosInstance.get("/api/promotions", { params: queryParams });
+    const { data } = await axiosInstance.get("/api/promotions", {
+      params: queryParams,
+    });
     return data;
   };
 
