@@ -6,10 +6,9 @@ const PromotionService = () => {
     return data;
   };
 
-  const fetchPromotions = async (queryParams) => {
-    const { data } = await axiosInstance.get(`/api/promotions`, {
-      params: queryParams,
-    });
+  const fetchPromotions = async () => {
+    console.log("============================");
+    const { data } = await axiosInstance.get(`/api/promotions`);
     return data;
   };
 
@@ -35,8 +34,10 @@ const PromotionService = () => {
       expiredDate: promotion.expiredDate,
       notes: "notes",
     };
+    console.log(request);
 
     const { data } = await axiosInstance.post("/api/promotions", request);
+    console.log(data);
     return data;
   };
 
@@ -54,6 +55,7 @@ const PromotionService = () => {
       notes: "notes",
     };
     const { data } = await axiosInstance.put("/api/promotions", request);
+    console.log(data);
     return data;
   };
 
