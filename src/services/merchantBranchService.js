@@ -58,7 +58,6 @@ const MerchantBranchService = () => {
     formData.append("picNumber", merchantBranch.picNumber);
     formData.append("picEmail", merchantBranch.picEmail);
     formData.append("image", merchantBranch.image);
-    formData.append("joinDate", merchantBranch.joinDate);
     const { data } = await axiosInstance.post(
       `/api/merchants/branches`,
       formData
