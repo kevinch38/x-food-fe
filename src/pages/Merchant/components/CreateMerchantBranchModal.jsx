@@ -93,6 +93,7 @@ export default function CreateMerchantBranchModal({
       picName: "",
       picNumber: "",
       picEmail: "",
+      address: "",
       image: null,
     },
     onSubmit: async (values) => {
@@ -105,18 +106,8 @@ export default function CreateMerchantBranchModal({
         delete data.branchID;
         dispatch(
           merchantBranchAction(async () => {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, "0");
-            const day = now.getDate().toString().padStart(2, "0");
-            const hours = now.getHours().toString().padStart(2, "0");
-            const minutes = now.getMinutes().toString().padStart(2, "0");
-            const seconds = now.getSeconds().toString().padStart(2, "0");
-            const joinDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-
             await merchantBranchService.saveMerchantBranch({
-              ...data,
-              joinDate: joinDate,
+              ...data
             });
             await onGetMerchantBranches(
               merchantID,
@@ -198,6 +189,7 @@ export default function CreateMerchantBranchModal({
         picName: "",
         picNumber: "",
         picEmail: "",
+        address: "",
         image: null,
       });
     }
@@ -221,7 +213,7 @@ export default function CreateMerchantBranchModal({
       aria-hidden="true"
       style={{
         borderRadius: "50px",
-        marginTop: "5%",
+        marginTop: "1%",
       }}
     >
       <div
@@ -401,6 +393,24 @@ export default function CreateMerchantBranchModal({
                           placeholder="PIC Email"
                           name="picEmail"
                         />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+
+                          <input
+                            className={`form-control ${
+                              touched.address && errors.address && "is-invalid"
+                            }`}
+                            key={key}
+                            type="text"
+                            name="address"
+                            id="address"
+                            value={address}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            placeholder="Address"
+                          />
                       </td>
                     </tr>
                     <tr>
