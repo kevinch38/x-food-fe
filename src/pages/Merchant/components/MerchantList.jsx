@@ -102,7 +102,7 @@ const MerchantList = () => {
     debounceSearch2,
     dispatch,
     merchantService,
-    merchants?.length
+    merchants?.length,
   ]);
 
   useEffect(() => {
@@ -228,7 +228,9 @@ const MerchantList = () => {
                           {merchantStatus.toLowerCase().replace(/_/g, " ")}
                         </span>
                       </button>
-                      {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
+                      {idx !== array.length - 1 && (
+                        <div className="dropdown-divider"></div>
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -422,8 +424,7 @@ const MerchantList = () => {
       <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Merchant List</h2>
-          {(adminRole === "ROLE_SUPER_ADMIN" ||
-            adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+          {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
             <i
               className="bi bi-plus-circle-fill h2 cursor-pointer"
               style={{
@@ -453,8 +454,7 @@ const MerchantList = () => {
               <th className="fw-normal">Join Date</th>
               <th className="fw-normal">Created At</th>
               <th className="fw-normal">Updated At</th>
-              {(adminRole === "ROLE_SUPER_ADMIN" ||
-                adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              {(adminRole === "ROLE_PARTNERSHIP_STAFF" ||
                 adminRole === "ROLE_PARTNERSHIP_HEAD") && (
                 <th className="fw-normal">Action</th>
               )}

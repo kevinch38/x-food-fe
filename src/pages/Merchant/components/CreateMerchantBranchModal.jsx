@@ -32,8 +32,45 @@ export default function CreateMerchantBranchModal({
   const { merchantBranchService } = useContext(ServiceContext);
   const [key, setKey] = useState();
 
+  const gmt = [
+    "GMT-11",
+    "GMT-10",
+    "GMT-9",
+    "GMT-8",
+    "GMT-7",
+    "GMT-6",
+    "GMT-5",
+    "GMT-4",
+    "GMT-3",
+    "GMT-2",
+    "GMT-1",
+    "GMT+0",
+    "GMT+1",
+    "GMT+2",
+    "GMT+3",
+    "GMT+4",
+    "GMT+5",
+    "GMT+6",
+    "GMT+7",
+    "GMT+8",
+    "GMT+9",
+    "GMT+10",
+    "GMT+11",
+    "GMT+12",
+    "GMT+13",
+    "GMT+14",
+  ];
+
   const {
-    values: { branchName, cityID, picName, picNumber, picEmail },
+    values: {
+      branchName,
+      cityID,
+      address,
+      timezone,
+      picName,
+      picNumber,
+      picEmail,
+    },
     errors,
     dirty,
     isValid,
@@ -51,6 +88,8 @@ export default function CreateMerchantBranchModal({
       branchName: "",
       branchWorkingHoursID: "1",
       cityID: "",
+      address: "",
+      timezone: "",
       picName: "",
       picNumber: "",
       picEmail: "",
@@ -130,7 +169,6 @@ export default function CreateMerchantBranchModal({
             branchName,
             address,
             timezone,
-            branchWorkingHoursID,
             city,
             picName,
             picNumber,
@@ -141,7 +179,6 @@ export default function CreateMerchantBranchModal({
             branchName: branchName,
             address: address,
             timezone: timezone,
-            branchWorkingHoursID: branchWorkingHoursID,
             cityID: city.cityID,
             picName: picName,
             picNumber: picNumber,
@@ -155,7 +192,8 @@ export default function CreateMerchantBranchModal({
         branchID: null,
         merchantID: merchantID,
         branchName: "",
-        branchWorkingHoursID: "1",
+        address: "",
+        timezone: "",
         cityID: "",
         picName: "",
         picNumber: "",
@@ -363,6 +401,46 @@ export default function CreateMerchantBranchModal({
                           placeholder="PIC Email"
                           name="picEmail"
                         />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={address}
+                          id="address"
+                          className={`form-control  ${
+                            touched.address && errors.address && "is-invalid"
+                          }`}
+                          type="text"
+                          placeholder="PIC Email"
+                          name="address"
+                        />
+                      </td>
+                      <td>
+                        <select
+                          name="timezone"
+                          id="timezone"
+                          onChange={handleChange}
+                          value={timezone ? timezone : `abcde`}
+                          onBlur={handleBlur}
+                          className={`form-control  ${
+                            touched.timezone &&
+                            errors.timezone &&
+                            "is-invalid p-2 w-100 border-1 border-dark-subtle rounded"
+                          }`}
+                        >
+                          <option hidden disabled value="abcde">
+                            Timezone
+                          </option>
+
+                          {gmt.map((gmt, index) => (
+                            <option key={index} value={gmt.gmtID}>
+                              {gmt}
+                            </option>
+                          ))}
+                        </select>
                       </td>
                     </tr>
                     <tr>

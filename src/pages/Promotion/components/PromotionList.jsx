@@ -401,18 +401,20 @@ const PromotionList = () => {
       <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Promotion List</h2>
-          <i
-            className="bi bi-plus-circle-fill h2 cursor-pointer"
-            style={{
-              color: "rgb(101, 213, 26)",
-            }}
-            onClick={() => {
-              setPromotionID(null);
-              setSearchState("");
-            }}
-            data-bs-toggle="modal"
-            data-bs-target={`#createPromotionModal`}
-          ></i>
+          {adminRole === "ROLE_MARKETING_STAFF" && (
+            <i
+              className="bi bi-plus-circle-fill h2 cursor-pointer"
+              style={{
+                color: "rgb(101, 213, 26)",
+              }}
+              onClick={() => {
+                setPromotionID(null);
+                setSearchState("");
+              }}
+              data-bs-toggle="modal"
+              data-bs-target={`#createPromotionModal`}
+            ></i>
+          )}
         </div>
 
         <table className="table text-center align-middle">
@@ -430,8 +432,7 @@ const PromotionList = () => {
               <th className="fw-normal">Created At</th>
               <th className="fw-normal">Updated At</th>
               <th className="fw-normal">Expired Date</th>
-              {(adminRole === "ROLE_SUPER_ADMIN" ||
-                adminRole === "ROLE_MARKETING_STAFF" ||
+              {(adminRole === "ROLE_MARKETING_STAFF" ||
                 adminRole === "ROLE_MARKETING_HEAD") && (
                 <th className="fw-normal">Action</th>
               )}
@@ -441,17 +442,7 @@ const PromotionList = () => {
             {promotions && promotions.length !== 0 ? (
               promotions.map((promotion, idx) => {
                 return (
-                  <React.Fragment key={++idx}>
-                    <tr>
-                      <td>
-                        <ApproveRejectPromotionModal
-                          idx={idx}
-                          promotionID={promotion.promotionID}
-                          action={action}
-                        />
-                      </td>
-                    </tr>
-
+                  <tr key={idx} style={{ height: "60px" }}>
                     <PromotionItem
                       key={promotion.promotionID}
                       promotion={promotion}
@@ -459,7 +450,14 @@ const PromotionList = () => {
                       setPromotionID={setPromotionID}
                       setAction={setAction}
                     />
-                  </React.Fragment>
+                    <td colSpan={0}>
+                      <ApproveRejectPromotionModal
+                        idx={idx}
+                        promotionID={promotion.promotionID}
+                        action={action}
+                      />
+                    </td>
+                  </tr>
                 );
               })
             ) : (

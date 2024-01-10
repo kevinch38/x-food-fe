@@ -9,22 +9,16 @@ PromotionItem.propTypes = {
   idx: PropTypes.number,
   setPromotionID: PropTypes.func,
   onGetPromotions: PropTypes.func,
-  setAction: PropTypes.any
+  setAction: PropTypes.any,
 };
 
-function PromotionItem({
-  promotion,
-  idx,
-  setPromotionID,
-  setAction,
-}) {
+function PromotionItem({ promotion, idx, setPromotionID, setAction }) {
   const { authService } = useContext(ServiceContext);
   const token = authService.getTokenFromStorage();
   if (token) {
     const decodedToken = jwtDecode(token);
     var adminRole = decodedToken.role;
   }
-
 
   const {
     promotionID,
@@ -41,7 +35,7 @@ function PromotionItem({
   } = promotion;
 
   return (
-    <tr key={idx} style={{ height: "60px" }}>
+    <>
       <td>{idx}</td>
       <td>{promotionID}</td>
       <td>{merchantName}</td>
@@ -69,9 +63,7 @@ function PromotionItem({
         {status !== "INACTIVE" && (
           <div className="d-flex justify-content-between w-100">
             <div className="p-2 btn-group d-flex align-items-center justify-content-between">
-              {(adminRole === "ROLE_SUPER_ADMIN" ||
-                adminRole === "ROLE_MARKETING_STAFF" ||
-                adminRole === "ROLE_MARKETING_HEAD") && (
+              {adminRole === "ROLE_MARKETING_STAFF" && (
                 <i
                   className="bi bi-pencil-fill h3 cursor-pointer m-2"
                   style={{
@@ -82,8 +74,7 @@ function PromotionItem({
                   data-bs-target={`#createPromotionModal`}
                 ></i>
               )}
-              {(adminRole === "ROLE_SUPER_ADMIN" ||
-                adminRole === "ROLE_MARKETING_STAFF") && (
+              {adminRole === "ROLE_MARKETING_STAFF" && (
                 <i
                   className="bi bi-trash-fill h3 cursor-pointer m-2"
                   style={{
@@ -147,7 +138,7 @@ function PromotionItem({
           </div>
         )}
       </td>
-    </tr>
+    </>
   );
 }
 

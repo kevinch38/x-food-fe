@@ -44,24 +44,22 @@ const MerchantBranchService = () => {
   };
 
   const saveMerchantBranch = async (merchantBranch) => {
-    const formData = new FormData();
-    formData.append("merchantID", merchantBranch.merchantID);
-    formData.append("branchName", merchantBranch.branchName);
-    formData.append("address", merchantBranch.address);
-    formData.append("timezone", merchantBranch.timezone);
-    formData.append(
-      "branchWorkingHoursID",
-      merchantBranch.branchWorkingHoursID
-    );
-    formData.append("cityID ", merchantBranch.cityID);
-    formData.append("picName", merchantBranch.picName);
-    formData.append("picNumber", merchantBranch.picNumber);
-    formData.append("picEmail", merchantBranch.picEmail);
-    formData.append("image", merchantBranch.image);
-    formData.append("joinDate", merchantBranch.joinDate);
+    const branchWorkingHours = [];
+    const request = {
+      merchantID: merchantBranch.merchantID,
+      branchName: merchantBranch.branchName,
+      address: merchantBranch.address,
+      timezone: merchantBranch.timezone,
+      branchWorkingHours: branchWorkingHours,
+      cityID: merchantBranch.cityID,
+      picName: merchantBranch.picName,
+      picNumber: merchantBranch.picNumber,
+      picEmail: merchantBranch.picEmail,
+    };
+
     const { data } = await axiosInstance.post(
       `/api/merchants/branches`,
-      formData
+      request
     );
     return data;
   };

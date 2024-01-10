@@ -181,8 +181,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
       <td>{joinDate}</td>
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
-      {(adminRole === "ROLE_SUPER_ADMIN" ||
-        adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+      {(adminRole === "ROLE_PARTNERSHIP_STAFF" ||
         adminRole === "ROLE_PARTNERSHIP_HEAD") && (
         <td className="visible">
           {status == "INACTIVE" ? (
@@ -203,8 +202,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     data-bs-target={`#createMerchantModal`}
                   ></i>
                 )} */}
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
-                  adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
                   <i
                     className="bi bi-trash-fill h3 cursor-pointer m-2"
                     style={{
@@ -217,8 +215,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                 )}
                 {status !== "INACTIVE" &&
                   status !== "ACTIVE" &&
-                  (adminRole === "ROLE_SUPER_ADMIN" ||
-                    adminRole === "ROLE_MARKETING_HEAD") && (
+                  adminRole === "ROLE_MARKETING_HEAD" && (
                     <div className="dropdown">
                       <button
                         className="btn btn-light dropdown-toggle"
@@ -511,8 +508,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     <p>| {status}</p>
                     <div className="d-flex justify-content-between">
                       <span>| {note}</span>
-                      {(adminRole === "ROLE_SUPER_ADMIN" ||
-                        adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                      {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
                         <span className="text-end">
                           {status == "ACTIVE" ? (
                             <i
@@ -583,7 +579,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                                   merchantBranchAction={merchantBranchAction}
                                   merchantBranchService={merchantBranchService}
                                   onGetMerchantBranches={onGetMerchantBranches}
-                                  setActionBranch={setActionBranch}
+                                  setAction={setActionBranch}
                                   action={actionBranch}
                                 />
                               </React.Fragment>

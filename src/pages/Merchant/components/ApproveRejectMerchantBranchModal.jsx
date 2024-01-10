@@ -19,6 +19,7 @@ export default function ApproveRejectMerchantBranchModal({
   idx,
   action,
 }) {
+  console.log(action)
   const dispatch = useDispatch();
   const [merchantBranch, setMerchantBranch] = useState();
   const { merchantBranchService } = useContext(ServiceContext);
@@ -132,7 +133,7 @@ export default function ApproveRejectMerchantBranchModal({
                 className="modal-title text-center mt-3"
                 style={{ color: "grey" }}
               >
-                Do you really want to delete these records? This process cannot
+                Do you really want to decline this request? This process cannot
                 be undone
               </p>
               <div className="justify-content-start text-start d-flex mt-5">

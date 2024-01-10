@@ -73,9 +73,7 @@ function MerchantBranchItem({
           <div className="p-2 row">
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
-                  adminRole === "ROLE_PARTNERSHIP_STAFF" ||
-                  adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
                   <i
                     className="bi bi-pencil-fill h3 cursor-pointer m-2"
                     style={{
@@ -88,8 +86,7 @@ function MerchantBranchItem({
                     data-bs-target={`#createMerchantBranchModal${merchantID}`}
                   ></i>
                 )}
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
-                  adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
                   <i
                     className="bi bi-trash-fill h3 cursor-pointer m-2"
                     style={{
@@ -105,8 +102,7 @@ function MerchantBranchItem({
 
                 {status !== "INACTIVE" &&
                   status !== "ACTIVE" &&
-                  (adminRole === "ROLE_SUPER_ADMIN" ||
-                    adminRole === "ROLE_PARTNERSHIP_HEAD") && (
+                  adminRole === "ROLE_PARTNERSHIP_HEAD" && (
                     <div
                       className="dropdown"
                       onClick={setMerchantBranchID(branchID)}

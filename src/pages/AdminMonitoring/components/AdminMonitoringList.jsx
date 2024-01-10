@@ -303,7 +303,7 @@ const AdminMonitoringList = () => {
       <div className="d-flex justify-content-between align-items-center">
         <h2>Admin Monitoring List</h2>
       </div>
-      <table className="table">
+      <table className="table text-center">
         <thead>
           <tr>
             <th className="fw-normal">No</th>
