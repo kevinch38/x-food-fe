@@ -202,20 +202,21 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     data-bs-target={`#createMerchantModal`}
                   ></i>
                 )} */}
-                {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
-                  <i
-                    className="bi bi-trash-fill h3 cursor-pointer m-2"
-                    style={{
-                      color: "rgb(255, 0, 0)",
-                    }}
-                    onClick={() => setMerchantID(merchantID)}
-                    data-bs-toggle="modal"
-                    data-bs-target={`#deleteMerchantModal`}
-                  ></i>
-                )}
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" &&
+                  status === "ACTIVE" && (
+                    <i
+                      className="bi bi-trash-fill h3 cursor-pointer m-2"
+                      style={{
+                        color: "rgb(255, 0, 0)",
+                      }}
+                      onClick={() => setMerchantID(merchantID)}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#deleteMerchantModal`}
+                    ></i>
+                  )}
                 {status !== "INACTIVE" &&
                   status !== "ACTIVE" &&
-                  adminRole === "ROLE_MARKETING_HEAD" && (
+                  adminRole === "ROLE_PARTNERSHIP_HEAD" && (
                     <div className="dropdown">
                       <button
                         className="btn btn-light dropdown-toggle"

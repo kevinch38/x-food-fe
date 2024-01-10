@@ -63,7 +63,7 @@ function PromotionItem({ promotion, idx, setPromotionID, setAction }) {
         {status !== "INACTIVE" && (
           <div className="d-flex justify-content-between w-100">
             <div className="p-2 btn-group d-flex align-items-center justify-content-between">
-              {adminRole === "ROLE_MARKETING_STAFF" && (
+              {adminRole === "ROLE_MARKETING_STAFF" && status === "ACTIVE" && (
                 <i
                   className="bi bi-pencil-fill h3 cursor-pointer m-2"
                   style={{
@@ -74,7 +74,7 @@ function PromotionItem({ promotion, idx, setPromotionID, setAction }) {
                   data-bs-target={`#createPromotionModal`}
                 ></i>
               )}
-              {adminRole === "ROLE_MARKETING_STAFF" && (
+              {adminRole === "ROLE_MARKETING_STAFF" && status === "ACTIVE" && (
                 <i
                   className="bi bi-trash-fill h3 cursor-pointer m-2"
                   style={{
@@ -87,8 +87,7 @@ function PromotionItem({ promotion, idx, setPromotionID, setAction }) {
               )}
               {status !== "INACTIVE" &&
                 status !== "ACTIVE" &&
-                (adminRole === "ROLE_SUPER_ADMIN" ||
-                  adminRole === "ROLE_MARKETING_HEAD") && (
+                adminRole === "ROLE_MARKETING_HEAD" && (
                   <div className="dropdown">
                     <button
                       className="btn btn-light dropdown-toggle"

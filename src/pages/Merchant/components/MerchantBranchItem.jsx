@@ -73,32 +73,34 @@ function MerchantBranchItem({
           <div className="p-2 row">
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
-                {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
-                  <i
-                    className="bi bi-pencil-fill h3 cursor-pointer m-2"
-                    style={{
-                      color: "rgb(255, 210, 48)",
-                    }}
-                    onClick={() => {
-                      setMerchantBranchID(branchID);
-                    }}
-                    data-bs-toggle="modal"
-                    data-bs-target={`#createMerchantBranchModal${merchantID}`}
-                  ></i>
-                )}
-                {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
-                  <i
-                    className="bi bi-trash-fill h3 cursor-pointer m-2"
-                    style={{
-                      color: "rgb(255, 0, 0)",
-                    }}
-                    onClick={() => {
-                      setMerchantBranchID(branchID);
-                    }}
-                    data-bs-toggle="modal"
-                    data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
-                  ></i>
-                )}
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" &&
+                  status === "ACTIVE" && (
+                    <i
+                      className="bi bi-pencil-fill h3 cursor-pointer m-2"
+                      style={{
+                        color: "rgb(255, 210, 48)",
+                      }}
+                      onClick={() => {
+                        setMerchantBranchID(branchID);
+                      }}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#createMerchantBranchModal${merchantID}`}
+                    ></i>
+                  )}
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" &&
+                  status === "ACTIVE" && (
+                    <i
+                      className="bi bi-trash-fill h3 cursor-pointer m-2"
+                      style={{
+                        color: "rgb(255, 0, 0)",
+                      }}
+                      onClick={() => {
+                        setMerchantBranchID(branchID);
+                      }}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#deleteMerchantBranchModal${merchantID}`}
+                    ></i>
+                  )}
 
                 {status !== "INACTIVE" &&
                   status !== "ACTIVE" &&
