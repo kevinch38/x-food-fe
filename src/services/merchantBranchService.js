@@ -64,6 +64,13 @@ const MerchantBranchService = () => {
     return data;
   };
 
+  const saveMerchantBranchImage = async (image, id) => {
+    const formData = new FormData();
+    formData.append('image', image);
+    const { data } = await axiosInstance.put(`/api/merchants/branches/${id}`, formData);
+    return data;
+}
+
   const updateMerchantBranch = async (merchantBranch) => {
     const formData = new FormData();
     formData.append("branchID", merchantBranch.branchID);
@@ -103,6 +110,7 @@ const MerchantBranchService = () => {
     approveMerchantBranch,
     approveInactiveMerchantBranch,
     rejectUpdateMerchantBranch,
+    saveMerchantBranchImage
   };
 };
 

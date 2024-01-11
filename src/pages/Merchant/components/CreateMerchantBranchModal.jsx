@@ -86,15 +86,14 @@ export default function CreateMerchantBranchModal({
       branchID: null,
       merchantID: merchantID,
       branchName: "",
-      branchWorkingHoursID: "1",
       cityID: "",
       address: "",
       timezone: "",
       picName: "",
       picNumber: "",
       picEmail: "",
-      address: "",
       image: null,
+      branchWorkingHours: [{ openHour: "", closeHour: "", days: "" }],
     },
     onSubmit: async (values) => {
       if (!isValid) return;
@@ -106,9 +105,13 @@ export default function CreateMerchantBranchModal({
         delete data.branchID;
         dispatch(
           merchantBranchAction(async () => {
-            await merchantBranchService.saveMerchantBranch({
-              ...data
+            const result = await merchantBranchService.saveMerchantBranch({
+              ...data,
             });
+            await merchantBranchService.saveMerchantBranchImage(
+              data.image,
+              result.data.branchID
+            );
             await onGetMerchantBranches(
               merchantID,
               "Branch Data Successfully Inserted"
@@ -189,7 +192,6 @@ export default function CreateMerchantBranchModal({
         picName: "",
         picNumber: "",
         picEmail: "",
-        address: "",
         image: null,
       });
     }
@@ -213,7 +215,9 @@ export default function CreateMerchantBranchModal({
       aria-hidden="true"
       style={{
         borderRadius: "50px",
-        marginTop: "1%",
+        marginTop: "4vh",
+        overflowY: "auto",
+        maxHeight: "90vh",
       }}
     >
       <div
@@ -229,7 +233,6 @@ export default function CreateMerchantBranchModal({
               <button
                 type="button"
                 className="btn-close"
-                // data-bs-dismiss='modal'
                 aria-label="Close"
                 onClick={() => {
                   clearImage();
@@ -397,35 +400,18 @@ export default function CreateMerchantBranchModal({
                     </tr>
                     <tr>
                       <td>
-
-                          <input
-                            className={`form-control ${
-                              touched.address && errors.address && "is-invalid"
-                            }`}
-                            key={key}
-                            type="text"
-                            name="address"
-                            id="address"
-                            value={address}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            placeholder="Address"
-                          />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
                         <input
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          value={address}
-                          id="address"
-                          className={`form-control  ${
+                          className={`form-control ${
                             touched.address && errors.address && "is-invalid"
                           }`}
+                          key={key}
                           type="text"
-                          placeholder="PIC Email"
                           name="address"
+                          id="address"
+                          value={address}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          placeholder="Address"
                         />
                       </td>
                       <td>

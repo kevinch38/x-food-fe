@@ -19,7 +19,6 @@ export default function ApproveRejectMerchantBranchModal({
   idx,
   action,
 }) {
-  console.log(action)
   const dispatch = useDispatch();
   const [merchantBranch, setMerchantBranch] = useState();
   const { merchantBranchService } = useContext(ServiceContext);
