@@ -120,7 +120,7 @@ export default function ApproveRejectMerchantBranchModal({
               ></span>
               {action === "Reject" ? (
                 <h1 className="modal-title fw-bold text-center mt-2">
-                  Are You Sure You Want To Reject?
+                  Are You Sure You Want To Decline?
                 </h1>
               ) : (
                 <h1 className="modal-title fw-bold text-center mt-2">
