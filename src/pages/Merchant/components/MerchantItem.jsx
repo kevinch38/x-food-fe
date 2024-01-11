@@ -41,7 +41,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     picEmail,
     joinDate,
     status,
-    note,
+    notes,
     createdAt,
     updatedAt,
   } = merchant;
@@ -508,7 +508,7 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     <p>| {picName}</p>
                     <p>| {status}</p>
                     <div className="d-flex justify-content-between">
-                      <span>| {note}</span>
+                      <span>| {notes}</span>
                       {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
                         <span className="text-end">
                           {status == "ACTIVE" ? (

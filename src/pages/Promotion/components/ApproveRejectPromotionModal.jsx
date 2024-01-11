@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ServiceContext } from "../../../context/ServiceContext";
 import { useContext, useEffect, useState } from "react";
 import { promotionAction } from "../../../slices/promotionSlice";
+import { useFormik } from "formik";
 
 ApproveRejectPromotionModal.propTypes = {
   promotionID: PropTypes.string,
@@ -18,6 +19,17 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
   const { promotions } = useSelector((state) => state.promotion);
 
   console.log(promotionID);
+
+  const {
+    values: { notes },
+    handleChange,
+    handleBlur,
+  } = useFormik({
+    initialValues: {
+      notes: "",
+    },
+  });
+
   useEffect(() => {
     if (promotionID) {
       const fetchPromotionDetails = async () => {
@@ -35,7 +47,8 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
   const handleApprove = () => {
     dispatch(
       promotionAction(async () => {
-        await promotionService.approvePromotion(promotionID);
+        const request = { promotionID: promotionID, notes: notes };
+        await promotionService.approvePromotion(request);
 
         const data = promotions.filter(
           (promotion) => promotion.branchID !== promotionID
@@ -48,7 +61,8 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
   const handleApproveInactive = () => {
     dispatch(
       promotionAction(async () => {
-        await promotionService.approveInactivePromotion(promotionID);
+        const request = { promotionID: promotionID, notes: notes };
+        await promotionService.approveInactivePromotion(request);
 
         const data = promotions.filter(
           (promotion) => promotion.branchID !== promotionID
@@ -121,7 +135,7 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
                   <p>PIC:</p>
                   <p>Request Type:</p>
                 </div>
-                <div>
+                <div  style={{ width: "400px" }}>
                   <p>| {promotionID}</p>
                   <p>| {promotion?.promotionName}</p>
                   <p>
@@ -134,6 +148,22 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
                       : null}
                   </p>
                 </div>
+                {action === "Reject" && (
+                  <div className="flex-grow-1">
+                    <div className="form-floating">
+                      <textarea
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className="form-control"
+                        placeholder="Leave a comment here"
+                        value={notes}
+                        id="notes"
+                        style={{ maxHeight: "100px" }}
+                      ></textarea>
+                      <label htmlFor="floatingTextarea">Notes</label>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="d-flex justify-content-around mt-5 w-75 ">
                 <button

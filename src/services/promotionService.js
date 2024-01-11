@@ -30,23 +30,26 @@ const PromotionService = () => {
     return data;
   };
 
-  const approvePromotion = async (id) => {
+  const approvePromotion = async (request) => {
     const { data } = await axiosInstance.put(
-      `/api/promotions/approve/active/${id}`
+      `/api/promotions/approve/active`,
+      request
     );
     return data;
   };
 
-  const approveInactivePromotion = async (id) => {
+  const approveInactivePromotion = async (request) => {
     const { data } = await axiosInstance.put(
-      `/api/promotions/approve/inactive/${id}`
+      `/api/promotions/approve/inactive`,
+      request
     );
     return data;
   };
 
-  const rejectUpdatePromotion = async (id) => {
+  const rejectUpdatePromotion = async (request) => {
     const { data } = await axiosInstance.put(
-      `/api/promotions/reject/update/${id}`
+      `/api/promotions/reject/update`,
+      request
     );
     return data;
   };

@@ -77,7 +77,7 @@ const MerchantBranchService = () => {
   const updateMerchantBranch = async (merchantBranch) => {
     const branchWorkingHours = [];
     const request = {
-      merchantID: merchantBranch.merchantID,
+      branchID: merchantBranch.branchID,
       branchName: merchantBranch.branchName,
       address: merchantBranch.address,
       timezone: merchantBranch.timezone,
@@ -88,7 +88,7 @@ const MerchantBranchService = () => {
       picEmail: merchantBranch.picEmail,
     };
 
-    const { data } = await axiosInstance.post(
+    const { data } = await axiosInstance.put(
       `/api/merchants/branches`,
       request
     );

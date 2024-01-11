@@ -126,9 +126,10 @@ export default function CreateMerchantBranchModal({
 
       dispatch(
         merchantBranchAction(async () => {
-          await merchantBranchService.updateMerchantBranch({
+          const result = await merchantBranchService.updateMerchantBranch({
             ...values,
           });
+          console.log(result);
           await onGetMerchantBranches(
             merchantID,
             "Branch Data Successfully Updated"
@@ -206,6 +207,7 @@ export default function CreateMerchantBranchModal({
   const handleChangeFile = (e) => {
     setFieldValue(e.currentTarget.name, e.currentTarget.files[0]);
   };
+
   return (
     <div
       className="modal fade"
