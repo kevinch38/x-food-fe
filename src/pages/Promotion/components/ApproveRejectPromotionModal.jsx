@@ -18,8 +18,6 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
   const { promotionService } = useContext(ServiceContext);
   const { promotions } = useSelector((state) => state.promotion);
 
-  console.log(promotionID);
-
   const {
     values: { notes },
     handleChange,
@@ -44,7 +42,7 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
     }
   }, [promotionID, promotionService]);
 
-  const handleApprove = () => {
+  const handleActive = () => {
     dispatch(
       promotionAction(async () => {
         const request = { promotionID: promotionID, notes: notes };
@@ -58,7 +56,7 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
     );
   };
 
-  const handleApproveInactive = () => {
+  const handleInactive = () => {
     dispatch(
       promotionAction(async () => {
         const request = { promotionID: promotionID, notes: notes };
@@ -67,6 +65,21 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
         const data = promotions.filter(
           (promotion) => promotion.branchID !== promotionID
         );
+        return data;
+      })
+    );
+  };
+
+  const handleRejectUpdate = () => {
+    dispatch(
+      promotionAction(async () => {
+        const request = { promotionID: promotionID, notes: notes };
+        await promotionService.rejectUpdatePromotion(request);
+
+        const data = promotions.filter(
+          (promotion) => promotion.branchID !== promotionID
+        );
+
         return data;
       })
     );
@@ -131,17 +144,22 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
               <div className="justify-content-start text-start d-flex mt-5">
                 <div style={{ width: "200px" }}>
                   <p>ID:</p>
-                  <p>Promotion Name:</p>
-                  <p>PIC:</p>
+                  <p>Merchant ID:</p>
+                  <p>Name:</p>
+                  <p>Max Redeem:</p>
+                  <p>Value:</p>
+                  <p>Cost:</p>
+                  <p>Quantity:</p>
                   <p>Request Type:</p>
                 </div>
-                <div  style={{ width: "400px" }}>
+                <div style={{ width: "400px" }}>
                   <p>| {promotionID}</p>
+                  <p>| {promotion?.merchantID}</p>
                   <p>| {promotion?.promotionName}</p>
-                  <p>
-                    | {promotion?.picName} - {promotion?.picNumber} (
-                    {promotion?.picEmail})
-                  </p>
+                  <p>| {promotion?.maxRedeem}</p>
+                  <p>| {promotion?.promotionValue}</p>
+                  <p>| {promotion?.cost}</p>
+                  <p>| {promotion?.quantity}</p>
                   <p>
                     {promotion?.status.match(/WAITING_FOR_(\w+)_APPROVAL/)
                       ? promotion?.status.match(/WAITING_FOR_(\w+)_APPROVAL/)[1]
@@ -158,7 +176,7 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
                         placeholder="Leave a comment here"
                         value={notes}
                         id="notes"
-                        style={{ maxHeight: "100px" }}
+                        style={{ maxHeight: "200px" }}
                       ></textarea>
                       <label htmlFor="floatingTextarea">Notes</label>
                     </div>
@@ -192,11 +210,15 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
                       if (
                         promotion?.status === "WAITING_FOR_DELETION_APPROVAL"
                       ) {
-                        handleApprove(promotion?.branchID);
+                        handleActive(promotion?.branchID);
                       } else if (
                         promotion?.status === "WAITING_FOR_CREATION_APPROVAL"
                       ) {
-                        handleApproveInactive(promotion?.branchID);
+                        handleInactive(promotion?.branchID);
+                      } else if (
+                        promotion?.status === "WAITING_FOR_UPDATE_APPROVAL"
+                      ) {
+                        handleRejectUpdate(promotion?.branchID);
                       }
                     }}
                   >
@@ -216,12 +238,12 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
                       if (
                         promotion?.status === "WAITING_FOR_DELETION_APPROVAL"
                       ) {
-                        handleApproveInactive(promotion?.branchID);
+                        handleInactive(promotion?.branchID);
                       } else if (
                         promotion?.status === "WAITING_FOR_CREATION_APPROVAL" ||
                         promotion?.status === "WAITING_FOR_UPDATE_APPROVAL"
                       ) {
-                        handleApprove(promotion?.branchID);
+                        handleActive(promotion?.branchID);
                       }
                     }}
                   >
