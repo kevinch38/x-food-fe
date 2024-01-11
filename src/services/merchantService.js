@@ -20,7 +20,6 @@ const MerchantService = () => {
         formData.append('picEmail', merchant.picEmail);
         formData.append('image', merchant.image);
         formData.append('logoImage', merchant.logoImage);
-        formData.append('notes', merchant.notes);
         const { data } = await axiosInstance.post('/api/merchants', formData);
         return data;
     }

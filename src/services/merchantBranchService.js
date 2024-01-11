@@ -66,30 +66,33 @@ const MerchantBranchService = () => {
 
   const saveMerchantBranchImage = async (image, id) => {
     const formData = new FormData();
-    formData.append('image', image);
-    const { data } = await axiosInstance.put(`/api/merchants/branches/${id}`, formData);
-    return data;
-}
-
-  const updateMerchantBranch = async (merchantBranch) => {
-    const formData = new FormData();
-    formData.append("branchID", merchantBranch.branchID);
-    formData.append("branchName", merchantBranch.branchName);
-    formData.append("address", merchantBranch.address);
-    formData.append("timezone", merchantBranch.timezone);
-    formData.append(
-      "branchWorkingHoursID",
-      merchantBranch.branchWorkingHoursID
-    );
-    formData.append("picName", merchantBranch.picName);
-    formData.append("picNumber", merchantBranch.picNumber);
-    formData.append("picEmail", merchantBranch.picEmail);
-    formData.append("image", merchantBranch.image);
-    formData.append("cityID", merchantBranch.cityID);
+    formData.append("image", image);
     const { data } = await axiosInstance.put(
-      "/api/merchants/branches",
+      `/api/merchants/branches/${id}`,
       formData
     );
+    return data;
+  };
+
+  const updateMerchantBranch = async (merchantBranch) => {
+    const branchWorkingHours = [];
+    const request = {
+      merchantID: merchantBranch.merchantID,
+      branchName: merchantBranch.branchName,
+      address: merchantBranch.address,
+      timezone: merchantBranch.timezone,
+      branchWorkingHours: branchWorkingHours,
+      cityID: merchantBranch.cityID,
+      picName: merchantBranch.picName,
+      picNumber: merchantBranch.picNumber,
+      picEmail: merchantBranch.picEmail,
+    };
+
+    const { data } = await axiosInstance.post(
+      `/api/merchants/branches`,
+      request
+    );
+
     return data;
   };
 
@@ -110,7 +113,7 @@ const MerchantBranchService = () => {
     approveMerchantBranch,
     approveInactiveMerchantBranch,
     rejectUpdateMerchantBranch,
-    saveMerchantBranchImage
+    saveMerchantBranchImage,
   };
 };
 
