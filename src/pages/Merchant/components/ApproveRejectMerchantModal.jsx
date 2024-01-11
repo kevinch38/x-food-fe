@@ -22,6 +22,7 @@ export default function ApproveRejectMerchantModal({ merchantID, action }) {
     values: { notes },
     handleChange,
     handleBlur,
+    handleReset,
   } = useFormik({
     initialValues: {
       notes: "",
@@ -49,7 +50,7 @@ export default function ApproveRejectMerchantModal({ merchantID, action }) {
         await merchantService.approveMerchant(request);
 
         const data = merchants.filter(
-          (merchant) => merchant.branchID !== merchantID
+          (merchant) => merchant.merchantID !== merchantID
         );
         let messageBox;
         // if (action == 'Reject') {
@@ -80,6 +81,7 @@ export default function ApproveRejectMerchantModal({ merchantID, action }) {
         } else if (merchant?.status === "WAITING_FOR_UPDATE_APPROVAL") {
           messageBox = "Update merchant successfully approved";
         }
+        handleReset()
         return { messageBox, data };
       })
     );
@@ -123,6 +125,7 @@ export default function ApproveRejectMerchantModal({ merchantID, action }) {
         } else if (merchant?.status === "WAITING_FOR_CREATION_APPROVAL") {
           messageBox = "Creation merchant successfully rejected";
         }
+        handleReset()
         return { messageBox, data };
       })
     );
@@ -231,6 +234,7 @@ export default function ApproveRejectMerchantModal({ merchantID, action }) {
                   }}
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={()=>handleReset()}
                 >
                   Cancel
                 </button>
