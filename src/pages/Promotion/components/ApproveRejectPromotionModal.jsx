@@ -94,7 +94,7 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
           (promotion) => promotion.promotionID !== promotionID
         );
 
-        return data;
+        return {data,messageBox:"Update promotion successfully rejected"};
       })
     );
   };
