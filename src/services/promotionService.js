@@ -23,7 +23,6 @@ const PromotionService = () => {
       cost: promotion.cost,
       quantity: promotion.quantity,
       expiredDate: promotion.expiredDate,
-      notes: "notes",
     };
 
     const { data } = await axiosInstance.post("/api/promotions", request);

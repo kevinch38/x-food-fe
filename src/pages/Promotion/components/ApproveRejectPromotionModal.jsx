@@ -49,9 +49,17 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
         await promotionService.approvePromotion(request);
 
         const data = promotions.filter(
-          (promotion) => promotion.branchID !== promotionID
+          (promotion) => promotion.promotionID !== promotionID
         );
-        return data;
+        let messageBox;
+        if (promotion?.status === "WAITING_FOR_DELETION_APPROVAL") {
+          messageBox = "Deletion promotion successfully rejected";
+        } else if (promotion?.status === "WAITING_FOR_CREATION_APPROVAL") {
+          messageBox = "Creation promotion successfully approved";
+        } else if (promotion?.status === "WAITING_FOR_UPDATE_APPROVAL") {
+          messageBox = "Update promotion successfully approved";
+        }
+        return {data,messageBox};
       })
     );
   };
@@ -63,9 +71,15 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
         await promotionService.approveInactivePromotion(request);
 
         const data = promotions.filter(
-          (promotion) => promotion.branchID !== promotionID
+          (promotion) => promotion.promotionID !== promotionID
         );
-        return data;
+        let messageBox;
+        if (promotion?.status === "WAITING_FOR_DELETION_APPROVAL") {
+          messageBox = "Deletion promotion successfully approved";
+        } else if (promotion?.status === "WAITING_FOR_CREATION_APPROVAL") {
+          messageBox = "Creation promotion successfully rejected";
+        }
+        return {data,messageBox};
       })
     );
   };
@@ -77,7 +91,7 @@ export default function ApproveRejectPromotionModal({ promotionID, action }) {
         await promotionService.rejectUpdatePromotion(request);
 
         const data = promotions.filter(
-          (promotion) => promotion.branchID !== promotionID
+          (promotion) => promotion.promotionID !== promotionID
         );
 
         return data;

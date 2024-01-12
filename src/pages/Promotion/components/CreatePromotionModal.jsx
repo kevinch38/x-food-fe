@@ -32,6 +32,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
       cost,
       quantity,
       expiredDate,
+      merchantName,
     },
     errors,
     dirty,
@@ -125,7 +126,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
             promotionID: promotionID,
             merchantName:
               promotions.find((p) => p.merchantID === merchantID)
-                ?.merchantName || "",
+                ?.merchantID || "",
             promotionName: promotionName,
             promotionDescription: promotionDescription,
             maxRedeem: maxRedeem,
@@ -248,7 +249,11 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           name="merchantName"
                           id="merchantName"
                           onChange={handleChange}
-                          defaultValue=""
+                          value={
+														merchantName
+															? merchantName
+															: `abcde`
+													}
                           onBlur={handleBlur}
                           className={`form-control  ${
                             touched.promotionValue &&
@@ -257,7 +262,8 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           }`}
                         >
                           <option
-                            value=""
+                            value="abcde"
+                            hidden
                             disabled
                             className="color-dark-subtle"
                           >

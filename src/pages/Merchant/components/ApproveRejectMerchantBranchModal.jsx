@@ -49,9 +49,17 @@ export default function ApproveRejectMerchantBranchModal({
         merchantBranches.filter(
           (merchantBranch) => merchantBranch.branchID !== id
         );
+        let messageBox;
+        if (merchantBranch?.status === "WAITING_FOR_DELETION_APPROVAL") {
+          messageBox = "Deletion branch successfully rejected";
+        } else if (merchantBranch?.status === "WAITING_FOR_CREATION_APPROVAL") {
+          messageBox = "Creation branch successfully approved";
+        } else if (merchantBranch?.status === "WAITING_FOR_UPDATE_APPROVAL") {
+          messageBox = "Update branch successfully approved";
+        }
         await onGetMerchantBranches(
           merchantID,
-          "Branch Data Successfully Approved"
+          messageBox
         );
       })
     );
@@ -65,9 +73,15 @@ export default function ApproveRejectMerchantBranchModal({
         merchantBranches.filter(
           (merchantBranch) => merchantBranch.branchID !== id
         );
+        let messageBox;
+        if (merchantBranch?.status === "WAITING_FOR_DELETION_APPROVAL") {
+          messageBox = "Deletion branch successfully approved";
+        } else if (merchantBranch?.status === "WAITING_FOR_CREATION_APPROVAL") {
+          messageBox = "Creation branch successfully rejected";
+        }
         await onGetMerchantBranches(
           merchantID,
-          "Successfully Approved Delete Branch"
+          messageBox
         );
       })
     );
