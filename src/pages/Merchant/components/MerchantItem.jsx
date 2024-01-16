@@ -4,6 +4,9 @@ import MerchantBranchItem from "./MerchantBranchItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
 import { ServiceContext } from "../../../context/ServiceContext";
+import ApproveRejectMerchantBranchModal from "./ApproveRejectMerchantBranchModal";
+import ApproveRejectMerchantModal from "./ApproveRejectMerchantModal";
+
 import {
   citiesAction,
   merchantBranchAction,
@@ -23,6 +26,8 @@ MerchantItem.propTypes = {
   setMerchantID: PropTypes.func,
   idx: PropTypes.number,
   onGetMerchantBranches: PropTypes.any,
+  merchantAction: PropTypes.any,
+  merchantService: PropTypes.any,
 };
 
 function MerchantItem({ merchant, idx, setMerchantID }) {
@@ -36,12 +41,13 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
     picEmail,
     joinDate,
     status,
-    note,
+    notes,
     createdAt,
     updatedAt,
   } = merchant;
+  const [actionBranch, setActionBranch] = useState("");
+  const [actionMerchant, setActionMerchant] = useState("");
   const { authService } = useContext(ServiceContext);
-
   const { merchantBranches } = useSelector((state) => state.merchantBranch);
   const { cities } = useSelector((state) => state.merchantBranch);
   const { merchantBranchService } = useContext(ServiceContext);
@@ -175,16 +181,15 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
       <td>{joinDate}</td>
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
-      {(adminRole === "ROLE_SUPER_ADMIN" ||
-        adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+      {(adminRole === "ROLE_PARTNERSHIP_STAFF" ||
         adminRole === "ROLE_PARTNERSHIP_HEAD") && (
-        <td>
+        <td className="visible">
           {status == "INACTIVE" ? (
             ""
           ) : (
             <div className="p-2 d-flex justify-content-between w-100">
               <div className="btn-group justify-content-between">
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
+                {/* {(adminRole === "ROLE_SUPER_ADMIN" ||
                   adminRole === "ROLE_PARTNERSHIP_STAFF" ||
                   adminRole === "ROLE_PARTNERSHIP_HEAD") && (
                   <i
@@ -196,19 +201,67 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     data-bs-toggle="modal"
                     data-bs-target={`#createMerchantModal`}
                   ></i>
-                )}
-                {(adminRole === "ROLE_SUPER_ADMIN" ||
-                  adminRole === "ROLE_PARTNERSHIP_STAFF") && (
-                  <i
-                    className="bi bi-trash-fill h3 cursor-pointer m-2"
-                    style={{
-                      color: "rgb(255, 0, 0)",
-                    }}
-                    onClick={() => setMerchantID(merchantID)}
-                    data-bs-toggle="modal"
-                    data-bs-target={`#deleteMerchantModal`}
-                  ></i>
-                )}
+                )} */}
+                {adminRole === "ROLE_PARTNERSHIP_STAFF" &&
+                  status === "ACTIVE" && (
+                    <i
+                      className="bi bi-trash-fill h3 cursor-pointer m-2"
+                      style={{
+                        color: "rgb(255, 0, 0)",
+                      }}
+                      onClick={() => setMerchantID(merchantID)}
+                      data-bs-toggle="modal"
+                      data-bs-target={`#deleteMerchantModal`}
+                    ></i>
+                  )}
+                {status !== "INACTIVE" &&
+                  status !== "ACTIVE" &&
+                  adminRole === "ROLE_PARTNERSHIP_HEAD" && (
+                    <div className="dropdown">
+                      <button
+                        className="btn btn-light dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        style={{ width: "auto" }}
+                      >
+                        <i
+                          className="bi bi-list-ul h3 cursor-pointer"
+                          style={{ color: "rgb(128, 128, 128)" }}
+                        />
+                      </button>
+
+                      <div
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        {["Approve", "Reject"].map((action, idx, array) => {
+                          return (
+                            <React.Fragment key={idx}>
+                              <button
+                                className="dropdown-item"
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#approveRejectMerchantModal${merchantID}`}
+                                onClick={() => {
+                                  setActionMerchant(action);
+                                }}
+                              >
+                                <span className="text-capitalize">
+                                  {action.toLowerCase().replace(/_/g, " ")}
+                                </span>
+                              </button>
+                              {idx !== array.length - 1 && (
+                                <div className="dropdown-divider"></div>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
           )}
@@ -228,6 +281,19 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
         </div>
       </td>
       <td>
+        <ApproveRejectMerchantBranchModal
+          idx={idx}
+          merchantID={merchantID}
+          merchantBranchID={merchantBranchID}
+          onGetMerchantBranches={onGetMerchantBranches}
+          action={actionBranch}
+        />
+        <ApproveRejectMerchantModal
+          idx={idx}
+          merchantID={merchantID}
+          onGetMerchantBranches={onGetMerchantBranches}
+          action={actionMerchant}
+        />
         <CreateMerchantBranchModal
           onGetMerchantBranches={onGetMerchantBranches}
           setMerchantBranchID={setMerchantBranchID}
@@ -344,22 +410,17 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                       <div
                         className="dropdown-menu"
                         aria-labelledby="dropdownMenuButton"
+                        style={{ maxHeight: "200px", overflowY: "auto" }}
                       >
-                        {[
-                          "Jakarta Pusat",
-                          "Jakarta Utara",
-                          "Jakarta Timur",
-                          "Jakarta Seletan",
-                          "Jakarta Barat",
-                        ].map((city, idx) => {
+                        {filteredCities.map(({ cityName, cityID }) => {
                           return (
-                            <React.Fragment key={idx}>
+                            <React.Fragment key={cityID}>
                               <button
                                 className="dropdown-item"
                                 href="#"
-                                onClick={() => handleChange2(city, "city")}
+                                onClick={() => handleChange2(cityName, "city")}
                               >
-                                {city}
+                                {cityName}
                               </button>
                               <div className="dropdown-divider"></div>
                             </React.Fragment>
@@ -447,9 +508,8 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                     <p>| {picName}</p>
                     <p>| {status}</p>
                     <div className="d-flex justify-content-between">
-                      <span>| {note}</span>
-                      {(adminRole === "ROLE_SUPER_ADMIN" ||
-                        adminRole === "ROLE_PARTNERSHIP_STAFF") && (
+                      <span>| {notes}</span>
+                      {adminRole === "ROLE_PARTNERSHIP_STAFF" && (
                         <span className="text-end">
                           {status == "ACTIVE" ? (
                             <i
@@ -498,38 +558,10 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                             <th scope="col">NO</th>
                             <th scope="col">ID</th>
                             <th scope="col">Branch</th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "200px",
-                              }}
-                            >
-                              City
-                            </th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "100px",
-                              }}
-                            >
-                              PIC Name
-                            </th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "100px",
-                              }}
-                            >
-                              PIC Number
-                            </th>
-                            <th
-                              scope="col"
-                              style={{
-                                minWidth: "100px",
-                              }}
-                            >
-                              PIC Email
-                            </th>
+                            <th scope="col">City</th>
+                            <th scope="col">PIC Name</th>
+                            <th scope="col">PIC Number</th>
+                            <th scope="col">PIC Email</th>
                             <th scope="col">Status</th>
                             <th scope="col">Join Date</th>
                             <th scope="col">Created At</th>
@@ -537,14 +569,19 @@ function MerchantItem({ merchant, idx, setMerchantID }) {
                           </tr>
                         </thead>
                         <tbody className="table-group-divider">
-                          {merchantBranches.map((merchantBranches, idx) => {
+                          {merchantBranches.map((merchantBranch, idx) => {
                             return (
                               <React.Fragment key={idx}>
                                 <MerchantBranchItem
-                                  key={merchantBranches.merchantbranchID}
-                                  merchantBranches={merchantBranches}
+                                  key={merchantBranch.merchantbranchID}
+                                  merchantBranch={merchantBranch}
                                   idx={++idx}
                                   setMerchantBranchID={setMerchantBranchID}
+                                  merchantBranchAction={merchantBranchAction}
+                                  merchantBranchService={merchantBranchService}
+                                  onGetMerchantBranches={onGetMerchantBranches}
+                                  setAction={setActionBranch}
+                                  action={actionBranch}
                                 />
                               </React.Fragment>
                             );

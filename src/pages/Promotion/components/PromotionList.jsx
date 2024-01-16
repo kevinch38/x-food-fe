@@ -10,6 +10,7 @@ import CreatePromotionModal from "./CreatePromotionModal";
 import DeletePromotionModal from "./DeletePromotionModal";
 import React from "react";
 import { jwtDecode } from "jwt-decode";
+import ApproveRejectPromotionModal from "./ApproveRejectPromotionModal";
 
 const PromotionList = () => {
   const [searchParam, setSearchParam] = useSearchParams();
@@ -17,6 +18,7 @@ const PromotionList = () => {
   const { promotions } = useSelector((state) => state.promotion);
   const { promotionService, authService } = useContext(ServiceContext);
   const [paging, setPaging] = useState({});
+  const [action, setAction] = useState({});
   const [promotionID, setPromotionID] = useState();
 
   const currentPage = parseInt(searchParam.get("page") || 1);
@@ -98,6 +100,7 @@ const PromotionList = () => {
     debounceSearch2,
     dispatch,
     promotionService,
+    promotions?.length,
   ]);
 
   useEffect(() => {
@@ -205,7 +208,7 @@ const PromotionList = () => {
                   "WAITING_FOR_DELETION_APPROVAL",
                   "WAITING_FOR_CREATION_APPROVAL",
                   "WAITING_FOR_UPDATE_APPROVAL",
-                ].map((promotionStatus, idx) => {
+                ].map((promotionStatus, idx, array) => {
                   return (
                     <React.Fragment key={idx}>
                       <button
@@ -219,7 +222,9 @@ const PromotionList = () => {
                           {promotionStatus.toLowerCase().replace(/_/g, " ")}
                         </span>
                       </button>
-                      <div className="dropdown-divider"></div>
+                      {idx !== array.length - 1 && (
+                        <div className="dropdown-divider"></div>
+                      )}
                     </React.Fragment>
                   );
                 })}
@@ -396,18 +401,20 @@ const PromotionList = () => {
       <div className="mx-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2>Promotion List</h2>
-          <i
-            className="bi bi-plus-circle-fill h2 cursor-pointer"
-            style={{
-              color: "rgb(101, 213, 26)",
-            }}
-            onClick={() => {
-              setPromotionID(null);
-              setSearchState("");
-            }}
-            data-bs-toggle="modal"
-            data-bs-target={`#createPromotionModal`}
-          ></i>
+          {adminRole === "ROLE_MARKETING_STAFF" && (
+            <i
+              className="bi bi-plus-circle-fill h2 cursor-pointer"
+              style={{
+                color: "rgb(101, 213, 26)",
+              }}
+              onClick={() => {
+                setPromotionID(null);
+                setSearchState("");
+              }}
+              data-bs-toggle="modal"
+              data-bs-target={`#createPromotionModal`}
+            ></i>
+          )}
         </div>
 
         <table className="table text-center align-middle">
@@ -425,8 +432,7 @@ const PromotionList = () => {
               <th className="fw-normal">Created At</th>
               <th className="fw-normal">Updated At</th>
               <th className="fw-normal">Expired Date</th>
-              {(adminRole === "ROLE_SUPER_ADMIN" ||
-                adminRole === "ROLE_MARKETING_STAFF" ||
+              {(adminRole === "ROLE_MARKETING_STAFF" ||
                 adminRole === "ROLE_MARKETING_HEAD") && (
                 <th className="fw-normal">Action</th>
               )}
@@ -436,12 +442,22 @@ const PromotionList = () => {
             {promotions && promotions.length !== 0 ? (
               promotions.map((promotion, idx) => {
                 return (
-                  <PromotionItem
-                    key={promotion.promotionID}
-                    promotion={promotion}
-                    idx={++idx}
-                    setPromotionID={setPromotionID}
-                  />
+                  <tr key={idx} style={{ height: "60px" }}>
+                    <PromotionItem
+                      key={promotion.promotionID}
+                      promotion={promotion}
+                      idx={++idx}
+                      setPromotionID={setPromotionID}
+                      setAction={setAction}
+                    />
+                    <td colSpan={0}>
+                      <ApproveRejectPromotionModal
+                        idx={idx}
+                        promotionID={promotion.promotionID}
+                        action={action}
+                      />
+                    </td>
+                  </tr>
                 );
               })
             ) : (

@@ -182,7 +182,7 @@ const AdminMonitoringList = () => {
                 "CREATE_PROMOTION",
                 "UPDATE_PROMOTION",
                 "DELETE_PROMOTION",
-              ].map((activity, idx) => {
+              ].map((activity, idx, array) => {
                 return (
                   <React.Fragment key={idx}>
                     <button
@@ -194,7 +194,7 @@ const AdminMonitoringList = () => {
                         {activity.toLowerCase().replace(/_/g, " ")}
                       </span>
                     </button>
-                    <div className="dropdown-divider"></div>
+                    {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
                   </React.Fragment>
                 );
               })}
@@ -223,7 +223,7 @@ const AdminMonitoringList = () => {
                 "ROLE_PARTNERSHIP_STAFF",
                 "ROLE_MARKETING_HEAD",
                 "ROLE_MARKETING_STAFF",
-              ].map((adminRole, idx) => {
+              ].map((adminRole, idx, array) => {
                 return (
                   <React.Fragment key={idx}>
                     <button
@@ -235,7 +235,7 @@ const AdminMonitoringList = () => {
                         {adminRole.toLowerCase().replace(/_/g, " ")}
                       </span>
                     </button>
-                    <div className="dropdown-divider"></div>
+                    {idx !== array.length - 1 && <div className="dropdown-divider"></div>}
                   </React.Fragment>
                 );
               })}
@@ -303,7 +303,7 @@ const AdminMonitoringList = () => {
       <div className="d-flex justify-content-between align-items-center">
         <h2>Admin Monitoring List</h2>
       </div>
-      <table className="table">
+      <table className="table text-center">
         <thead>
           <tr>
             <th className="fw-normal">No</th>

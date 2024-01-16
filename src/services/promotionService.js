@@ -6,15 +6,16 @@ const PromotionService = () => {
     return data;
   };
 
-  const fetchPromotions = async () => {
-    console.log("============================");
-    const { data } = await axiosInstance.get(`/api/promotions`);
+  const fetchPromotions = async (queryParams) => {
+    const { data } = await axiosInstance.get("/api/promotions", {
+      params: queryParams,
+    });
     return data;
   };
 
   const savePromotion = async (promotion) => {
     const request = {
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
@@ -22,7 +23,6 @@ const PromotionService = () => {
       cost: promotion.cost,
       quantity: promotion.quantity,
       expiredDate: promotion.expiredDate,
-      notes: "notes",
     };
     console.log(request);
 
@@ -31,10 +31,34 @@ const PromotionService = () => {
     return data;
   };
 
+  const approvePromotion = async (request) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/approve/active`,
+      request
+    );
+    return data;
+  };
+
+  const approveInactivePromotion = async (request) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/approve/inactive`,
+      request
+    );
+    return data;
+  };
+
+  const rejectUpdatePromotion = async (request) => {
+    const { data } = await axiosInstance.put(
+      `/api/promotions/reject/update`,
+      request
+    );
+    return data;
+  };
+
   const updatePromotion = async (promotion) => {
     const request = {
       promotionID: promotion.promotionID,
-      merchantID: promotion.merchantID,
+      merchantID: promotion.merchantName,
       promotionName: promotion.promotionName,
       maxRedeem: promotion.maxRedeem,
       promotionValue: promotion.promotionValue,
@@ -42,7 +66,6 @@ const PromotionService = () => {
       cost: promotion.cost,
       quantity: promotion.quantity,
       expiredDate: promotion.expiredDate,
-      notes: "notes",
     };
     const { data } = await axiosInstance.put("/api/promotions", request);
     console.log(data);
@@ -60,6 +83,9 @@ const PromotionService = () => {
     savePromotion,
     updatePromotion,
     deletePromotion,
+    approveInactivePromotion,
+    approvePromotion,
+    rejectUpdatePromotion,
   };
 };
 

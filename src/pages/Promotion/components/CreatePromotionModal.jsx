@@ -32,6 +32,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
       cost,
       quantity,
       expiredDate,
+      merchantName,
     },
     errors,
     dirty,
@@ -68,7 +69,10 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
               ...data,
             });
             const a = [...promotions, result.data];
-            return { data: a, messageBox : 'Promotion Data Successfully Inserted' };
+            return {
+              data: a,
+              messageBox: "Promotion Data Successfully Inserted",
+            };
           })
         );
         setPromotionID(null);
@@ -82,7 +86,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
             ...values,
           });
           const a = [...promotions, result.data];
-          return { data: a, messageBox : 'Promotion Data Successfully Updated', };
+          return { data: a, messageBox: "Promotion Data Successfully Updated" };
         })
       );
       setPromotionID(null);
@@ -122,7 +126,7 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
             promotionID: promotionID,
             merchantName:
               promotions.find((p) => p.merchantID === merchantID)
-                ?.merchantName || "",
+                ?.merchantID || "",
             promotionName: promotionName,
             promotionDescription: promotionDescription,
             maxRedeem: maxRedeem,
@@ -245,7 +249,11 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           name="merchantName"
                           id="merchantName"
                           onChange={handleChange}
-                          defaultValue=""
+                          value={
+														merchantName
+															? merchantName
+															: `abcde`
+													}
                           onBlur={handleBlur}
                           className={`form-control  ${
                             touched.promotionValue &&
@@ -254,7 +262,8 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           }`}
                         >
                           <option
-                            value=""
+                            value="abcde"
+                            hidden
                             disabled
                             className="color-dark-subtle"
                           >
@@ -262,12 +271,12 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           </option>
 
                           {promotionOptions.map((promotionOption, index) => (
-                              <option
-                                key={index}
-                                value={promotionOption.merchantID}
-                              >
-                                {promotionOption.merchantName}
-                              </option>
+                            <option
+                              key={index}
+                              value={promotionOption.merchantID}
+                            >
+                              {promotionOption.merchantName}
+                            </option>
                           ))}
                         </select>
                       </td>
@@ -375,13 +384,17 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
                           onBlur={handleBlur}
                           value={expiredDate}
                           id="expiredDate"
-                          className={`form-control  ${
+                          className={`form-control ${
                             touched.expiredDate &&
                             errors.expiredDate &&
                             "is-invalid"
                           }`}
-                          type="datetime-local"
-                          placeholder="Expired Date"
+                          type="text"
+                          onFocus={() => {
+                            document.getElementById("expiredDate").type =
+                              "date";
+                          }}
+                          placeholder="End Of Day"
                           name="expiredDate"
                         />
                       </td>

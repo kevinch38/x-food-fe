@@ -16,6 +16,11 @@ body {
   white-space: nowrap;
 }
 
+.table-mb {
+  max-width: 150px !important;
+
+}
+
 .loader {
   transform: rotateZ(45deg);
   perspective: 1000px;
@@ -23,6 +28,10 @@ body {
   width: 128px;
   height: 128px;
   color: #fff;
+}
+
+.visible {
+  overflow:visible !important;
 }
 
 .loader:before,
@@ -60,7 +69,7 @@ body {
 }
 
 .disabled-button {
-  color: #BDBDC6 !important; 
+  color: #bdbdc6 !important;
   cursor: default;
 }
 

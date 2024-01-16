@@ -18,6 +18,7 @@ const validationSchemaBranch = () =>
 			.test('fileSize', 'Image size is too large', (value) => {
 				return value.size <= maxSize;
 			}),
+		timezone: Yup.string().required('Timezone is required'),
 	});
 
 export default validationSchemaBranch;
