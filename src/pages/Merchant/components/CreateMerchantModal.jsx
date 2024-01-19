@@ -299,7 +299,7 @@ export default function CreateMerchantModal({ setMerchantID, merchantID }) {
                           className={`form-control  ${
                             touched.picEmail && errors.picEmail && "is-invalid"
                           }`}
-                          type="text"
+                          type="email"
                           placeholder="PIC Email:"
                           name="picEmail"
                         />

@@ -85,7 +85,10 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
           const result = await promotionService.updatePromotion({
             ...values,
           });
-          const a = [...promotions, result.data];
+          // const a = [...promotions, result.data];
+          const a = promotions.filter(
+            (promotion) => promotion.promotionID !== result.data.promotionID
+          );
           return { data: a, messageBox: "Promotion Data Successfully Updated" };
         })
       );
@@ -159,7 +162,9 @@ export default function CreatePromotionModal({ setPromotionID, promotionID }) {
     const onGetMerchants = async () => {
       const result = await dispatch(
         merchantAction(async () => {
-          const response = await merchantService.fetchMerchants();
+          const response = await merchantService.fetchMerchants({
+            merchantStatus:"ACTIVE"
+          });
           return response.data;
         })
       );
