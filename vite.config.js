@@ -1,21 +1,26 @@
-/* eslint-disable no-undef */
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
-import dotenv from 'dotenv'
+import * as path from "path";
 
-dotenv.config();
-
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  base: './',
-  server: {
-    proxy: {
-      '/api': {
-        target: `http://${process.env.HOST}:${process.env.PORT}`,
-        changeOrigin: true,
-        rewrite: (path) => path.replace('^/api/', ''),
-      }
+    plugins: [react()],
+    build: {
+        outDir: 'build',
+        assetsDir: 'assets',
+        emptyOutDir: true,
+    },
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+        },
+    },
+    base: './',
+    server: {
+        proxy: {
+            '/api': {
+                target: `http://43.218.113.28:8081`,
+                changeOrigin: true,
+            }
+        }
     }
-  }
 })
