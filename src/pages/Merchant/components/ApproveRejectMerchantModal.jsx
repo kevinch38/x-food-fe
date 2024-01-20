@@ -88,7 +88,7 @@ export default function ApproveRejectMerchantModal({ merchantID, action }) {
   };
 
   const handleApproveInactive = () => {
-    console.log(notes);
+    // console.log(notes);
     dispatch(
       merchantAction(async () => {
 		const request = {merchantID: merchantID, notes: notes}

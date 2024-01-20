@@ -67,7 +67,7 @@ function HistoryModal({ idx, order, topUp, payment }) {
         <div>
           <p>| {historyID}</p>
           <p>| {balanceID}</p>
-          <p>| {updatedAt}</p>
+          <p>| {fixDate(updatedAt)}</p>
           <p>| {method}</p>
           <p>| {topUpAmount}</p>
           <p>| {topUpFee}</p>
@@ -106,8 +106,8 @@ function HistoryModal({ idx, order, topUp, payment }) {
           <p>| {accountID}</p>
           <p>| {paymentAmount}</p>
           <p>| {paymentType}</p>
-          <p>| {updatedAt}</p>
-          <p>| {expiredAt}</p>
+          <p>| {fixDate(updatedAt)}</p>
+          <p>| {fixDate(expiredAt)}</p>
           <p>| {paymentStatus}</p>
           <p>| {friendID}</p>
           <p>| {orderID}</p>
@@ -115,6 +115,24 @@ function HistoryModal({ idx, order, topUp, payment }) {
       </div>
     );
   }
+
+  
+	const fixDate = (date) => {
+		let dateLocal = new Date(date);
+		let newDate = new Date(
+			dateLocal.getTime() - dateLocal.getTimezoneOffset() * 60 * 1000
+		);
+		const year = newDate.getFullYear();
+		const month = (newDate.getMonth() + 1).toString().padStart(2, '0');
+		const day = newDate.getDate().toString().padStart(2, '0');
+		const hours = newDate.getHours().toString().padStart(2, '0');
+		const minutes = newDate.getMinutes().toString().padStart(2, '0');
+		const seconds = newDate.getSeconds().toString().padStart(2, '0');
+		const miliSeconds = newDate.getMilliseconds().toString().padStart(3, '0');
+		const result = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${miliSeconds}`;
+
+		return result;
+	};
 
   return (
     <div

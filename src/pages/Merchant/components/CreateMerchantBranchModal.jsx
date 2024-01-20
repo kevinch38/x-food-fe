@@ -32,95 +32,234 @@ export default function CreateMerchantBranchModal({
   const { merchantBranchService } = useContext(ServiceContext);
   const [key, setKey] = useState();
 
+  // const gmt = [
+  //   "GMT-11",
+  //   "GMT-10",
+  //   "GMT-9",
+  //   "GMT-8",
+  //   "GMT-7",
+  //   "GMT-6",
+  //   "GMT-5",
+  //   "GMT-4",
+  //   "GMT-3",
+  //   "GMT-2",
+  //   "GMT-1",
+  //   "GMT+0",
+  //   "GMT+1",
+  //   "GMT+2",
+  //   "GMT+3",
+  //   "GMT+4",
+  //   "GMT+5",
+  //   "GMT+6",
+  //   "GMT+7",
+  //   "GMT+8",
+  //   "GMT+9",
+  //   "GMT+10",
+  //   "GMT+11",
+  //   "GMT+12",
+  //   "GMT+13",
+  //   "GMT+14",
+  // ];
+
+  
   const gmt = [
-    "GMT-11",
-    "GMT-10",
-    "GMT-9",
-    "GMT-8",
-    "GMT-7",
-    "GMT-6",
-    "GMT-5",
-    "GMT-4",
-    "GMT-3",
-    "GMT-2",
-    "GMT-1",
-    "GMT+0",
-    "GMT+1",
-    "GMT+2",
-    "GMT+3",
-    "GMT+4",
-    "GMT+5",
-    "GMT+6",
-    "GMT+7",
-    "GMT+8",
-    "GMT+9",
-    "GMT+10",
-    "GMT+11",
-    "GMT+12",
-    "GMT+13",
-    "GMT+14",
-  ];
+    "WIB",
+    "WITA",
+    "WIT",
+];
 
   const hour = [
     {
+      value: "00:00:00",
+      show: "00:00",
+    },
+    {
+      value: "00:30:00",
+      show: "00:30",
+    },
+    {
+      value: "01:00:00",
+      show: "01:00",
+    },
+    {
+      value: "01:30:00",
+      show: "01:30",
+    },
+    {
+      value: "02:00:00",
+      show: "02:00",
+    },
+    {
+      value: "02:30:00",
+      show: "02:30",
+    },
+    {
+      value: "03:00:00",
+      show: "03:00",
+    },
+    {
+      value: "03:30:00",
+      show: "03:30",
+    },
+    {
+      value: "04:00:00",
+      show: "04:00",
+    },
+    {
+      value: "04:30:00",
+      show: "04:30",
+    },
+    {
+      value: "05:00:00",
+      show: "05:00",
+    },
+    {
+      value: "05:30:00",
+      show: "05:30",
+    },
+    {
+      value: "06:00:00",
+      show: "06:00",
+    },
+    {
+      value: "06:30:00",
+      show: "06:30",
+    },
+    {
       value: "07:00:00",
       show: "07:00",
+    },
+    {
+      value: "07:30:00",
+      show: "07:30",
     },
     {
       value: "08:00:00",
       show: "08:00",
     },
     {
+      value: "08:30:00",
+      show: "08:30",
+    },
+    {
       value: "09:00:00",
       show: "09:00",
+    },
+    {
+      value: "09:30:00",
+      show: "09:30",
     },
     {
       value: "10:00:00",
       show: "10:00",
     },
     {
+      value: "10:30:00",
+      show: "10:30",
+    },
+    {
       value: "11:00:00",
       show: "11:00",
+    },
+    {
+      value: "11:30:00",
+      show: "11:30",
     },
     {
       value: "12:00:00",
       show: "12:00",
     },
     {
+      value: "12:30:00",
+      show: "12:30",
+    },
+    {
       value: "13:00:00",
       show: "13:00",
+    },
+    {
+      value: "13:30:00",
+      show: "13:30",
     },
     {
       value: "14:00:00",
       show: "14:00",
     },
     {
+      value: "14:30:00",
+      show: "14:30",
+    },
+    {
       value: "15:00:00",
       show: "15:00",
+    },
+    {
+      value: "15:30:00",
+      show: "15:30",
     },
     {
       value: "16:00:00",
       show: "16:00",
     },
     {
+      value: "16:30:00",
+      show: "16:30",
+    },
+    {
       value: "17:00:00",
       show: "17:00",
+    },
+    {
+      value: "17:30:00",
+      show: "17:30",
     },
     {
       value: "18:00:00",
       show: "18:00",
     },
     {
+      value: "18:30:00",
+      show: "18:30",
+    },
+    {
       value: "19:00:00",
       show: "19:00",
+    },
+    {
+      value: "19:30:00",
+      show: "19:30",
     },
     {
       value: "20:00:00",
       show: "20:00",
     },
     {
+      value: "20:30:00",
+      show: "20:30",
+    },
+    {
       value: "21:00:00",
       show: "21:00",
+    },
+    {
+      value: "21:30:00",
+      show: "21:30",
+    },
+    {
+      value: "22:00:00",
+      show: "22:00",
+    },
+    {
+      value: "22:30:00",
+      show: "22:30",
+    },
+    {
+      value: "23:00:00",
+      show: "23:00",
+    },
+    {
+      value: "23:30:00",
+      show: "23:30",
     },
   ];
   const {
@@ -224,10 +363,10 @@ export default function CreateMerchantBranchModal({
 
       dispatch(
         merchantBranchAction(async () => {
-          const result = await merchantBranchService.updateMerchantBranch({
+          await merchantBranchService.updateMerchantBranch({
             ...values,
           });
-          console.log(result);
+          // console.log(result);
           await onGetMerchantBranches(
             merchantID,
             "Branch Data Successfully Updated"
@@ -318,7 +457,7 @@ export default function CreateMerchantBranchModal({
                 tuesdayID = branchWorkingHour.branchWorkingHoursID;
                 break;
               case "WEDNESDAY":
-                console.log(branchWorkingHour);
+                // console.log(branchWorkingHour);
                 openHourWednesday = branchWorkingHour.openHour;
                 closeHourWednesday = branchWorkingHour.closeHour;
                 wednesdayID = branchWorkingHour.branchWorkingHoursID;

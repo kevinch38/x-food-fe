@@ -39,6 +39,8 @@ function Sidebar() {
             <div className="mt-3" />
             {(adminRole === "ROLE_SUPER_ADMIN" ||
               adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_PARTNERSHIP_HEAD" ||
+              adminRole === "ROLE_MARKETING_HEAD" ||
               adminRole === "ROLE_MARKETING_STAFF") && (
               <NavLink
                 className={({ isActive }) =>
@@ -59,6 +61,7 @@ function Sidebar() {
             {(adminRole === "ROLE_SUPER_ADMIN" ||
               adminRole === "ROLE_PARTNERSHIP_STAFF" ||
               adminRole === "ROLE_PARTNERSHIP_HEAD" ||
+              adminRole === "ROLE_MARKETING_HEAD" ||
               adminRole === "ROLE_MARKETING_STAFF") && (
               <NavLink
                 className={({ isActive }) =>
@@ -77,6 +80,7 @@ function Sidebar() {
 
             {(adminRole === "ROLE_SUPER_ADMIN" ||
               adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_PARTNERSHIP_HEAD" ||
               adminRole === "ROLE_MARKETING_HEAD" ||
               adminRole === "ROLE_MARKETING_STAFF") && (
               <NavLink
@@ -96,6 +100,8 @@ function Sidebar() {
 
             {(adminRole === "ROLE_SUPER_ADMIN" ||
               adminRole === "ROLE_PARTNERSHIP_STAFF" ||
+              adminRole === "ROLE_PARTNERSHIP_HEAD" ||
+              adminRole === "ROLE_MARKETING_HEAD" ||
               adminRole === "ROLE_MARKETING_STAFF") && (
               <NavLink
                 className={({ isActive }) =>

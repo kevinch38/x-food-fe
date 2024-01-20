@@ -24,10 +24,10 @@ const PromotionService = () => {
       quantity: promotion.quantity,
       expiredDate: promotion.expiredDate,
     };
-    console.log(request);
+    // console.log(request);
 
     const { data } = await axiosInstance.post("/api/promotions", request);
-    console.log(data);
+    // console.log(data);
     return data;
   };
 
@@ -68,7 +68,7 @@ const PromotionService = () => {
       expiredDate: promotion.expiredDate,
     };
     const { data } = await axiosInstance.put("/api/promotions", request);
-    console.log(data);
+    // console.log(data);
     return data;
   };
 
