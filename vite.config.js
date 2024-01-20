@@ -3,10 +3,10 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
 
-// const HOST = "43.218.113.28";
-// const PORT = "8081";
-const HOST = 'localhost';
-const PORT = '8080';
+const HOST = "43.218.113.28";
+const PORT = "8081";
+// const HOST = 'localhost';
+// const PORT = '8080';
 
 // https://vitejs.dev/config/
 export default defineConfig({
