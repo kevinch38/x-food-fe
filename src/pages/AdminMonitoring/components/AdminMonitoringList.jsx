@@ -174,7 +174,7 @@ const AdminMonitoringList = () => {
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
               {[
                 "CREATE_MERCHANT",
-                "UPDATE_MERCHANT",
+                // "UPDATE_MERCHANT",
                 "DELETE_MERCHANT",
                 "CREATE_BRANCH",
                 "UPDATE_BRANCH",

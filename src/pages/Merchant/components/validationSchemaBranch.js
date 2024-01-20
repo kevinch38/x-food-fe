@@ -9,7 +9,7 @@ const validationSchemaBranch = () =>
 		cityID: Yup.string().required('City is required'),
 		picNumber: Yup.string()
 			.required('PIC Number is required')
-			// .matches(/^\d+$/,"Invalid PIC Number")
+			.matches(/^[0-9]+$/, 'PIC Number must be numbers')
 			.test(
 				'Digits only',
 				'The field should have digits only',
